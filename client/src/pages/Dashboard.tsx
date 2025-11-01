@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../store/authStore'
 import { useOnboardingStore } from '../store/onboardingStore'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -6,6 +7,7 @@ import { User, Heart, Activity, Dna, Package, CheckCircle, Microscope, Sparkles,
 import ParticleBackground from '../components/landing/ParticleBackground'
 
 const Dashboard = () => {
+  const navigate = useNavigate()
   const { user } = useAuthStore()
   const { isComplete } = useOnboardingStore()
   const [dnaProgress, setDnaProgress] = useState(() => {
@@ -268,15 +270,16 @@ const Dashboard = () => {
                         Results Complete!
                       </p>
                       <p className="text-gray-300 text-sm">
-                        Your DNA analysis is ready. Click below to view your personalized insights.
+                        Your DNA analysis is ready. View your personalized insurance recommendations now.
                       </p>
                     </div>
                     <motion.button 
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
+                      onClick={() => navigate('/purchase')}
                       className="px-6 py-3 bg-white text-black rounded-lg hover:bg-gray-100 transition font-medium whitespace-nowrap"
                     >
-                      View Results →
+                      View Plans →
                     </motion.button>
                   </div>
                 </motion.div>
@@ -293,6 +296,7 @@ const Dashboard = () => {
             transition={{ delay: 0.3 }}
             whileHover={{ y: -5 }}
             className="p-8 rounded-2xl backdrop-blur-2xl bg-gradient-to-br from-white/[0.05] to-white/[0.02] border border-white/10 text-center group"
+            onClick={() => navigate('/analysis')}
           >
             <div className="w-16 h-16 mx-auto mb-6 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center group-hover:bg-purple-500/20 transition">
               <Bot className="w-8 h-8 text-purple-400" />

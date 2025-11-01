@@ -1,8 +1,10 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { useCartStore } from '../store/cartStore'
 import { useState, useMemo } from 'react'
+import { useAuthStore } from '../store/authStore'
+import { useOnboardingStore } from '../store/onboardingStore'
 import ParticleBackground from '../components/landing/ParticleBackground'
-import { Heart, Car, Plane, Shield, Activity, Dna, Sparkles } from 'lucide-react'
+import { Heart, Car, Plane, Shield, Activity, Dna, Sparkles, Award, TrendingUp, Info, AlertCircle, CheckCircle, ChevronRight, Users } from 'lucide-react'
 
 // Mock data types
 interface Plan {
@@ -364,6 +366,27 @@ const mockPlans: Plan[] = [
 
 const Purchase = () => {
   const { items, addItem, removeItem, total } = useCartStore()
+  const { isAuthenticated } = useAuthStore()
+  const { isComplete } = useOnboardingStore()
+  
+  // Check if DNA results are complete
+  const [dnaResultsReady, setDnaResultsReady] = useState(() => {
+    const saved = localStorage.getItem('dnaProgress')
+    return saved ? parseInt(saved) >= 3 : false
+  })
+  
+  // Check localStorage for DNA progress changes
+  useState(() => {
+    const interval = setInterval(() => {
+      const saved = localStorage.getItem('dnaProgress')
+      const isReady = saved ? parseInt(saved) >= 3 : false
+      setDnaResultsReady(isReady)
+    }, 1000)
+    return () => clearInterval(interval)
+  })
+  
+  // Only show recommendations if: authenticated + onboarding complete + DNA results ready
+  const shouldShowRecommendations = isAuthenticated && isComplete && dnaResultsReady
   
   // State
   const [activeType, setActiveType] = useState<'Health' | 'Auto' | 'Travel' | 'Life' | 'Sports'>('Health')
@@ -373,6 +396,7 @@ const Purchase = () => {
   const [showPersonalizedPricing, setShowPersonalizedPricing] = useState(true)
   const [showEstimator, setShowEstimator] = useState(false)
   const [showCartOverlay, setShowCartOverlay] = useState(false)
+  const [showRecommendations, setShowRecommendations] = useState(true)
   
   // Filters
   const [filters, setFilters] = useState({
@@ -392,6 +416,42 @@ const Purchase = () => {
     occupationRisk: 'Low',
     dnaRiskClass: 'B',
   })
+  
+  // DNA-based recommendation data (shown when user is authenticated and completed onboarding)
+  const userSummary = {
+    age: 29,
+    gender: "Female",
+    lifestyle: "Active",
+    dnaRisks: ["High cardiovascular risk", "Moderate recovery rate"],
+    note: "We prioritized health and sports coverage for your profile."
+  }
+  
+  // Top recommended plans based on DNA analysis
+  const recommendedPlanIds = ['aia-health-standard', 'allianz-sports-active', 'aia-travel-basic', 'ge-life-term']
+  const topRecommendations = mockPlans.filter(p => recommendedPlanIds.includes(p.id))
+  
+  // Calculate match scores for recommendations
+  const getMatchScore = (planId: string): number => {
+    const scores: Record<string, number> = {
+      'aia-health-standard': 0.91,
+      'allianz-sports-active': 0.86,
+      'aia-travel-basic': 0.88,
+      'ge-life-term': 0.85
+    }
+    return scores[planId] || 0.80
+  }
+  
+  const getMatchColor = (score: number) => {
+    if (score >= 0.9) return 'text-green-400'
+    if (score >= 0.85) return 'text-blue-400'
+    return 'text-purple-400'
+  }
+
+  const getMatchBg = (score: number) => {
+    if (score >= 0.9) return 'bg-green-500/20 border-green-500/30'
+    if (score >= 0.85) return 'bg-blue-500/20 border-blue-500/30'
+    return 'bg-purple-500/20 border-purple-500/30'
+  }
   
   const insuranceTypes: Array<'Health' | 'Auto' | 'Travel' | 'Life' | 'Sports'> = ['Health', 'Auto', 'Travel', 'Life', 'Sports']
   const typeIcons = {
@@ -589,6 +649,232 @@ const Purchase = () => {
             )}
           </motion.button>
         </motion.div>
+        
+        {/* Onboarding Prompt - Shows if authenticated but not completed onboarding/DNA test */}
+        {isAuthenticated && (!isComplete || !dnaResultsReady) && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.15 }}
+            className="mb-8 p-6 rounded-2xl backdrop-blur-2xl bg-gradient-to-br from-blue-600/20 to-purple-600/20 border border-blue-500/30"
+          >
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center border border-blue-500/30 flex-shrink-0">
+                <AlertCircle className="w-6 h-6 text-blue-400" />
+              </div>
+              <div className="flex-1">
+                <h3 className="text-xl font-bold text-white mb-2">
+                  Get Personalized Plan Recommendations
+                </h3>
+                {!isComplete ? (
+                  <p className="text-gray-300 mb-4">
+                    Complete your health profile and DNA assessment to receive AI-powered insurance recommendations tailored specifically to your genetic profile and lifestyle.
+                  </p>
+                ) : !dnaResultsReady ? (
+                  <p className="text-gray-300 mb-4">
+                    Your DNA test is being processed. Once complete, you'll see personalized plan recommendations here based on your unique genetic profile.
+                  </p>
+                ) : null}
+                <div className="flex gap-3">
+                  {!isComplete && (
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => window.location.href = '/dashboard'}
+                      className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:shadow-lg hover:shadow-blue-500/50 transition font-semibold"
+                    >
+                      Complete Profile →
+                    </motion.button>
+                  )}
+                  {isComplete && !dnaResultsReady && (
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => window.location.href = '/dashboard'}
+                      className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:shadow-lg hover:shadow-blue-500/50 transition font-semibold"
+                    >
+                      Check DNA Status →
+                    </motion.button>
+                  )}
+                  <span className="text-sm text-gray-400 flex items-center gap-2">
+                    <Info className="w-4 h-4" />
+                    Browse all plans below while you wait
+                  </span>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+        
+        {/* Personalized Recommendations Section - Shows only when user completed onboarding + DNA results ready */}
+        {shouldShowRecommendations && showRecommendations && (
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.15 }}
+            className="mb-8 p-8 rounded-2xl backdrop-blur-2xl bg-gradient-to-br from-purple-600/20 to-blue-600/20 border border-purple-500/30 relative overflow-hidden"
+          >
+            {/* Close button */}
+            <button
+              onClick={() => setShowRecommendations(false)}
+              className="absolute top-4 right-4 p-2 hover:bg-white/10 rounded-lg transition text-gray-400 hover:text-white"
+            >
+              ✕
+            </button>
+            
+            {/* Header */}
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center border border-purple-500/30">
+                <Award className="w-6 h-6 text-purple-400" />
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+                  Recommended For You
+                  <Sparkles className="w-5 h-5 text-yellow-400" />
+                </h2>
+                <p className="text-gray-300 text-sm">Based on your DNA analysis and lifestyle profile</p>
+              </div>
+            </div>
+            
+            {/* User Profile Summary */}
+            <div className="mb-6 p-4 bg-black/20 rounded-xl border border-white/10">
+              <div className="flex items-start gap-3">
+                <Info className="w-5 h-5 text-purple-400 mt-0.5 flex-shrink-0" />
+                <div className="flex-1">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3">
+                    <div>
+                      <div className="text-xs text-gray-400">Age</div>
+                      <div className="font-semibold text-white">{userSummary.age}</div>
+                    </div>
+                    <div>
+                      <div className="text-xs text-gray-400">Lifestyle</div>
+                      <div className="font-semibold text-white flex items-center gap-1">
+                        <Activity className="w-3 h-3 text-green-400" />
+                        {userSummary.lifestyle}
+                      </div>
+                    </div>
+                    <div className="col-span-2">
+                      <div className="text-xs text-gray-400">DNA Risk Factors</div>
+                      <div className="text-sm text-orange-400">
+                        {userSummary.dnaRisks.join(', ')}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="text-sm text-purple-300 flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4" />
+                    {userSummary.note}
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Recommended Plans Grid */}
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {topRecommendations.map((plan, index) => {
+                const pricing = calculatePremium(plan, showPersonalizedPricing)
+                const matchScore = getMatchScore(plan.id)
+                const Icon = typeIcons[plan.type]
+                
+                return (
+                  <motion.div
+                    key={plan.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 * index }}
+                    whileHover={{ y: -5, scale: 1.02 }}
+                    className="relative p-5 rounded-xl backdrop-blur-2xl bg-gradient-to-br from-white/[0.1] to-white/[0.05] border border-white/20 hover:border-purple-500/50 transition-all group"
+                  >
+                    {/* Match Score Badge */}
+                    <div className={`absolute -top-2 -right-2 px-3 py-1.5 rounded-full border ${getMatchBg(matchScore)}`}>
+                      <span className={`text-xs font-bold ${getMatchColor(matchScore)}`}>
+                        {Math.round(matchScore * 100)}% Match
+                      </span>
+                    </div>
+                    
+                    {/* Plan Header */}
+                    <div className="flex items-center gap-2 mb-3">
+                      <div className="w-10 h-10 bg-gradient-to-br from-purple-500/20 to-blue-500/20 rounded-lg flex items-center justify-center border border-purple-500/30">
+                        <Icon className="w-5 h-5 text-purple-400" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="text-xs text-gray-400 truncate">{plan.company}</div>
+                        <div className="font-semibold text-white text-sm truncate">{plan.name}</div>
+                      </div>
+                    </div>
+                    
+                    {/* Pricing */}
+                    <div className="mb-3">
+                      <div className="text-2xl font-bold text-purple-400">RM {pricing.monthly}</div>
+                      <div className="text-xs text-gray-400">per month</div>
+                    </div>
+                    
+                    {/* Key Feature */}
+                    <div className="mb-3 text-xs text-gray-300 line-clamp-2">
+                      {plan.features[0]}
+                    </div>
+                    
+                    {/* Why Recommended */}
+                    <div className="mb-4 p-2 bg-purple-950/30 rounded-lg border border-purple-800/30">
+                      <div className="flex items-start gap-1.5">
+                        <Sparkles className="w-3 h-3 text-purple-400 mt-0.5 flex-shrink-0" />
+                        <p className="text-xs text-gray-300 line-clamp-2">
+                          {plan.type === 'Health' ? 'Covers cardiac care based on your DNA risk profile' :
+                           plan.type === 'Sports' ? 'Perfect for your active lifestyle' :
+                           plan.type === 'Travel' ? 'Ideal for international travelers' :
+                           'Family protection with critical illness coverage'}
+                        </p>
+                      </div>
+                    </div>
+                    
+                    {/* Actions */}
+                    <div className="flex gap-2">
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => setSelectedPlanDetail(plan)}
+                        className="flex-1 px-3 py-2 text-xs bg-white/10 text-white rounded-lg hover:bg-white/20 transition border border-white/20"
+                      >
+                        Details
+                      </motion.button>
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => addItem({ ...plan, price: pricing.monthly, type: plan.type })}
+                        className="flex-1 px-3 py-2 text-xs bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-lg hover:from-purple-500 hover:to-purple-600 transition font-medium"
+                      >
+                        Select
+                      </motion.button>
+                    </div>
+                  </motion.div>
+                )
+              })}
+            </div>
+            
+            {/* View All Recommendations Link */}
+            <div className="mt-6 text-center">
+              <p className="text-sm text-gray-300 mb-3">
+                Want to see detailed analysis and insights about these recommendations?
+              </p>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => window.location.href = '/recommendations'}
+                className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg transition border border-white/20 font-medium"
+              >
+                <TrendingUp className="w-4 h-4" />
+                View Full Recommendations Page
+                <ChevronRight className="w-4 h-4" />
+              </motion.button>
+            </div>
+            
+            {/* Divider */}
+            <div className="mt-8 mb-4 flex items-center gap-4">
+              <div className="flex-1 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+              <span className="text-sm text-gray-400">Or browse all plans below</span>
+              <div className="flex-1 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+            </div>
+          </motion.section>
+        )}
         
         {/* Platform Differentiator Banner */}
         <motion.div 

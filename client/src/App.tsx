@@ -7,6 +7,8 @@ import ChatPanel from './components/chat/ChatPanel'
 import Landing from './pages/Landing'
 import Dashboard from './pages/Dashboard'
 import Purchase from './pages/Purchase'
+import AIAnalysis from './pages/AIAnalysis'
+import RecommendationsPage from './pages/RecommendationsPage'
 
 // Onboarding Pages
 import AvatarSelection from './pages/onboarding/AvatarSelection'
@@ -63,6 +65,14 @@ function AppContent() {
             <Route 
               path="/dashboard" 
               element={isAuthenticated ? <Dashboard /> : <Navigate to="/" />} 
+            />
+            <Route 
+              path="/analysis" 
+              element={isAuthenticated ? <AIAnalysis /> : <Navigate to="/" />} 
+            />
+            <Route 
+              path="/recommendations" 
+              element={isAuthenticated ? <RecommendationsPage /> : <Navigate to="/" />} 
             />
 
             {/* Catch all */}
