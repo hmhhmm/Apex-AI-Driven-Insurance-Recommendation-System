@@ -94,20 +94,20 @@ export default function AvatarSelection() {
                     {/* Female 3D Avatar - Wrapper with extra height */}
                     <div className="w-64 mb-6 relative overflow-hidden" style={{ height: '280px' }}>
                       {/* Inner container that clips bottom 20% */}
-                      <div
+                      <div 
                         className="absolute top-0 left-0 right-0"
-                        style={{
+                        style={{ 
                           height: '320px',
                           clipPath: 'inset(0 0 20% 0)'
                         }}
                       >
-                        <Spline
+                        <Spline 
                           scene="https://prod.spline.design/xWHBgK2bOBQRvsmd/scene.splinecode"
                           className="w-full h-full"
                         />
                       </div>
                     </div>
-                   
+                    
                     <h3 className="text-2xl font-bold text-white mb-2">Female</h3>
                     <p className="text-gray-400">Select this avatar</p>
                   </div>
@@ -121,25 +121,25 @@ export default function AvatarSelection() {
                   className="group relative"
                 >
                   <div className="flex flex-col items-center">
-                    {/* Male 3D Avatar - Scaled to match female */}
-                    <div className="w-64 mb-6 relative overflow-hidden" style={{ height: '280px' }}>
-                      {/* Inner container - scaled to match female size */}
-                      <div
+                    {/* Male 3D Avatar - Wrapper with extra height */}
+                    <div className="w-64 mb-6 relative overflow-hidden" style={{ height: '256px' }}>
+                      {/* Inner container that clips bottom 25% and scales down */}
+                      <div 
                         className="absolute top-0 left-0 right-0"
-                        style={{
-                          height: '320px',
-                          clipPath: 'inset(0 0 20% 0)',
-                          transform: 'scale(1.1)',
-                          transformOrigin: 'center center'
+                        style={{ 
+                          height: '380px',
+                          clipPath: 'inset(0 0 25% 0)',
+                          transform: 'scale(0.85)',
+                          transformOrigin: 'top center'
                         }}
                       >
-                        <Spline
-                          scene="https://prod.spline.design/PuH8zLiZwiK61OXD/scene.splinecode"
+                        <Spline 
+                          scene="https://prod.spline.design/odtCmzosoH-uUN4I/scene.splinecode"
                           className="w-full h-full"
                         />
                       </div>
                     </div>
-                   
+                    
                     <h3 className="text-2xl font-bold text-white mb-2">Male</h3>
                     <p className="text-gray-400">Select this avatar</p>
                   </div>
@@ -171,14 +171,14 @@ export default function AvatarSelection() {
                   <div 
                     className="absolute top-0 left-0 right-0"
                     style={{ 
-                      height: '240px',
-                      clipPath: 'inset(0 0 20% 0)',
-                      transform: 'scale(1.1)',
-                      transformOrigin: 'center center'
+                      height: '280px',
+                      clipPath: 'inset(0 0 25% 0)',
+                      transform: 'scale(0.85)',
+                      transformOrigin: 'top center'
                     }}
                   >
                     <Spline 
-                      scene="https://prod.spline.design/PuH8zLiZwiK61OXD/scene.splinecode"
+                      scene="https://prod.spline.design/odtCmzosoH-uUN4I/scene.splinecode"
                       className="w-full h-full"
                     />
                   </div>
