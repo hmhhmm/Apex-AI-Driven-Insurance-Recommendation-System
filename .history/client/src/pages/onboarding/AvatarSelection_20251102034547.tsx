@@ -175,7 +175,7 @@ export default function AvatarSelection() {
                       >
                         <Spline
                           scene="https://prod.spline.design/xWHBgK2bOBQRvsmd/scene.splinecode"
-                          className="w-full h-full pointer-events-none"
+                          className="w-full h-full"
                         />
                       </div>
                     </div>
@@ -207,7 +207,7 @@ export default function AvatarSelection() {
                       >
                         <Spline
                           scene="https://prod.spline.design/PuH8zLiZwiK61OXD/scene.splinecode"
-                          className="w-full h-full pointer-events-none"
+                          className="w-full h-full"
                         />
                       </div>
                     </div>
@@ -242,7 +242,7 @@ export default function AvatarSelection() {
                     >
                       <Spline 
                         scene="https://prod.spline.design/xWHBgK2bOBQRvsmd/scene.splinecode"
-                        className="w-full h-full pointer-events-none"
+                        className="w-full h-full"
                       />
                     </div>
                   ) : (
@@ -257,7 +257,7 @@ export default function AvatarSelection() {
                     >
                       <Spline 
                         scene="https://prod.spline.design/PuH8zLiZwiK61OXD/scene.splinecode"
-                        className="w-full h-full pointer-events-none"
+                        className="w-full h-full"
                       />
                     </div>
                   )}

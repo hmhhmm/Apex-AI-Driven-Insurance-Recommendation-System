@@ -175,7 +175,7 @@ export default function AvatarSelection() {
                       >
                         <Spline
                           scene="https://prod.spline.design/xWHBgK2bOBQRvsmd/scene.splinecode"
-                          className="w-full h-full pointer-events-none"
+                          className="w-full h-full"
                         />
                       </div>
                     </div>
@@ -207,7 +207,7 @@ export default function AvatarSelection() {
                       >
                         <Spline
                           scene="https://prod.spline.design/PuH8zLiZwiK61OXD/scene.splinecode"
-                          className="w-full h-full pointer-events-none"
+                          className="w-full h-full"
                         />
                       </div>
                     </div>
@@ -242,7 +242,7 @@ export default function AvatarSelection() {
                     >
                       <Spline 
                         scene="https://prod.spline.design/xWHBgK2bOBQRvsmd/scene.splinecode"
-                        className="w-full h-full pointer-events-none"
+                        className="w-full h-full"
                       />
                     </div>
                   ) : (
@@ -257,7 +257,7 @@ export default function AvatarSelection() {
                     >
                       <Spline 
                         scene="https://prod.spline.design/PuH8zLiZwiK61OXD/scene.splinecode"
-                        className="w-full h-full pointer-events-none"
+                        className="w-full h-full"
                       />
                     </div>
                   )}
@@ -427,23 +427,27 @@ export default function AvatarSelection() {
                         </motion.div>
                       )}
 
-                      {/* Health Insurance: Exercise Frequency */}
-                      {currentQuestion === 1 && formData.insuranceTypes.includes('Health') && (
+                      {/* Question 7: Exercise (if Health selected) */}
+                      {currentQuestion === 6 && formData.insuranceTypes.includes('Health') && (
                         <motion.div 
                           className="card p-8"
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -20 }}
+                          initial={{ opacity: 0, x: 20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: -20 }}
                         >
-                          <div className="mb-6">
-                            <h2 className="text-2xl font-bold text-white mb-2">
-                              Health Assessment
-                            </h2>
-                            <p className="text-gray-400">Exercise Frequency</p>
+                          <div className="flex items-start gap-4 mb-6">
+                            <div className="w-16 h-16 bg-green-600/20 rounded-full flex items-center justify-center flex-shrink-0">
+                              <span className="text-3xl">🏃‍♂️</span>
+                            </div>
+                            <div className="flex-1">
+                              <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
+                                Do you exercise regularly?
+                              </h2>
+                              <p className="text-green-400 text-sm flex items-center gap-1">
+                                <span>●</span> Earn 10 points
+                              </p>
+                            </div>
                           </div>
-                          <p className="text-white font-medium mb-4">
-                            How often do you engage in physical exercise?
-                          </p>
                           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                             {['Rarely', 'Sometimes', 'Often'].map((freq) => (
                               <button
@@ -452,7 +456,7 @@ export default function AvatarSelection() {
                                   updateFormData('exerciseFrequency', freq)
                                   setTimeout(handleNext, 300)
                                 }}
-                                className="px-6 py-4 rounded-lg transition-all duration-200 bg-zinc-800 text-white hover:bg-zinc-700 font-medium border border-zinc-700 hover:border-blue-500"
+                                className="px-6 py-4 rounded-xl transition-all duration-200 hover:scale-105 bg-zinc-800 text-white hover:bg-gradient-to-r hover:from-green-600 hover:to-emerald-600 font-semibold"
                               >
                                 {freq}
                               </button>
@@ -461,23 +465,27 @@ export default function AvatarSelection() {
                         </motion.div>
                       )}
 
-                      {/* Health Insurance: Smoking Status */}
-                      {currentQuestion === 2 && formData.insuranceTypes.includes('Health') && (
+                      {/* Question 8: Smoking (if Health selected) */}
+                      {currentQuestion === 7 && formData.insuranceTypes.includes('Health') && (
                         <motion.div 
                           className="card p-8"
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -20 }}
+                          initial={{ opacity: 0, x: 20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: -20 }}
                         >
-                          <div className="mb-6">
-                            <h2 className="text-2xl font-bold text-white mb-2">
-                              Health Assessment
-                            </h2>
-                            <p className="text-gray-400">Smoking Status</p>
+                          <div className="flex items-start gap-4 mb-6">
+                            <div className="w-16 h-16 bg-green-600/20 rounded-full flex items-center justify-center flex-shrink-0">
+                              <span className="text-3xl">🚭</span>
+                            </div>
+                            <div className="flex-1">
+                              <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
+                                Do you smoke?
+                              </h2>
+                              <p className="text-green-400 text-sm flex items-center gap-1">
+                                <span>●</span> Earn 10 points
+                              </p>
+                            </div>
                           </div>
-                          <p className="text-white font-medium mb-4">
-                            Do you smoke or use tobacco products?
-                          </p>
                           <div className="grid grid-cols-2 gap-3">
                             {['Yes', 'No'].map((answer) => (
                               <button
@@ -486,7 +494,7 @@ export default function AvatarSelection() {
                                   updateFormData('smokes', answer)
                                   setTimeout(handleNext, 300)
                                 }}
-                                className="px-6 py-4 rounded-lg transition-all duration-200 bg-zinc-800 text-white hover:bg-zinc-700 font-medium border border-zinc-700 hover:border-blue-500"
+                                className="px-6 py-4 rounded-xl transition-all duration-200 hover:scale-105 bg-zinc-800 text-white hover:bg-gradient-to-r hover:from-green-600 hover:to-emerald-600 font-semibold"
                               >
                                 {answer}
                               </button>
@@ -495,66 +503,70 @@ export default function AvatarSelection() {
                         </motion.div>
                       )}
 
-                      {/* Life Insurance: Coverage Amount */}
-                      {((currentQuestion === 1 && !formData.insuranceTypes.includes('Health')) || 
-                        (currentQuestion === 3 && formData.insuranceTypes.includes('Health'))) && 
-                        formData.insuranceTypes.includes('Life') && (
+                      {/* Question 9: Life Coverage (if Life selected) */}
+                      {currentQuestion === (formData.insuranceTypes.includes('Health') ? 8 : 6) && formData.insuranceTypes.includes('Life') && (
                         <motion.div 
                           className="card p-8"
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -20 }}
+                          initial={{ opacity: 0, x: 20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: -20 }}
                         >
-                          <div className="mb-6">
-                            <h2 className="text-2xl font-bold text-white mb-2">
-                              Life Insurance Assessment
-                            </h2>
-                            <p className="text-gray-400">Coverage Amount</p>
+                          <div className="flex items-start gap-4 mb-6">
+                            <div className="w-16 h-16 bg-purple-600/20 rounded-full flex items-center justify-center flex-shrink-0">
+                              <span className="text-3xl">💰</span>
+                            </div>
+                            <div className="flex-1">
+                              <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
+                                Expected coverage amount?
+                              </h2>
+                              <p className="text-green-400 text-sm flex items-center gap-1">
+                                <span>●</span> Earn 10 points
+                              </p>
+                            </div>
                           </div>
-                          <p className="text-white font-medium mb-4">
-                            What is your expected coverage amount?
-                          </p>
                           <select
                             value={formData.lifeCoverage}
                             onChange={(e) => updateFormData('lifeCoverage', e.target.value)}
-                            className="w-full px-4 py-3 bg-zinc-900 text-white rounded-lg border border-zinc-700 focus:border-blue-500 focus:outline-none transition-all"
+                            className="w-full px-6 py-4 bg-zinc-900 text-white text-lg rounded-xl border-2 border-blue-500 focus:border-purple-500 focus:outline-none transition-all"
                           >
                             <option value="">Select coverage amount</option>
-                            <option value="100000">RM 100,000</option>
-                            <option value="250000">RM 250,000</option>
-                            <option value="500000">RM 500,000</option>
-                            <option value="750000">RM 750,000</option>
-                            <option value="1000000">RM 1,000,000</option>
-                            <option value="1500000">RM 1,500,000</option>
-                            <option value="2000000+">RM 2,000,000+</option>
+                            <option value="100000">$100,000</option>
+                            <option value="250000">$250,000</option>
+                            <option value="500000">$500,000</option>
+                            <option value="1000000">$1,000,000</option>
+                            <option value="1000000+">$1,000,000+</option>
                           </select>
                           <button
                             onClick={handleNext}
                             disabled={!formData.lifeCoverage}
-                            className="w-full mt-6 px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg"
+                            className="w-full mt-6 px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                           >
-                            Continue →
+                            Next Question →
                           </button>
                         </motion.div>
                       )}
 
-                      {/* Car Insurance: Vehicle Ownership */}
+                      {/* Question 10: Has Car (if Car selected) - Dynamic question number */}
                       {currentQuestion === getTotalQuestions() - 2 && formData.insuranceTypes.includes('Car') && (
                         <motion.div 
                           className="card p-8"
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -20 }}
+                          initial={{ opacity: 0, x: 20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: -20 }}
                         >
-                          <div className="mb-6">
-                            <h2 className="text-2xl font-bold text-white mb-2">
-                              Car Insurance Assessment
-                            </h2>
-                            <p className="text-gray-400">Vehicle Ownership</p>
+                          <div className="flex items-start gap-4 mb-6">
+                            <div className="w-16 h-16 bg-blue-600/20 rounded-full flex items-center justify-center flex-shrink-0">
+                              <span className="text-3xl">🚗</span>
+                            </div>
+                            <div className="flex-1">
+                              <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
+                                Do you have a car?
+                              </h2>
+                              <p className="text-green-400 text-sm flex items-center gap-1">
+                                <span>●</span> Earn 10 points
+                              </p>
+                            </div>
                           </div>
-                          <p className="text-white font-medium mb-4">
-                            Do you own a car?
-                          </p>
                           <div className="grid grid-cols-2 gap-3">
                             {['Yes', 'No'].map((answer) => (
                               <button
@@ -563,7 +575,7 @@ export default function AvatarSelection() {
                                   updateFormData('hasCar', answer)
                                   setTimeout(handleNext, 300)
                                 }}
-                                className="px-6 py-4 rounded-lg transition-all duration-200 bg-zinc-800 text-white hover:bg-zinc-700 font-medium border border-zinc-700 hover:border-blue-500"
+                                className="px-6 py-4 rounded-xl transition-all duration-200 hover:scale-105 bg-zinc-800 text-white hover:bg-gradient-to-r hover:from-blue-600 hover:to-blue-600 font-semibold"
                               >
                                 {answer}
                               </button>
@@ -572,110 +584,30 @@ export default function AvatarSelection() {
                         </motion.div>
                       )}
 
-                      {/* Car Insurance: Existing Insurance Status (if has car) */}
-                      {currentQuestion === getTotalQuestions() - 1 && formData.hasCar === 'Yes' && formData.insuranceTypes.includes('Car') && (
-                        <motion.div 
-                          className="card p-8"
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -20 }}
-                        >
-                          <div className="mb-6">
-                            <h2 className="text-2xl font-bold text-white mb-2">
-                              Car Insurance Assessment
-                            </h2>
-                            <p className="text-gray-400">Current Insurance Status</p>
-                          </div>
-                          <p className="text-white font-medium mb-4">
-                            Do you currently have car insurance?
-                          </p>
-                          <div className="grid grid-cols-2 gap-3">
-                            {['Yes', 'No'].map((answer) => (
-                              <button
-                                key={answer}
-                                onClick={() => {
-                                  updateFormData('hasCarInsurance', answer)
-                                  if (answer === 'Yes') {
-                                    setTimeout(handleNext, 300)
-                                  } else {
-                                    setTimeout(handleNext, 300)
-                                  }
-                                }}
-                                className="px-6 py-4 rounded-lg transition-all duration-200 bg-zinc-800 text-white hover:bg-zinc-700 font-medium border border-zinc-700 hover:border-blue-500"
-                              >
-                                {answer}
-                              </button>
-                            ))}
-                          </div>
-                        </motion.div>
-                      )}
-
-                      {/* Car Details (if no insurance) */}
-                      {formData.hasCarInsurance === 'No' && formData.hasCar === 'Yes' && formData.insuranceTypes.includes('Car') && (
-                        <motion.div 
-                          className="card p-8 mt-6"
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                        >
-                          <div className="mb-6">
-                            <h3 className="text-xl font-semibold text-white mb-2">
-                              Vehicle Details
-                            </h3>
-                            <p className="text-gray-400 text-sm">Please provide your car information</p>
-                          </div>
-                          <div className="space-y-4">
-                            <div>
-                              <label className="block text-white font-medium mb-2">
-                                Car Plate Number
-                              </label>
-                              <input
-                                type="text"
-                                value={formData.carPlate}
-                                onChange={(e) => updateFormData('carPlate', e.target.value.toUpperCase())}
-                                placeholder="e.g., ABC1234"
-                                className="w-full px-4 py-3 bg-zinc-900 text-white rounded-lg border border-zinc-700 focus:border-blue-500 focus:outline-none transition-all"
-                              />
-                            </div>
-                            <div>
-                              <label className="block text-white font-medium mb-2">
-                                Car Model
-                              </label>
-                              <input
-                                type="text"
-                                value={formData.carModel}
-                                onChange={(e) => updateFormData('carModel', e.target.value)}
-                                placeholder="e.g., Toyota Camry 2022"
-                                className="w-full px-4 py-3 bg-zinc-900 text-white rounded-lg border border-zinc-700 focus:border-blue-500 focus:outline-none transition-all"
-                              />
-                            </div>
-                          </div>
-                        </motion.div>
-                      )}
-
-                      {/* Travel Frequency Assessment */}
+                      {/* Question 11: Travel Frequency */}
                       {currentQuestion === getTotalQuestions() - 1 && (
                         <motion.div 
                           className="card p-8"
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -20 }}
+                          initial={{ opacity: 0, x: 20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: -20 }}
                         >
-                          <div className="mb-6">
-                            <h2 className="text-2xl font-bold text-white mb-2">
-                              Travel Assessment
-                            </h2>
-                            <p className="text-gray-400">Annual Travel Frequency</p>
-                          </div>
-                          <p className="text-white font-medium mb-4">
-                            How many times do you travel internationally per year?
-                          </p>
-                          {formData.travelFrequency && parseInt(formData.travelFrequency.split('-')[0]) >= 3 && (
-                            <div className="mb-4 p-3 bg-blue-600/10 border border-blue-500/30 rounded-lg">
-                              <p className="text-blue-400 text-sm">
-                                ℹ️ Based on your travel frequency, we may recommend Travel Insurance coverage
-                              </p>
+                          <div className="flex items-start gap-4 mb-6">
+                            <div className="w-16 h-16 bg-yellow-600/20 rounded-full flex items-center justify-center flex-shrink-0">
+                              <span className="text-3xl">✈️</span>
                             </div>
-                          )}
+                            <div className="flex-1">
+                              <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
+                                How often do you travel per year?
+                              </h2>
+                              <p className="text-green-400 text-sm flex items-center gap-1">
+                                <span>●</span> Earn 10 points
+                              </p>
+                              {formData.travelFrequency && parseInt(formData.travelFrequency.split('-')[0]) >= 3 && (
+                                <p className="text-yellow-400 text-sm mt-1">✨ We recommend Travel Insurance!</p>
+                              )}
+                            </div>
+                          </div>
                           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                             {['0-1', '2', '3-5', '6+'].map((freq) => (
                               <button
@@ -684,9 +616,9 @@ export default function AvatarSelection() {
                                   updateFormData('travelFrequency', freq)
                                   setTimeout(handleNext, 300)
                                 }}
-                                className="px-6 py-4 rounded-lg transition-all duration-200 bg-zinc-800 text-white hover:bg-zinc-700 font-medium border border-zinc-700 hover:border-blue-500"
+                                className="px-6 py-4 rounded-xl transition-all duration-200 hover:scale-105 bg-zinc-800 text-white hover:bg-gradient-to-r hover:from-yellow-600 hover:to-orange-600 font-semibold"
                               >
-                                {freq} {freq === '6+' ? 'times' : freq === '0-1' ? 'time' : 'times'}
+                                {freq}
                               </button>
                             ))}
                           </div>

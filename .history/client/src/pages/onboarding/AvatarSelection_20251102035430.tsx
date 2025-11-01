@@ -175,7 +175,14 @@ export default function AvatarSelection() {
                       >
                         <Spline
                           scene="https://prod.spline.design/xWHBgK2bOBQRvsmd/scene.splinecode"
-                          className="w-full h-full pointer-events-none"
+                          className="w-full h-full"
+                          onLoad={(spline) => {
+                            spline.setZoom(1);
+                            const canvas = document.querySelector('canvas');
+                            if (canvas) {
+                              canvas.addEventListener('wheel', (e) => e.preventDefault(), { passive: false });
+                            }
+                          }}
                         />
                       </div>
                     </div>
@@ -207,7 +214,14 @@ export default function AvatarSelection() {
                       >
                         <Spline
                           scene="https://prod.spline.design/PuH8zLiZwiK61OXD/scene.splinecode"
-                          className="w-full h-full pointer-events-none"
+                          className="w-full h-full"
+                          onLoad={(spline) => {
+                            spline.setZoom(1);
+                            const canvas = document.querySelector('canvas');
+                            if (canvas) {
+                              canvas.addEventListener('wheel', (e) => e.preventDefault(), { passive: false });
+                            }
+                          }}
                         />
                       </div>
                     </div>
@@ -242,7 +256,14 @@ export default function AvatarSelection() {
                     >
                       <Spline 
                         scene="https://prod.spline.design/xWHBgK2bOBQRvsmd/scene.splinecode"
-                        className="w-full h-full pointer-events-none"
+                        className="w-full h-full"
+                        onLoad={(spline) => {
+                          spline.setZoom(1);
+                          const canvas = document.querySelector('canvas');
+                          if (canvas) {
+                            canvas.addEventListener('wheel', (e) => e.preventDefault(), { passive: false });
+                          }
+                        }}
                       />
                     </div>
                   ) : (
@@ -257,7 +278,14 @@ export default function AvatarSelection() {
                     >
                       <Spline 
                         scene="https://prod.spline.design/PuH8zLiZwiK61OXD/scene.splinecode"
-                        className="w-full h-full pointer-events-none"
+                        className="w-full h-full"
+                        onLoad={(spline) => {
+                          spline.setZoom(1);
+                          const canvas = document.querySelector('canvas');
+                          if (canvas) {
+                            canvas.addEventListener('wheel', (e) => e.preventDefault(), { passive: false });
+                          }
+                        }}
                       />
                     </div>
                   )}
