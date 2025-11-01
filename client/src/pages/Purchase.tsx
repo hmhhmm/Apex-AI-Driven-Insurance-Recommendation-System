@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { useCartStore } from '../store/cartStore'
 import { useState, useMemo } from 'react'
+import ParticleBackground from '../components/landing/ParticleBackground'
 
 // Mock data types
 interface Plan {
@@ -493,19 +494,74 @@ const Purchase = () => {
   }
 
   return (
-    <div className="min-h-screen bg-black py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-black overflow-x-hidden relative">
+      {/* Animated Background */}
+      <ParticleBackground />
+      
+      {/* Animated Gradient Orbs */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <motion.div
+          className="absolute top-1/4 -left-48 w-96 h-96 bg-purple-500/30 rounded-full blur-3xl"
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.3, 0.5, 0.3],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+        <motion.div
+          className="absolute top-1/2 right-0 w-96 h-96 bg-blue-500/30 rounded-full blur-3xl"
+          animate={{
+            scale: [1.2, 1, 1.2],
+            opacity: [0.3, 0.5, 0.3],
+          }}
+          transition={{
+            duration: 10,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+        <motion.div
+          className="absolute bottom-0 left-1/3 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl"
+          animate={{
+            scale: [1, 1.3, 1],
+            opacity: [0.2, 0.4, 0.2],
+          }}
+          transition={{
+            duration: 12,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+      </div>
+
+      {/* Grid Overlay */}
+      <div className="fixed inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:100px_100px] pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">
         {/* Header with Cart Icon */}
-        <div className="mb-8 flex justify-between items-start">
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="mb-8 flex justify-between items-start"
+        >
           <div>
-            <h1 className="text-4xl font-bold mb-2 text-white">Insurance Plans Marketplace</h1>
+            <h1 className="text-4xl md:text-5xl font-light mb-2 text-white">
+              Insurance <span className="font-normal">Plans</span> Marketplace
+            </h1>
             <p className="text-gray-400">Compare plans from top Malaysian insurers • All prices in RM</p>
           </div>
           
           {/* Cart Icon */}
-          <button
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={() => setShowCartOverlay(true)}
-            className="relative p-3 bg-zinc-900 hover:bg-zinc-800 rounded-lg transition border border-zinc-700"
+            className="relative p-3 backdrop-blur-xl bg-white/5 hover:bg-white/10 rounded-xl transition border border-white/10"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -522,166 +578,210 @@ const Purchase = () => {
               />
             </svg>
             {items.length > 0 && (
-              <span className="absolute -top-2 -right-2 w-6 h-6 bg-blue-600 rounded-full text-xs flex items-center justify-center font-bold text-white">
+              <motion.span 
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full text-xs flex items-center justify-center font-bold text-white"
+              >
                 {items.length}
-              </span>
+              </motion.span>
             )}
-          </button>
-        </div>
+          </motion.button>
+        </motion.div>
         
         {/* Platform Differentiator Banner */}
-        <div className="card mb-6 bg-gradient-to-r from-blue-900/40 to-purple-900/40 border-blue-500/50">
-          <div className="flex items-start gap-4">
-            <div className="text-4xl">🧬</div>
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="mb-6 p-6 rounded-2xl backdrop-blur-2xl bg-gradient-to-r from-white/[0.07] to-white/[0.02] border border-white/10 relative overflow-hidden"
+        >
+          {/* Shine effect */}
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent" />
+          
+          <div className="flex items-start gap-4 relative z-10">
+            <motion.div 
+              className="text-4xl"
+              animate={{ rotate: [0, 5, -5, 0] }}
+              transition={{ duration: 3, repeat: Infinity }}
+            >
+              🧬
+            </motion.div>
             <div className="flex-1">
-              <h3 className="text-xl font-bold text-white mb-2">Your Premium is Personalised</h3>
+              <h3 className="text-xl font-light text-white mb-2">
+                Your Premium is <span className="font-normal">Personalised</span>
+              </h3>
               <p className="text-gray-300 text-sm mb-3">
                 Our platform uses <strong>DNA profiling</strong>, <strong>cognitive modelling</strong>, and <strong>quantum risk analysis</strong> to adjust your premium based on your unique risk profile — not just generic demographics.
               </p>
-              <button
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
                 onClick={() => setShowEstimator(!showEstimator)}
                 className="text-blue-400 text-sm hover:text-blue-300 underline"
               >
                 {showEstimator ? 'Hide' : 'Show'} Premium Estimator
-              </button>
+              </motion.button>
             </div>
             <div className="flex items-center gap-2">
               <span className="text-sm text-gray-300">Show:</span>
-              <button
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={() => setShowPersonalizedPricing(!showPersonalizedPricing)}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
                   showPersonalizedPricing
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-zinc-800 text-gray-400 hover:bg-zinc-700'
+                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'
+                    : 'backdrop-blur-xl bg-white/5 text-gray-400 hover:bg-white/10 border border-white/10'
                 }`}
               >
                 {showPersonalizedPricing ? 'Personalised Pricing' : 'Standard Pricing'}
-              </button>
+              </motion.button>
             </div>
           </div>
-        </div>
+        </motion.div>
         
         {/* Premium Estimator */}
-        {showEstimator && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            className="card mb-6 bg-zinc-950 border-zinc-700"
-          >
-            <h3 className="text-lg font-bold text-white mb-4">Premium Estimator</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-              <div>
-                <label className="block text-sm text-gray-400 mb-1">Age</label>
-                <input
-                  type="number"
-                  value={userProfile.age}
-                  onChange={(e) => setUserProfile({ ...userProfile, age: parseInt(e.target.value) || 18 })}
-                  className="w-full bg-zinc-900 border border-zinc-700 rounded px-3 py-2 text-white"
-                  min="18"
-                  max="100"
-                />
+        <AnimatePresence>
+          {showEstimator && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              className="mb-6 p-6 rounded-2xl backdrop-blur-2xl bg-gradient-to-br from-white/[0.07] to-white/[0.02] border border-white/10 overflow-hidden"
+            >
+              <h3 className="text-lg font-light text-white mb-4">
+                Premium <span className="font-normal">Estimator</span>
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                <div>
+                  <label className="block text-sm text-gray-400 mb-2">Age</label>
+                  <input
+                    type="number"
+                    value={userProfile.age}
+                    onChange={(e) => setUserProfile({ ...userProfile, age: parseInt(e.target.value) || 18 })}
+                    className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white focus:border-blue-500 focus:outline-none transition"
+                    min="18"
+                    max="100"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm text-gray-400 mb-2">Smoking Status</label>
+                  <select
+                    value={userProfile.smoking ? 'yes' : 'no'}
+                    onChange={(e) => setUserProfile({ ...userProfile, smoking: e.target.value === 'yes' })}
+                    className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white focus:border-blue-500 focus:outline-none transition"
+                  >
+                    <option value="no">Non-smoker</option>
+                    <option value="yes">Smoker</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm text-gray-400 mb-2">Occupation Risk</label>
+                  <select
+                    value={userProfile.occupationRisk}
+                    onChange={(e) => setUserProfile({ ...userProfile, occupationRisk: e.target.value as any })}
+                    className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white focus:border-blue-500 focus:outline-none transition"
+                  >
+                    <option value="Low">Low Risk</option>
+                    <option value="Medium">Medium Risk</option>
+                    <option value="High">High Risk</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm text-gray-400 mb-2">DNA Risk Class</label>
+                  <select
+                    value={userProfile.dnaRiskClass}
+                    onChange={(e) => setUserProfile({ ...userProfile, dnaRiskClass: e.target.value as any })}
+                    className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white focus:border-blue-500 focus:outline-none transition"
+                  >
+                    <option value="A">Class A (Best)</option>
+                    <option value="B">Class B (Good)</option>
+                    <option value="C">Class C (Average)</option>
+                    <option value="D">Class D (Higher Risk)</option>
+                  </select>
+                </div>
               </div>
-              <div>
-                <label className="block text-sm text-gray-400 mb-1">Smoking Status</label>
-                <select
-                  value={userProfile.smoking ? 'yes' : 'no'}
-                  onChange={(e) => setUserProfile({ ...userProfile, smoking: e.target.value === 'yes' })}
-                  className="w-full bg-zinc-900 border border-zinc-700 rounded px-3 py-2 text-white"
-                >
-                  <option value="no">Non-smoker</option>
-                  <option value="yes">Smoker</option>
-                </select>
+              <div className="text-sm text-gray-400">
+                <p>💡 Your personalised premium reflects: age-based risk, smoking status, occupation hazards, DNA-predicted health risk, and lifestyle habits.</p>
               </div>
-              <div>
-                <label className="block text-sm text-gray-400 mb-1">Occupation Risk</label>
-                <select
-                  value={userProfile.occupationRisk}
-                  onChange={(e) => setUserProfile({ ...userProfile, occupationRisk: e.target.value as any })}
-                  className="w-full bg-zinc-900 border border-zinc-700 rounded px-3 py-2 text-white"
-                >
-                  <option value="Low">Low Risk</option>
-                  <option value="Medium">Medium Risk</option>
-                  <option value="High">High Risk</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm text-gray-400 mb-1">DNA Risk Class</label>
-                <select
-                  value={userProfile.dnaRiskClass}
-                  onChange={(e) => setUserProfile({ ...userProfile, dnaRiskClass: e.target.value as any })}
-                  className="w-full bg-zinc-900 border border-zinc-700 rounded px-3 py-2 text-white"
-                >
-                  <option value="A">Class A (Best)</option>
-                  <option value="B">Class B (Good)</option>
-                  <option value="C">Class C (Average)</option>
-                  <option value="D">Class D (Higher Risk)</option>
-                </select>
-              </div>
-            </div>
-            <div className="text-sm text-gray-400">
-              <p>💡 Your personalised premium reflects: age-based risk, smoking status, occupation hazards, DNA-predicted health risk, and lifestyle habits.</p>
-            </div>
-          </motion.div>
-        )}
+            </motion.div>
+          )}
+        </AnimatePresence>
         
         {/* Type Tabs */}
-        <div className="flex flex-wrap gap-2 mb-6">
-          {insuranceTypes.map((type) => (
-            <button
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="flex flex-wrap gap-2 mb-6"
+        >
+          {insuranceTypes.map((type, index) => (
+            <motion.button
               key={type}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.3 + index * 0.1 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={() => {
                 setActiveType(type)
                 setSearchQuery('')
               }}
-              className={`px-6 py-3 rounded-lg font-semibold transition flex items-center gap-2 ${
+              className={`px-6 py-3 rounded-xl font-semibold transition flex items-center gap-2 ${
                 activeType === type
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-zinc-900 text-gray-400 hover:bg-zinc-800'
+                  ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/50'
+                  : 'backdrop-blur-xl bg-white/5 text-gray-400 hover:bg-white/10 border border-white/10'
               }`}
             >
               <span className="text-xl">{typeIcons[type]}</span>
               {type}
-            </button>
+            </motion.button>
           ))}
-        </div>
+        </motion.div>
         
         {/* Filters & Search */}
-        <div className="card mb-6">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="mb-6 p-6 rounded-2xl backdrop-blur-2xl bg-gradient-to-br from-white/[0.07] to-white/[0.02] border border-white/10"
+        >
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
             <div>
-              <label className="block text-sm text-gray-400 mb-1">Search Plans</label>
+              <label className="block text-sm text-gray-400 mb-2">Search Plans</label>
               <input
                 type="text"
                 placeholder="Company or plan name..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-zinc-900 border border-zinc-700 rounded px-3 py-2 text-white"
+                className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none transition"
               />
             </div>
             <div>
-              <label className="block text-sm text-gray-400 mb-1">Max Monthly Budget (RM)</label>
+              <label className="block text-sm text-gray-400 mb-2">Max Monthly Budget (RM)</label>
               <input
                 type="number"
                 value={filters.maxMonthlyBudget}
                 onChange={(e) => setFilters({ ...filters, maxMonthlyBudget: parseInt(e.target.value) || 1000 })}
-                className="w-full bg-zinc-900 border border-zinc-700 rounded px-3 py-2 text-white"
+                className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white focus:border-blue-500 focus:outline-none transition"
               />
             </div>
             <div>
-              <label className="block text-sm text-gray-400 mb-1">Max Deductible (RM)</label>
+              <label className="block text-sm text-gray-400 mb-2">Max Deductible (RM)</label>
               <input
                 type="number"
                 value={filters.maxDeductible}
                 onChange={(e) => setFilters({ ...filters, maxDeductible: parseInt(e.target.value) || 10000 })}
-                className="w-full bg-zinc-900 border border-zinc-700 rounded px-3 py-2 text-white"
+                className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white focus:border-blue-500 focus:outline-none transition"
               />
             </div>
             <div>
-              <label className="block text-sm text-gray-400 mb-1">Sort By</label>
+              <label className="block text-sm text-gray-400 mb-2">Sort By</label>
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as any)}
-                className="w-full bg-zinc-900 border border-zinc-700 rounded px-3 py-2 text-white"
+                className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white focus:border-blue-500 focus:outline-none transition"
               >
                 <option value="premium">Premium (Low → High)</option>
                 <option value="coverage">Coverage (High → Low)</option>
@@ -689,114 +789,136 @@ const Purchase = () => {
               </select>
             </div>
           </div>
-        </div>
+        </motion.div>
         
         {/* Plans Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          {filteredPlans.map((plan) => {
+          {filteredPlans.map((plan, index) => {
             const pricing = calculatePremium(plan, showPersonalizedPricing)
             const valueColor = getValueColor(plan)
             
             return (
               <motion.div
                 key={plan.id}
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className={`card bg-zinc-950 border-2 ${valueColor} hover:shadow-xl transition relative`}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                whileHover={{ y: -5 }}
+                className={`p-6 rounded-2xl backdrop-blur-2xl bg-gradient-to-br from-white/[0.07] to-white/[0.02] border-2 ${valueColor} hover:shadow-2xl transition-all relative group overflow-hidden`}
               >
-                <div className="flex items-start gap-4 mb-4">
-                  <div className="text-4xl">{typeIcons[plan.type]}</div>
-                  <div className="flex-1">
-                    <div className="text-xs text-gray-500 uppercase tracking-wide">{plan.company}</div>
-                    <h3 className="text-xl font-bold text-white">{plan.name}</h3>
-                  </div>
-                </div>
+                {/* Shine effect on hover */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
                 
-                {/* Pricing */}
-                <div className="mb-4 p-4 bg-zinc-900 rounded-lg border border-zinc-800">
-                  <div className="flex justify-between items-baseline mb-2">
-                    <div>
-                      <div className="text-3xl font-bold text-blue-400">RM {pricing.monthly}</div>
-                      <div className="text-xs text-gray-500">per month</div>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-lg font-semibold text-gray-300">RM {pricing.annual}</div>
-                      <div className="text-xs text-gray-500">per year</div>
+                <div className="relative z-10">
+                  <div className="flex items-start gap-4 mb-4">
+                    <motion.div 
+                      className="text-4xl"
+                      whileHover={{ scale: 1.2, rotate: 5 }}
+                      transition={{ type: "spring", stiffness: 300 }}
+                    >
+                      {typeIcons[plan.type]}
+                    </motion.div>
+                    <div className="flex-1">
+                      <div className="text-xs text-gray-500 uppercase tracking-wide">{plan.company}</div>
+                      <h3 className="text-xl font-light text-white">
+                        {plan.name}
+                      </h3>
                     </div>
                   </div>
-                  {showPersonalizedPricing && (pricing.monthly !== plan.monthlyPremiumBase) && (
-                    <div className="text-xs text-gray-400 border-t border-zinc-700 pt-2">
-                      Standard: RM {plan.monthlyPremiumBase}/month
-                      <span className={pricing.monthly < plan.monthlyPremiumBase ? 'text-green-400 ml-2' : 'text-red-400 ml-2'}>
-                        {pricing.monthly < plan.monthlyPremiumBase ? '↓' : '↑'} RM {Math.abs(pricing.monthly - plan.monthlyPremiumBase)}
+                  
+                  {/* Pricing */}
+                  <div className="mb-4 p-4 backdrop-blur-xl bg-white/5 rounded-xl border border-white/10">
+                    <div className="flex justify-between items-baseline mb-2">
+                      <div>
+                        <div className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                          RM {pricing.monthly}
+                        </div>
+                        <div className="text-xs text-gray-500">per month</div>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-lg font-semibold text-gray-300">RM {pricing.annual}</div>
+                        <div className="text-xs text-gray-500">per year</div>
+                      </div>
+                    </div>
+                    {showPersonalizedPricing && (pricing.monthly !== plan.monthlyPremiumBase) && (
+                      <div className="text-xs text-gray-400 border-t border-white/10 pt-2">
+                        Standard: RM {plan.monthlyPremiumBase}/month
+                        <span className={pricing.monthly < plan.monthlyPremiumBase ? 'text-green-400 ml-2' : 'text-red-400 ml-2'}>
+                          {pricing.monthly < plan.monthlyPremiumBase ? '↓' : '↑'} RM {Math.abs(pricing.monthly - plan.monthlyPremiumBase)}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                  
+                  {/* Key Details */}
+                  <div className="grid grid-cols-2 gap-3 mb-4 text-sm">
+                    <div>
+                      <div className="text-gray-500">Annual Cover</div>
+                      <div className="font-semibold text-white">RM {plan.annualCoverLimit.toLocaleString()}</div>
+                    </div>
+                    {plan.lifetimeCoverLimit && (
+                      <div>
+                        <div className="text-gray-500">Lifetime Limit</div>
+                        <div className="font-semibold text-white">RM {plan.lifetimeCoverLimit.toLocaleString()}</div>
+                      </div>
+                    )}
+                    <div>
+                      <div className="text-gray-500">Deductible</div>
+                      <div className="font-semibold text-white">RM {plan.deductible}</div>
+                    </div>
+                    <div>
+                      <div className="text-gray-500">Co-pay</div>
+                      <div className="font-semibold text-white">{plan.coPay}%</div>
+                    </div>
+                  </div>
+                  
+                  {/* Features */}
+                  <div className="mb-4">
+                    <div className="text-sm font-semibold text-gray-400 mb-2">Key Features</div>
+                    <ul className="space-y-1">
+                      {plan.features.slice(0, 3).map((feature, i) => (
+                        <li key={i} className="flex items-start gap-2 text-sm text-gray-300">
+                          <span className="text-green-500">✓</span>
+                          <span>{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  
+                  {/* Badges */}
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {plan.dnaDiscount && (
+                      <span className="px-2 py-1 backdrop-blur-xl bg-purple-500/20 text-purple-300 text-xs rounded-lg border border-purple-500/50">
+                        🧬 DNA-optimized
                       </span>
-                    </div>
-                  )}
-                </div>
-                
-                {/* Key Details */}
-                <div className="grid grid-cols-2 gap-3 mb-4 text-sm">
-                  <div>
-                    <div className="text-gray-500">Annual Cover</div>
-                    <div className="font-semibold text-white">RM {plan.annualCoverLimit.toLocaleString()}</div>
+                    )}
+                    {plan.lifestyleDiscount && (
+                      <span className="px-2 py-1 backdrop-blur-xl bg-green-500/20 text-green-300 text-xs rounded-lg border border-green-500/50">
+                        💚 Lifestyle discount
+                      </span>
+                    )}
                   </div>
-                  {plan.lifetimeCoverLimit && (
-                    <div>
-                      <div className="text-gray-500">Lifetime Limit</div>
-                      <div className="font-semibold text-white">RM {plan.lifetimeCoverLimit.toLocaleString()}</div>
-                    </div>
-                  )}
-                  <div>
-                    <div className="text-gray-500">Deductible</div>
-                    <div className="font-semibold text-white">RM {plan.deductible}</div>
+                  
+                  {/* Actions */}
+                  <div className="flex gap-2">
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => setSelectedPlanDetail(plan)}
+                      className="flex-1 px-4 py-2 backdrop-blur-xl bg-white/5 text-white rounded-lg hover:bg-white/10 transition border border-white/10"
+                    >
+                      View Details
+                    </motion.button>
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => addItem({ ...plan, price: pricing.monthly, type: plan.type })}
+                      className="flex-1 px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:shadow-lg hover:shadow-blue-500/50 transition"
+                    >
+                      Select Plan
+                    </motion.button>
                   </div>
-                  <div>
-                    <div className="text-gray-500">Co-pay</div>
-                    <div className="font-semibold text-white">{plan.coPay}%</div>
-                  </div>
-                </div>
-                
-                {/* Features */}
-                <div className="mb-4">
-                  <div className="text-sm font-semibold text-gray-400 mb-2">Key Features</div>
-                  <ul className="space-y-1">
-                    {plan.features.slice(0, 3).map((feature, i) => (
-                      <li key={i} className="flex items-start gap-2 text-sm text-gray-300">
-                        <span className="text-green-500">✓</span>
-                        <span>{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                
-                {/* Badges */}
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {plan.dnaDiscount && (
-                    <span className="px-2 py-1 bg-purple-900/50 text-purple-300 text-xs rounded border border-purple-500/50">
-                      🧬 DNA-optimized
-                    </span>
-                  )}
-                  {plan.lifestyleDiscount && (
-                    <span className="px-2 py-1 bg-green-900/50 text-green-300 text-xs rounded border border-green-500/50">
-                      💚 Lifestyle discount
-                    </span>
-                  )}
-                </div>
-                
-                {/* Actions */}
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => setSelectedPlanDetail(plan)}
-                    className="flex-1 px-4 py-2 bg-zinc-800 text-white rounded-lg hover:bg-zinc-700 transition"
-                  >
-                    View Details
-                  </button>
-                  <button
-                    onClick={() => addItem({ ...plan, price: pricing.monthly, type: plan.type })}
-                    className="flex-1 btn-primary"
-                  >
-                    Select Plan
-                  </button>
                 </div>
               </motion.div>
             )
