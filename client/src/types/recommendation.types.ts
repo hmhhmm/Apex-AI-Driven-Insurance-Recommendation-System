@@ -17,6 +17,11 @@ export interface RecommendationResponse {
     alternativePlans: PlanRecommendation[];
     totalPotentialSavings: number;
     confidence: number;
+    aiInsights?: {
+      overallAnalysis: string;
+      riskFactors: string[];
+      savingsTips: string[];
+    };
   };
 }
 

@@ -96,6 +96,27 @@ export default function RecommendationCard({ recommendation, index }: Recommenda
             <span className="text-4xl font-bold text-white">{plan.currency} {monthlyPrice}</span>
             <span className="text-white/60">/month</span>
           </div>
+          
+          {/* Show AI-adjusted pricing */}
+          {(plan as any).originalPrice && (plan as any).priceAdjustment !== undefined && (
+            <div className="mt-2 space-y-1">
+              <div className="flex items-center gap-2 text-sm text-white/50">
+                <span className="line-through">RM {(plan as any).originalPrice}</span>
+                <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
+                  (plan as any).priceAdjustment < 0 
+                    ? 'bg-green-500/20 text-green-300' 
+                    : 'bg-orange-500/20 text-orange-300'
+                }`}>
+                  {(plan as any).priceAdjustment > 0 ? '+' : ''}{(plan as any).priceAdjustment}%
+                </span>
+              </div>
+              <div className="flex items-center gap-1 text-xs text-purple-400">
+                <span>🤖</span>
+                <span>AI-personalized pricing based on your risk profile</span>
+              </div>
+            </div>
+          )}
+          
           {savingsPercentage > 0 && (
             <div className="flex items-center gap-2 mt-2 text-white text-sm">
               <TrendingDown className="w-4 h-4" />

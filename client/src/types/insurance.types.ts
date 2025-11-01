@@ -37,7 +37,11 @@ export interface InsurancePlan {
 }
 
 export interface PlanRecommendation {
-  plan: InsurancePlan;
+  plan: InsurancePlan & {
+    originalPrice?: number;
+    priceAdjustment?: number;
+    aiGenerated?: boolean;
+  };
   matchPercentage: number;
   adjustedPrice: number;
   originalPrice: number;
@@ -45,6 +49,8 @@ export interface PlanRecommendation {
   savings: number;
   savingsPercentage: number;
   whyRecommended: string;
+  reasoning?: string;
   dnaHighlights: string[];
   features: string[];
+  potentialSavings?: number;
 }

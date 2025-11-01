@@ -70,6 +70,7 @@ export function useRecommendations(userProfile: UserProfile | null) {
     userRiskProfile: recommendationData?.userRiskProfile || null,
     totalSavings: recommendationData?.totalPotentialSavings || 0,
     confidence: recommendationData?.confidence || 0,
+    aiInsights: recommendationData?.aiInsights || null,
     isLoading,
     error,
     refetch: refetchRecommendations

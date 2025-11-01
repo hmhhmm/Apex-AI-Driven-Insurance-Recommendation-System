@@ -72,6 +72,7 @@ export default function Purchase() {
     userRiskProfile,
     totalSavings,
     confidence,
+    aiInsights,
     isLoading,
     error,
     refetch
@@ -285,6 +286,56 @@ export default function Purchase() {
                   </div>
                 </div>
               ))}
+            </div>
+          </motion.div>
+        )}
+
+        {/* AI Insights Section */}
+        {aiInsights?.overallAnalysis && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="mb-8 bg-gradient-to-br from-purple-500/10 to-blue-500/10 border border-purple-500/20 rounded-2xl p-6 backdrop-blur-xl"
+          >
+            <div className="flex items-start gap-3 mb-4">
+              <div className="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center flex-shrink-0">
+                <span className="text-xl">🤖</span>
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-white mb-1">AI Analysis</h3>
+                <p className="text-sm text-white/70 font-light">{aiInsights.overallAnalysis}</p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+              {aiInsights.riskFactors?.length > 0 && (
+                <div className="bg-white/5 rounded-lg p-4">
+                  <h4 className="text-sm font-medium text-white mb-2 flex items-center gap-2">
+                    <span>⚠️</span>
+                    Key Risk Factors
+                  </h4>
+                  <ul className="space-y-1">
+                    {aiInsights.riskFactors.map((factor: string, idx: number) => (
+                      <li key={idx} className="text-sm text-white/60 font-light">• {factor}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {aiInsights.savingsTips?.length > 0 && (
+                <div className="bg-white/5 rounded-lg p-4">
+                  <h4 className="text-sm font-medium text-white mb-2 flex items-center gap-2">
+                    <span>💡</span>
+                    Money-Saving Tips
+                  </h4>
+                  <ul className="space-y-1">
+                    {aiInsights.savingsTips.map((tip: string, idx: number) => (
+                      <li key={idx} className="text-sm text-white/60 font-light">• {tip}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
           </motion.div>
         )}
