@@ -10,7 +10,6 @@ import Claims from './pages/Claims'
 import Purchase from './pages/Purchase'
 
 // Onboarding Pages
-import AvatarSelection from './pages/onboarding/AvatarSelection'
 import QuickAssessment from './pages/onboarding/QuickAssessment'
 import AccountCreation from './pages/onboarding/AccountCreation'
 import DNATestSelection from './pages/onboarding/DNATestOptions'
@@ -45,16 +44,6 @@ function AppContent() {
             {/* Public Routes */}
             <Route path="/" element={<Landing />} />
             <Route path="/purchase" element={<Purchase />} />
-
-            {/* Onboarding Flow */}
-            <Route path="/onboarding/avatar-selection" element={<AvatarSelection />} />
-            <Route path="/onboarding/quick-assessment" element={<QuickAssessment />} />
-            <Route path="/onboarding/account" element={<AccountCreation />} />
-            <Route path="/onboarding/dna-test" element={<DNATestSelection />} />
-            <Route path="/onboarding/dna-test/order-kit" element={<OrderKit />} />
-            <Route path="/onboarding/dna-test/upload-existing" element={<UploadExisting />} />
-            <Route path="/onboarding/dna-test/schedule-lab" element={<ScheduleLab />} />
-            <Route path="/onboarding/documents" element={<DocumentVault />} />
 
             {/* Protected Routes */}
             <Route 

@@ -15,15 +15,15 @@ const Dashboard = () => {
     }
   }, [isComplete])
 
-  // Mock DNA test progress - automatically advances through stages (2-3 days total)
+  // Mock DNA test progress - automatically advances through stages
   useEffect(() => {
     if (!isComplete) return
 
     const progressStages = [
       { stage: 0, delay: 0 },      // Kit Shipped (immediate)
-      { stage: 1, delay: 2000 },   // Sample Received (after 2s)
-      { stage: 2, delay: 4000 },   // Processing (after 4s)
-      { stage: 3, delay: 7000 },   // Results Ready (after 7s)
+      { stage: 1, delay: 3000 },   // Sample Received (after 3s)
+      { stage: 2, delay: 6000 },   // Processing (after 6s)
+      { stage: 3, delay: 10000 },  // Results Ready (after 10s)
     ]
 
     progressStages.forEach(({ stage, delay }) => {
@@ -176,7 +176,7 @@ const Dashboard = () => {
                 >
                   <p className="text-blue-200 text-sm font-medium flex items-center gap-2">
                     <span className="animate-pulse">⏱️</span>
-                    Estimated completion: 2-3 days
+                    Estimated completion: 2-3 business days
                   </p>
                 </motion.div>
               ) : (

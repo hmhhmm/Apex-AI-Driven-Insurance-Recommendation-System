@@ -65,11 +65,9 @@ interface OnboardingState {
   currentStep: OnboardingStep
   data: OnboardingData
   isComplete: boolean
-  selectedGender?: 'male' | 'female'
   
   // Actions
   setCurrentStep: (step: OnboardingStep) => void
-  setSelectedGender: (gender: 'male' | 'female') => void
   saveQuickAssessment: (data: QuickAssessmentData) => void
   saveAccountCreation: (data: AccountCreationData) => void
   saveDNATest: (data: DNATestData) => void
@@ -97,14 +95,9 @@ export const useOnboardingStore = create<OnboardingState>()(
       currentStep: 'quick-assessment',
       data: {},
       isComplete: false,
-      selectedGender: undefined,
 
       setCurrentStep: (step) => {
         set({ currentStep: step })
-      },
-
-      setSelectedGender: (gender) => {
-        set({ selectedGender: gender })
       },
 
       saveQuickAssessment: (data) => {

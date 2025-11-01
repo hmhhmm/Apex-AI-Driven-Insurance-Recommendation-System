@@ -47,7 +47,6 @@ function AppContent() {
             <Route path="/purchase" element={<Purchase />} />
 
             {/* Onboarding Flow */}
-            <Route path="/onboarding/avatar-selection" element={<AvatarSelection />} />
             <Route path="/onboarding/quick-assessment" element={<QuickAssessment />} />
             <Route path="/onboarding/account" element={<AccountCreation />} />
             <Route path="/onboarding/dna-test" element={<DNATestSelection />} />

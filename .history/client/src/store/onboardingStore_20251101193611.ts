@@ -97,14 +97,9 @@ export const useOnboardingStore = create<OnboardingState>()(
       currentStep: 'quick-assessment',
       data: {},
       isComplete: false,
-      selectedGender: undefined,
 
       setCurrentStep: (step) => {
         set({ currentStep: step })
-      },
-
-      setSelectedGender: (gender) => {
-        set({ selectedGender: gender })
       },
 
       saveQuickAssessment: (data) => {

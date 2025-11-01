@@ -1,8 +1,29 @@
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
+import { useState } from 'react'
+import { useAuthStore } from '../store/authStore'
 
 const Landing = () => {
   const navigate = useNavigate()
+  const { signup } = useAuthStore()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [name, setName] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+
+  const handleSignUp = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsLoading(true)
+    
+    try {
+      await signup(email, password, name)
+      navigate('/dashboard')
+    } catch (error) {
+      alert('Signup failed. Please try again.')
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   return (
     <div className="overflow-x-hidden bg-black">

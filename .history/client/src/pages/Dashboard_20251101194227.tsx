@@ -176,7 +176,7 @@ const Dashboard = () => {
                 >
                   <p className="text-blue-200 text-sm font-medium flex items-center gap-2">
                     <span className="animate-pulse">⏱️</span>
-                    Estimated completion: 2-3 days
+                    Estimated completion: 2-3 business days
                   </p>
                 </motion.div>
               ) : (
