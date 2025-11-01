@@ -18,13 +18,13 @@ function AppContent() {
   useChatToggleShortcut(toggleChat)
 
   return (
-    <div className="min-h-screen bg-black flex flex-col">
+    <div className="min-h-screen bg-black flex flex-col overflow-x-hidden">
       <Navigation />
       
-      <div className="flex flex-1 relative">
+      <div className="flex flex-1 relative overflow-x-hidden">
         {/* Main Content Area - Resizes when chat is open */}
         <main 
-          className={`flex-1 transition-all duration-300 ease-in-out ${
+          className={`flex-1 transition-all duration-300 ease-in-out overflow-x-hidden ${
             isOpen ? 'md:mr-[25%] md:min-w-0' : 'w-full'
           }`}
           style={{
