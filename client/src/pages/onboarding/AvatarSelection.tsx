@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { useOnboardingStore } from '../../store/onboardingStore'
@@ -47,27 +47,47 @@ export default function AvatarSelection() {
 
   const handleNext = () => {
     setPoints(prev => prev + 10)
-    if (currentQuestion < getTotalQuestions() - 1) {
+    if (currentQuestion < questionOrder.length - 1) {
       setCurrentQuestion(prev => prev + 1)
     } else {
       handleContinue()
     }
   }
 
-  const getTotalQuestions = () => {
-    let total = 1 // Personal info page
-    if (formData.insuranceTypes.includes('Health')) total += 2
-    if (formData.insuranceTypes.includes('Life')) total += 1
-    if (formData.insuranceTypes.includes('Car')) {
-      total += 1
-      if (formData.hasCar === 'Yes') {
-        total += 1
-        if (formData.hasCarInsurance === 'No') total += 1
-      }
+  // Build an explicit ordered list of question keys based on selected insurance types.
+  // This keeps the flow deterministic and avoids duplicated/skipped steps when formData changes.
+  const questionOrder = useMemo(() => {
+    const order: string[] = []
+    // Personal info as first page
+    order.push('personal')
+
+    // Health questions (exercise, smoking)
+    if (formData.insuranceTypes.includes('Health')) {
+      order.push('health-exercise', 'health-smoking')
     }
-    total += 1 // Travel frequency
-    return total
-  }
+
+    // Life coverage
+    if (formData.insuranceTypes.includes('Life')) {
+      order.push('life-coverage')
+    }
+
+    // Car related questions: ownership -> insurance -> details
+    if (formData.insuranceTypes.includes('Car')) {
+      order.push('car-ownership', 'car-insurance', 'car-details')
+    }
+
+    // Travel frequency
+    order.push('travel-frequency')
+
+    return order
+  }, [formData.insuranceTypes])
+
+  // Ensure currentQuestion stays within bounds if the questionOrder changes
+  useEffect(() => {
+    if (currentQuestion >= questionOrder.length) {
+      setCurrentQuestion(Math.max(0, questionOrder.length - 1))
+    }
+  }, [questionOrder, currentQuestion])
 
   const canProceedFromPersonalInfo = () => {
     return formData.name && 
@@ -283,7 +303,7 @@ export default function AvatarSelection() {
                     <div className="mb-8">
                       <div className="flex items-center justify-between mb-3">
                         <h3 className="text-xl font-semibold text-white">
-                          Step {currentQuestion + 1} of {getTotalQuestions()}
+                          Step {currentQuestion + 1} of {questionOrder.length}
                         </h3>
                         <span className="px-4 py-1 bg-blue-600/20 text-blue-400 rounded-full text-sm font-medium">
                           {currentQuestion === 0 ? 'Personal Information' : 'Insurance Details'}
@@ -293,7 +313,7 @@ export default function AvatarSelection() {
                         <motion.div 
                           className="h-full bg-gradient-to-r from-blue-600 to-purple-600"
                           initial={{ width: 0 }}
-                          animate={{ width: `${((currentQuestion + 1) / getTotalQuestions()) * 100}%` }}
+                          animate={{ width: `${((currentQuestion + 1) / questionOrder.length) * 100}%` }}
                           transition={{ duration: 0.5 }}
                         />
                       </div>
@@ -429,7 +449,7 @@ export default function AvatarSelection() {
                       )}
 
                       {/* Health Insurance: Exercise Frequency */}
-                      {currentQuestion === 1 && formData.insuranceTypes.includes('Health') && (
+                      {questionOrder[currentQuestion] === 'health-exercise' && (
                         <motion.div 
                           className="card p-8"
                           initial={{ opacity: 0, y: 20 }}
@@ -459,11 +479,21 @@ export default function AvatarSelection() {
                               </button>
                             ))}
                           </div>
+                          
+                          <div className="mt-6">
+                            <button
+                              onClick={handleNext}
+                              disabled={!formData.carPlate || !formData.carModel}
+                              className="w-full px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                              Continue →
+                            </button>
+                          </div>
                         </motion.div>
                       )}
 
                       {/* Health Insurance: Smoking Status */}
-                      {currentQuestion === 2 && formData.insuranceTypes.includes('Health') && (
+                      {questionOrder[currentQuestion] === 'health-smoking' && (
                         <motion.div 
                           className="card p-8"
                           initial={{ opacity: 0, y: 20 }}
@@ -497,9 +527,7 @@ export default function AvatarSelection() {
                       )}
 
                       {/* Life Insurance: Coverage Amount */}
-                      {((currentQuestion === 1 && !formData.insuranceTypes.includes('Health')) || 
-                        (currentQuestion === 3 && formData.insuranceTypes.includes('Health'))) && 
-                        formData.insuranceTypes.includes('Life') && (
+                      {questionOrder[currentQuestion] === 'life-coverage' && formData.insuranceTypes.includes('Life') && (
                         <motion.div 
                           className="card p-8"
                           initial={{ opacity: 0, y: 20 }}
@@ -540,7 +568,7 @@ export default function AvatarSelection() {
                       )}
 
                       {/* Car Insurance: Vehicle Ownership */}
-                      {currentQuestion === getTotalQuestions() - 2 && formData.insuranceTypes.includes('Car') && (
+                      {questionOrder[currentQuestion] === 'car-ownership' && formData.insuranceTypes.includes('Car') && (
                         <motion.div 
                           className="card p-8"
                           initial={{ opacity: 0, y: 20 }}
@@ -574,7 +602,7 @@ export default function AvatarSelection() {
                       )}
 
                       {/* Car Insurance: Existing Insurance Status (if has car) */}
-                      {currentQuestion === getTotalQuestions() - 1 && formData.hasCar === 'Yes' && formData.insuranceTypes.includes('Car') && (
+                      {questionOrder[currentQuestion] === 'car-insurance' && formData.insuranceTypes.includes('Car') && formData.hasCar === 'Yes' && (
                         <motion.div 
                           className="card p-8"
                           initial={{ opacity: 0, y: 20 }}
@@ -612,7 +640,7 @@ export default function AvatarSelection() {
                       )}
 
                       {/* Car Details (if no insurance) */}
-                      {formData.hasCarInsurance === 'No' && formData.hasCar === 'Yes' && formData.insuranceTypes.includes('Car') && (
+                      {questionOrder[currentQuestion] === 'car-details' && formData.hasCar === 'Yes' && formData.insuranceTypes.includes('Car') && (
                         <motion.div 
                           className="card p-8 mt-6"
                           initial={{ opacity: 0, y: 20 }}
@@ -654,7 +682,7 @@ export default function AvatarSelection() {
                       )}
 
                       {/* Travel Frequency Assessment */}
-                      {currentQuestion === getTotalQuestions() - 1 && (
+                      {questionOrder[currentQuestion] === 'travel-frequency' && (
                         <motion.div 
                           className="card p-8"
                           initial={{ opacity: 0, y: 20 }}
