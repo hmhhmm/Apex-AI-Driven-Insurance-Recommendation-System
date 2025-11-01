@@ -1,0 +1,114 @@
+═══════════════════════════════════════════════════════════════
+   3D AVATAR REPLACEMENT LOCATIONS - QUICK REFERENCE
+═══════════════════════════════════════════════════════════════
+
+App Running: http://localhost:5179/
+
+═══════════════════════════════════════════════════════════════
+LOCATION 1: AVATAR SELECTION PAGE (Main)
+═══════════════════════════════════════════════════════════════
+File: client/src/pages/onboarding/AvatarSelection.tsx
+URL:  http://localhost:5179/onboarding/avatar-selection
+
+┌─────────────────────────────────────────────────────────────┐
+│                                                             │
+│          Let's Get to Know You                              │
+│          Select your avatar to begin                        │
+│                                                             │
+│    ┌─────────────┐           ┌─────────────┐              │
+│    │             │           │             │              │
+│    │   FEMALE    │           │    MALE     │              │
+│    │   AVATAR    │           │   AVATAR    │              │
+│    │   (SVG)     │           │   (SVG)     │              │
+│    │             │           │             │              │
+│    │  256x256    │           │  256x256    │              │
+│    └─────────────┘           └─────────────┘              │
+│       Female                     Male                       │
+│    Select this avatar        Select this avatar            │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+
+REPLACE LINES:
+• Lines 58-90:  Female Avatar (Selection View) - 256x256px
+• Lines 102-137: Male Avatar (Selection View) - 256x256px  
+• Lines 152-166: Female Avatar (Confirmation) - 192x192px
+• Lines 168-182: Male Avatar (Confirmation) - 192x192px
+
+TOTAL REPLACEMENTS: 4 avatar instances
+
+═══════════════════════════════════════════════════════════════
+LOCATION 2: QUICK ASSESSMENT PAGE (Header)
+═══════════════════════════════════════════════════════════════
+File: client/src/pages/onboarding/QuickAssessment.tsx
+URL:  http://localhost:5179/onboarding/quick-assessment
+
+┌─────────────────────────────────────────────────────────────┐
+│ ┌───┐                                              Score    │
+│ │ A │ Level 1                                       0/100   │
+│ │ V │                                                       │
+│ └───┘                                                       │
+│  64x64                                                      │
+│  (SVG)                                                      │
+│                                                             │
+│    ┌────────────────────────────────────────┐             │
+│    │                                        │             │
+│    │     Quick Assessment Questions         │             │
+│    │                                        │             │
+│    └────────────────────────────────────────┘             │
+└─────────────────────────────────────────────────────────────┘
+
+REPLACE LINES:
+• Lines 196-227: Avatar with level badge - 64x64px
+
+IMPORTANT: Keep the level badge overlay!
+
+TOTAL REPLACEMENTS: 1 avatar instance
+
+═══════════════════════════════════════════════════════════════
+SUMMARY
+═══════════════════════════════════════════════════════════════
+
+Total Files to Edit: 2
+Total Avatar Instances: 5
+
+Priority:
+1. AvatarSelection.tsx (4 instances) - HIGHEST PRIORITY
+2. QuickAssessment.tsx (1 instance) - MEDIUM PRIORITY
+
+Avatar Sizes Needed:
+• Small:  64x64px   (w-16 h-16)  - QuickAssessment
+• Medium: 192x192px (w-48 h-48)  - Confirmation view
+• Large:  256x256px (w-64 h-64)  - Selection view
+
+Gender Options:
+• Male avatar
+• Female avatar
+
+Required Animations:
+• Hover: scale(1.05) - 1.1
+• Tap: scale(0.95)
+• Celebration: rotate(-10, 10, -10, 0)
+• Fade in/out transitions
+
+═══════════════════════════════════════════════════════════════
+RECOMMENDED APPROACH
+═══════════════════════════════════════════════════════════════
+
+1. Create: client/src/components/Avatar3D.tsx
+   → Single reusable component for all avatars
+   
+2. Install: npm install @splinetool/react-spline @splinetool/runtime
+   
+3. Upload your 3D avatars to Spline or host GLB files
+   
+4. Import Avatar3D into:
+   - AvatarSelection.tsx (replace 4 instances)
+   - QuickAssessment.tsx (replace 1 instance)
+   
+5. Test responsiveness on mobile/desktop
+
+═══════════════════════════════════════════════════════════════
+NEXT STEPS
+═══════════════════════════════════════════════════════════════
+
+See: 3D_AVATAR_INTEGRATION_GUIDE.md for complete implementation

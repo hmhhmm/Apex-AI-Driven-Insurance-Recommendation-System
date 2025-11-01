@@ -123,13 +123,13 @@ export default function AvatarSelection() {
                   <div className="flex flex-col items-center">
                     {/* Male 3D Avatar - Scaled to match female */}
                     <div className="w-64 mb-6 relative overflow-hidden" style={{ height: '280px' }}>
-                      {/* Inner container - scaled to match female size */}
+                      {/* Inner container - scaled up to match female size */}
                       <div
                         className="absolute top-0 left-0 right-0"
                         style={{
                           height: '320px',
                           clipPath: 'inset(0 0 20% 0)',
-                          transform: 'scale(1.1)',
+                          transform: 'scale(1.3)',
                           transformOrigin: 'center center'
                         }}
                       >
@@ -173,7 +173,7 @@ export default function AvatarSelection() {
                     style={{ 
                       height: '240px',
                       clipPath: 'inset(0 0 20% 0)',
-                      transform: 'scale(1.1)',
+                      transform: 'scale(1.3)',
                       transformOrigin: 'center center'
                     }}
                   >

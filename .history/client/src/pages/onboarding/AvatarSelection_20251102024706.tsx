@@ -121,20 +121,20 @@ export default function AvatarSelection() {
                   className="group relative"
                 >
                   <div className="flex flex-col items-center">
-                    {/* Male 3D Avatar - Scaled to match female */}
+                    {/* Male 3D Avatar - EXACT SAME SIZE as female */}
                     <div className="w-64 mb-6 relative overflow-hidden" style={{ height: '280px' }}>
-                      {/* Inner container - scaled to match female size */}
+                      {/* Inner container - EXACT same as female + rotation only */}
                       <div
                         className="absolute top-0 left-0 right-0"
                         style={{
                           height: '320px',
                           clipPath: 'inset(0 0 20% 0)',
-                          transform: 'scale(1.1)',
-                          transformOrigin: 'center center'
+                          transform: 'rotateY(45deg)',
+                          transformStyle: 'preserve-3d'
                         }}
                       >
                         <Spline
-                          scene="https://prod.spline.design/PuH8zLiZwiK61OXD/scene.splinecode"
+                          scene="https://prod.spline.design/odtCmzosoH-uUN4I/scene.splinecode"
                           className="w-full h-full"
                         />
                       </div>
@@ -173,12 +173,12 @@ export default function AvatarSelection() {
                     style={{ 
                       height: '240px',
                       clipPath: 'inset(0 0 20% 0)',
-                      transform: 'scale(1.1)',
-                      transformOrigin: 'center center'
+                      transform: 'rotateY(45deg)',
+                      transformStyle: 'preserve-3d'
                     }}
                   >
                     <Spline 
-                      scene="https://prod.spline.design/PuH8zLiZwiK61OXD/scene.splinecode"
+                      scene="https://prod.spline.design/odtCmzosoH-uUN4I/scene.splinecode"
                       className="w-full h-full"
                     />
                   </div>

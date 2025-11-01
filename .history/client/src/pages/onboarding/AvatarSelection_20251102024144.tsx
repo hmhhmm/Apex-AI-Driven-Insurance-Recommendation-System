@@ -121,20 +121,21 @@ export default function AvatarSelection() {
                   className="group relative"
                 >
                   <div className="flex flex-col items-center">
-                    {/* Male 3D Avatar - Scaled to match female */}
+                    {/* Male 3D Avatar - Adjusted to match female size */}
                     <div className="w-64 mb-6 relative overflow-hidden" style={{ height: '280px' }}>
-                      {/* Inner container - scaled to match female size */}
+                      {/* Inner container with scale, position, and rotation adjustments */}
                       <div
                         className="absolute top-0 left-0 right-0"
                         style={{
-                          height: '320px',
-                          clipPath: 'inset(0 0 20% 0)',
-                          transform: 'scale(1.1)',
+                          height: '420px',
+                          clipPath: 'inset(8% 0 28% 0)',
+                          transform: 'scale(0.85) translateY(-15px) rotateY(35deg)',
+                          transformStyle: 'preserve-3d',
                           transformOrigin: 'center center'
                         }}
                       >
                         <Spline
-                          scene="https://prod.spline.design/PuH8zLiZwiK61OXD/scene.splinecode"
+                          scene="https://prod.spline.design/odtCmzosoH-uUN4I/scene.splinecode"
                           className="w-full h-full"
                         />
                       </div>
@@ -171,14 +172,15 @@ export default function AvatarSelection() {
                   <div 
                     className="absolute top-0 left-0 right-0"
                     style={{ 
-                      height: '240px',
-                      clipPath: 'inset(0 0 20% 0)',
-                      transform: 'scale(1.1)',
+                      height: '320px',
+                      clipPath: 'inset(8% 0 28% 0)',
+                      transform: 'scale(0.85) translateY(-10px) rotateY(35deg)',
+                      transformStyle: 'preserve-3d',
                       transformOrigin: 'center center'
                     }}
                   >
                     <Spline 
-                      scene="https://prod.spline.design/PuH8zLiZwiK61OXD/scene.splinecode"
+                      scene="https://prod.spline.design/odtCmzosoH-uUN4I/scene.splinecode"
                       className="w-full h-full"
                     />
                   </div>

@@ -14,11 +14,13 @@ export default function AvatarSelection() {
   // Aggressive watermark removal
   useEffect(() => {
     const removeWatermark = () => {
+      // Remove by ID and class
       const watermarks = document.querySelectorAll(
         '#logo, [id*="logo"], [class*="spline"], a[href*="spline"], canvas + div, canvas ~ div'
       );
       watermarks.forEach(el => el.remove());
 
+      // Remove by text content
       const allDivs = document.querySelectorAll('div, a');
       allDivs.forEach(el => {
         if (el.textContent?.includes('Spline') || el.textContent?.includes('Built with')) {
@@ -28,7 +30,7 @@ export default function AvatarSelection() {
     };
 
     removeWatermark();
-    const interval = setInterval(removeWatermark, 50);
+    const interval = setInterval(removeWatermark, 50); // Every 50ms
     
     return () => clearInterval(interval);
   }, [selectedGender]);
@@ -45,6 +47,7 @@ export default function AvatarSelection() {
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center relative overflow-hidden">
+      {/* Ultra aggressive CSS hiding */}
       <style dangerouslySetInnerHTML={{
         __html: `
           #logo, 
@@ -52,10 +55,20 @@ export default function AvatarSelection() {
           [class*="spline"],
           canvas + div,
           canvas ~ div,
-          a[href*="spline"] {
+          a[href*="spline"],
+          div[style*="bottom"],
+          a[target="_blank"] {
             display: none !important;
             opacity: 0 !important;
             visibility: hidden !important;
+            pointer-events: none !important;
+            width: 0 !important;
+            height: 0 !important;
+          }
+          
+          /* Hide any absolute positioned elements at bottom */
+          canvas ~ * {
+            display: none !important;
           }
         `
       }} />
@@ -91,23 +104,23 @@ export default function AvatarSelection() {
                   className="group relative"
                 >
                   <div className="flex flex-col items-center">
-                    {/* Female 3D Avatar - Wrapper with extra height */}
-                    <div className="w-64 mb-6 relative overflow-hidden" style={{ height: '280px' }}>
-                      {/* Inner container that clips bottom 20% */}
-                      <div
-                        className="absolute top-0 left-0 right-0"
+                    {/* Female 3D Avatar - Completely clipped container */}
+                    <div className="w-64 h-64 mb-6 relative" style={{ clipPath: 'inset(0 0 20% 0)' }}>
+                      <Spline 
+                        scene="https://prod.spline.design/xWHBgK2bOBQRvsmd/scene.splinecode"
+                        className="w-full h-full"
+                      />
+                      {/* Solid overlay at bottom to completely cover watermark */}
+                      <div 
+                        className="absolute left-0 right-0 pointer-events-none z-50" 
                         style={{
-                          height: '320px',
-                          clipPath: 'inset(0 0 20% 0)'
+                          bottom: '0',
+                          height: '60px',
+                          background: 'linear-gradient(180deg, transparent 0%, #1a0b2e 50%, #1a0b2e 100%)'
                         }}
-                      >
-                        <Spline
-                          scene="https://prod.spline.design/xWHBgK2bOBQRvsmd/scene.splinecode"
-                          className="w-full h-full"
-                        />
-                      </div>
+                      />
                     </div>
-                   
+                    
                     <h3 className="text-2xl font-bold text-white mb-2">Female</h3>
                     <p className="text-gray-400">Select this avatar</p>
                   </div>
@@ -121,25 +134,24 @@ export default function AvatarSelection() {
                   className="group relative"
                 >
                   <div className="flex flex-col items-center">
-                    {/* Male 3D Avatar - Scaled to match female */}
-                    <div className="w-64 mb-6 relative overflow-hidden" style={{ height: '280px' }}>
-                      {/* Inner container - scaled to match female size */}
-                      <div
-                        className="absolute top-0 left-0 right-0"
-                        style={{
-                          height: '320px',
-                          clipPath: 'inset(0 0 20% 0)',
-                          transform: 'scale(1.1)',
-                          transformOrigin: 'center center'
-                        }}
-                      >
-                        <Spline
-                          scene="https://prod.spline.design/PuH8zLiZwiK61OXD/scene.splinecode"
-                          className="w-full h-full"
-                        />
-                      </div>
+                    <div className="w-64 h-64 mb-6 relative">
+                      <svg viewBox="0 0 200 200" className="w-full h-full">
+                        <ellipse cx="100" cy="80" rx="35" ry="38" fill="#F4C4A0" />
+                        <path d="M 65 55 Q 65 30, 100 28 Q 135 30, 135 55 L 135 70 Q 130 75, 125 70 L 75 70 Q 70 75, 65 70 Z" fill="#2C2416" />
+                        <circle cx="85" cy="75" r="4" fill="#1A120C" />
+                        <circle cx="115" cy="75" r="4" fill="#1A120C" />
+                        <circle cx="86" cy="74" r="2" fill="white" />
+                        <circle cx="116" cy="74" r="2" fill="white" />
+                        <path d="M 85 92 Q 100 97, 115 92" stroke="#D4876F" strokeWidth="2" fill="none" strokeLinecap="round" />
+                        <path d="M 78 68 Q 85 66, 92 68" stroke="#2C2416" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+                        <path d="M 108 68 Q 115 66, 122 68" stroke="#2C2416" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+                        <path d="M 70 120 L 70 170 Q 70 180, 80 180 L 120 180 Q 130 180, 130 170 L 130 120 Z" fill="#5DADE2" />
+                        <polygon points="90,120 100,130 110,120" fill="#3498DB" />
+                        <ellipse cx="55" cy="145" rx="13" ry="32" fill="#F4C4A0" transform="rotate(-20 55 145)" />
+                        <ellipse cx="145" cy="145" rx="13" ry="32" fill="#F4C4A0" transform="rotate(20 145 145)" />
+                      </svg>
                     </div>
-                   
+                    
                     <h3 className="text-2xl font-bold text-white mb-2">Male</h3>
                     <p className="text-gray-400">Select this avatar</p>
                   </div>
@@ -153,35 +165,38 @@ export default function AvatarSelection() {
               animate={{ scale: 1, opacity: 1 }}
               className="text-center"
             >
-              <div className="w-48 mb-8 mx-auto relative overflow-hidden" style={{ height: '210px' }}>
+              <div className="w-48 h-48 mx-auto mb-8 relative" style={{ clipPath: 'inset(0 0 20% 0)' }}>
                 {selectedGender === 'female' ? (
-                  <div 
-                    className="absolute top-0 left-0 right-0"
-                    style={{ 
-                      height: '240px',
-                      clipPath: 'inset(0 0 20% 0)'
-                    }}
-                  >
+                  <>
                     <Spline 
                       scene="https://prod.spline.design/xWHBgK2bOBQRvsmd/scene.splinecode"
                       className="w-full h-full"
                     />
-                  </div>
-                ) : (
-                  <div 
-                    className="absolute top-0 left-0 right-0"
-                    style={{ 
-                      height: '240px',
-                      clipPath: 'inset(0 0 20% 0)',
-                      transform: 'scale(1.1)',
-                      transformOrigin: 'center center'
-                    }}
-                  >
-                    <Spline 
-                      scene="https://prod.spline.design/PuH8zLiZwiK61OXD/scene.splinecode"
-                      className="w-full h-full"
+                    <div 
+                      className="absolute left-0 right-0 pointer-events-none z-50" 
+                      style={{
+                        bottom: '0',
+                        height: '50px',
+                        background: 'linear-gradient(180deg, transparent 0%, #1a0b2e 50%, #1a0b2e 100%)'
+                      }}
                     />
-                  </div>
+                  </>
+                ) : (
+                  <svg viewBox="0 0 200 200" className="w-full h-full">
+                    <ellipse cx="100" cy="80" rx="35" ry="38" fill="#F4C4A0" />
+                    <path d="M 65 55 Q 65 30, 100 28 Q 135 30, 135 55 L 135 70 Q 130 75, 125 70 L 75 70 Q 70 75, 65 70 Z" fill="#2C2416" />
+                    <circle cx="85" cy="75" r="4" fill="#1A120C" />
+                    <circle cx="115" cy="75" r="4" fill="#1A120C" />
+                    <circle cx="86" cy="74" r="2" fill="white" />
+                    <circle cx="116" cy="74" r="2" fill="white" />
+                    <path d="M 85 92 Q 100 97, 115 92" stroke="#D4876F" strokeWidth="2" fill="none" strokeLinecap="round" />
+                    <path d="M 78 68 Q 85 66, 92 68" stroke="#2C2416" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+                    <path d="M 108 68 Q 115 66, 122 68" stroke="#2C2416" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+                    <path d="M 70 120 L 70 170 Q 70 180, 80 180 L 120 180 Q 130 180, 130 170 L 130 120 Z" fill="#5DADE2" />
+                    <polygon points="90,120 100,130 110,120" fill="#3498DB" />
+                    <ellipse cx="55" cy="145" rx="13" ry="32" fill="#F4C4A0" transform="rotate(-20 55 145)" />
+                    <ellipse cx="145" cy="145" rx="13" ry="32" fill="#F4C4A0" transform="rotate(20 145 145)" />
+                  </svg>
                 )}
               </div>
               
