@@ -6,7 +6,7 @@ import Navigation from './components/layout/Navigation'
 import ChatPanel from './components/chat/ChatPanel'
 import Landing from './pages/Landing'
 import Dashboard from './pages/Dashboard'
-import Purchase from './pages/Purchase'
+import Purchase from './pages/PurchaseNew' // Updated to use new dynamic recommendation system
 import AIAnalysis from './pages/AIAnalysis'
 import RecommendationsPage from './pages/RecommendationsPage'
 

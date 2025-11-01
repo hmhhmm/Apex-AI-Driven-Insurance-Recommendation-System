@@ -20,8 +20,8 @@ const ChatInput = () => {
   }
 
   return (
-    <div className="p-4 border-t border-zinc-800 bg-zinc-950">
-      <div className="flex gap-2">
+    <div className="p-4 border-t border-zinc-700 bg-zinc-900">
+      <div className="flex gap-2 items-end">
         <input
           type="text"
           value={inputValue}
@@ -29,12 +29,12 @@ const ChatInput = () => {
           onKeyPress={handleKeyPress}
           placeholder="Type your message..."
           disabled={isTyping}
-          className="flex-1 px-4 py-3 bg-zinc-900 border border-zinc-700 rounded-lg focus:outline-none focus:border-blue-500 text-white placeholder-gray-500 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+          className="flex-1 px-4 py-2.5 bg-zinc-800 border border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white placeholder-gray-500 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
         />
         <button
           onClick={handleSend}
           disabled={!inputValue.trim() || isTyping}
-          className="px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:shadow-lg hover:shadow-blue-500/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           title="Send (Enter)"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -43,8 +43,7 @@ const ChatInput = () => {
         </button>
       </div>
       <p className="text-xs text-gray-500 mt-2">
-        Press <kbd className="px-2 py-1 bg-zinc-800 rounded text-gray-400">Enter</kbd> to send, 
-        <kbd className="px-2 py-1 bg-zinc-800 rounded text-gray-400 ml-1">Shift + Enter</kbd> for new line
+        Press <kbd className="px-1.5 py-0.5 bg-zinc-800 border border-zinc-700 rounded text-gray-400 font-mono text-xs">Enter</kbd> to send
       </p>
     </div>
   )

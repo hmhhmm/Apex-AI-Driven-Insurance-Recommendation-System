@@ -16,6 +16,23 @@ export interface QuickAssessmentData {
   healthGoals: string[]
   existingConditions: string[]
   familyHistory: string[]
+  
+  // Extended fields for recommendations
+  lifestyle?: 'Active' | 'Moderate' | 'Sedentary'
+  exerciseFrequency?: 'Regularly' | 'Occasionally' | 'Rarely' | 'Never'
+  exerciseTypes?: string[]
+  smokingStatus?: 'Never' | 'Former' | 'Current'
+  alcoholConsumption?: 'None' | 'Light' | 'Moderate' | 'Heavy'
+  currentMedications?: string[]
+  insuranceType?: string  // Comma-separated insurance types
+  budget?: 'Low' | 'Medium' | 'High'
+  hasDependents?: string  // 'Yes' or 'No'
+  numberOfDependents?: string
+  maritalStatus?: string
+  drivingExperience?: string
+  accidentHistory?: string
+  travelFrequency?: 'None' | 'Occasional' | 'Frequent'
+  annualIncome?: string
 }
 
 export interface AccountCreationData {
@@ -66,6 +83,7 @@ interface OnboardingState {
   data: OnboardingData
   isComplete: boolean
   selectedGender?: 'male' | 'female'
+  hasCompletedDNATest: boolean // Track if user already has DNA test results
   
   // Actions
   setCurrentStep: (step: OnboardingStep) => void
@@ -76,6 +94,7 @@ interface OnboardingState {
   saveDocumentVault: (data: DocumentVaultData) => void
   completeOnboarding: () => void
   resetOnboarding: () => void
+  retakeQuestionnaire: () => void // New: retake questions without resetting DNA/account
   
   // Navigation helpers
   goToNextStep: () => void
@@ -98,6 +117,7 @@ export const useOnboardingStore = create<OnboardingState>()(
       data: {},
       isComplete: false,
       selectedGender: undefined,
+      hasCompletedDNATest: false,
 
       setCurrentStep: (step) => {
         set({ currentStep: step })
@@ -121,7 +141,8 @@ export const useOnboardingStore = create<OnboardingState>()(
 
       saveDNATest: (data) => {
         set((state) => ({
-          data: { ...state.data, dnaTest: data }
+          data: { ...state.data, dnaTest: data },
+          hasCompletedDNATest: true
         }))
       },
 
@@ -139,7 +160,23 @@ export const useOnboardingStore = create<OnboardingState>()(
         set({ 
           currentStep: 'quick-assessment', 
           data: {}, 
-          isComplete: false 
+          isComplete: false,
+          hasCompletedDNATest: false
+        })
+      },
+
+      retakeQuestionnaire: () => {
+        // Keep account, DNA test, and document vault data
+        // Reset only questionnaire data and set to questionnaire step
+        const { data } = get()
+        set({
+          currentStep: 'quick-assessment',
+          data: {
+            ...data,
+            quickAssessment: undefined // Clear old questionnaire answers
+          },
+          isComplete: false,
+          selectedGender: undefined // Allow reselecting avatar/gender
         })
       },
 

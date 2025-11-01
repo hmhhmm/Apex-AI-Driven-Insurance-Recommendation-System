@@ -16,15 +16,6 @@ const ChatPanel = () => {
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* Optional backdrop for focus - uncomment if desired */}
-          {/* <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={closeChat}
-            className="fixed inset-0 bg-black/20 z-30"
-          /> */}
-
           {/* Chat Panel - Desktop */}
           <motion.aside
             initial={{ x: '100%' }}
@@ -36,7 +27,7 @@ const ChatPanel = () => {
               stiffness: 300,
               mass: 0.8
             }}
-            className="hidden md:flex fixed right-0 top-16 h-[calc(100vh-4rem)] w-[25%] min-w-[300px] max-w-[500px] bg-zinc-950 border-l border-zinc-800 shadow-2xl shadow-black/50 z-40 flex-col"
+            className="hidden md:flex fixed right-0 top-16 h-[calc(100vh-4rem)] w-[30%] min-w-[320px] max-w-[480px] bg-zinc-900/95 backdrop-blur-sm border-l border-zinc-700/50 shadow-2xl z-40 flex-col"
           >
             <ChatHeader />
             <ChatMessages />
@@ -54,7 +45,7 @@ const ChatPanel = () => {
               damping: 30, 
               stiffness: 300
             }}
-            className="md:hidden fixed inset-0 top-16 bg-zinc-950 z-40 flex flex-col"
+            className="md:hidden fixed inset-0 top-16 bg-zinc-900 z-40 flex flex-col"
           >
             <ChatHeader />
             <ChatMessages />

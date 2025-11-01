@@ -20,16 +20,16 @@ const QuickActions = () => {
   if (actions.length === 0) return null
 
   return (
-    <div className="p-3 border-t border-zinc-800 bg-zinc-950">
-      <p className="text-xs text-gray-500 mb-2">Quick Actions:</p>
+    <div className="p-3 border-t border-zinc-700 bg-zinc-900">
+      <p className="text-xs text-gray-400 mb-2 font-medium">Quick Actions</p>
       <div className="flex flex-wrap gap-2">
         {actions.map((action) => (
           <button
             key={action.id}
             onClick={() => handleAction(action)}
-            className="px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700 rounded-lg text-xs flex items-center gap-1.5 transition-colors text-gray-300"
+            className="px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 rounded-lg text-xs flex items-center gap-2 transition-colors text-gray-300 hover:text-white"
           >
-            <span>{action.icon}</span>
+            <span className="text-sm">{action.icon}</span>
             <span>{action.label}</span>
           </button>
         ))}
