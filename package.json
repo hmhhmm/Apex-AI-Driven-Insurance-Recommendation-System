@@ -26,7 +26,20 @@
     "autoprefixer": "^10.4.21",
     "postcss": "^8.5.6",
     "tailwindcss": "^3.3.0",
-    "typescript": "^5.2.2",
+    "typescript": "^5.9.3",
     "vite": "^4.3.9"
-  }
+  },
+  "main": "postcss.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hmhhmm/Apex-AI-Driven-Insurance-Recommendation-System.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/hmhhmm/Apex-AI-Driven-Insurance-Recommendation-System/issues"
+  },
+  "homepage": "https://github.com/hmhhmm/Apex-AI-Driven-Insurance-Recommendation-System#readme"
 }
