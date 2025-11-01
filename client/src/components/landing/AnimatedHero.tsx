@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { ChevronDown, Play } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 const AnimatedHero = () => {
   return (
@@ -54,13 +55,15 @@ const AnimatedHero = () => {
             transition={{ duration: 0.8, delay: 1.2 }}
             className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-20"
           >
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="px-8 py-3 bg-white text-black rounded-full font-medium text-sm hover:bg-gray-100 transition-colors duration-300 flex items-center gap-2"
-            >
-              Get Started
-            </motion.button>
+            <Link to="/onboarding/avatar-selection">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="px-8 py-3 bg-white text-black rounded-full font-medium text-sm hover:bg-gray-100 transition-colors duration-300 flex items-center gap-2"
+              >
+                Get Started
+              </motion.button>
+            </Link>
 
             <motion.button
               whileHover={{ scale: 1.05 }}

@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useCartStore } from '../store/cartStore'
 import { useState, useMemo } from 'react'
 import ParticleBackground from '../components/landing/ParticleBackground'
+import { Heart, Car, Plane, Shield, Activity, Dna, Sparkles } from 'lucide-react'
 
 // Mock data types
 interface Plan {
@@ -394,11 +395,11 @@ const Purchase = () => {
   
   const insuranceTypes: Array<'Health' | 'Auto' | 'Travel' | 'Life' | 'Sports'> = ['Health', 'Auto', 'Travel', 'Life', 'Sports']
   const typeIcons = {
-    Health: '🏥',
-    Auto: '🚗',
-    Travel: '✈️',
-    Life: '🛡️',
-    Sports: '⚽',
+    Health: Heart,
+    Auto: Car,
+    Travel: Plane,
+    Life: Shield,
+    Sports: Activity,
   }
   
   // Premium calculation with DNA & lifestyle adjustments
@@ -483,14 +484,14 @@ const Purchase = () => {
     return filtered
   }, [activeType, searchQuery, filters, sortBy, showPersonalizedPricing, userProfile])
   
-  // Value indicator color
+  // Value indicator color - lighter, more professional borders
   const getValueColor = (plan: Plan): string => {
     const pricing = calculatePremium(plan, showPersonalizedPricing)
     const valueRatio = plan.annualCoverLimit / pricing.monthly
     
-    if (valueRatio > 1500) return 'border-green-500'
-    if (valueRatio > 800) return 'border-yellow-500'
-    return 'border-red-500'
+    if (valueRatio > 1500) return 'border-purple-500/20'
+    if (valueRatio > 800) return 'border-purple-400/20'
+    return 'border-white/10'
   }
 
   return (
@@ -501,10 +502,10 @@ const Purchase = () => {
       {/* Animated Gradient Orbs */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <motion.div
-          className="absolute top-1/4 -left-48 w-96 h-96 bg-purple-500/30 rounded-full blur-3xl"
+          className="absolute top-1/4 -left-48 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl"
           animate={{
             scale: [1, 1.2, 1],
-            opacity: [0.3, 0.5, 0.3],
+            opacity: [0.2, 0.4, 0.2],
           }}
           transition={{
             duration: 8,
@@ -513,10 +514,10 @@ const Purchase = () => {
           }}
         />
         <motion.div
-          className="absolute top-1/2 right-0 w-96 h-96 bg-blue-500/30 rounded-full blur-3xl"
+          className="absolute top-1/2 right-0 w-96 h-96 bg-purple-600/15 rounded-full blur-3xl"
           animate={{
             scale: [1.2, 1, 1.2],
-            opacity: [0.3, 0.5, 0.3],
+            opacity: [0.15, 0.3, 0.15],
           }}
           transition={{
             duration: 10,
@@ -525,10 +526,10 @@ const Purchase = () => {
           }}
         />
         <motion.div
-          className="absolute bottom-0 left-1/3 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl"
+          className="absolute bottom-0 left-1/3 w-96 h-96 bg-purple-400/10 rounded-full blur-3xl"
           animate={{
             scale: [1, 1.3, 1],
-            opacity: [0.2, 0.4, 0.2],
+            opacity: [0.1, 0.2, 0.1],
           }}
           transition={{
             duration: 12,
@@ -600,13 +601,9 @@ const Purchase = () => {
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent" />
           
           <div className="flex items-start gap-4 relative z-10">
-            <motion.div 
-              className="text-4xl"
-              animate={{ rotate: [0, 5, -5, 0] }}
-              transition={{ duration: 3, repeat: Infinity }}
-            >
-              🧬
-            </motion.div>
+            <div className="p-3 rounded-xl bg-purple-500/10 border border-purple-500/20">
+              <Dna className="w-8 h-8 text-purple-400" />
+            </div>
             <div className="flex-1">
               <h3 className="text-xl font-light text-white mb-2">
                 Your Premium is <span className="font-normal">Personalised</span>
@@ -618,7 +615,7 @@ const Purchase = () => {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => setShowEstimator(!showEstimator)}
-                className="text-blue-400 text-sm hover:text-blue-300 underline"
+                className="text-purple-400 text-sm hover:text-purple-300 underline"
               >
                 {showEstimator ? 'Hide' : 'Show'} Premium Estimator
               </motion.button>
@@ -631,7 +628,7 @@ const Purchase = () => {
                 onClick={() => setShowPersonalizedPricing(!showPersonalizedPricing)}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
                   showPersonalizedPricing
-                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'
+                    ? 'bg-gradient-to-r from-purple-600 to-purple-700 text-white'
                     : 'backdrop-blur-xl bg-white/5 text-gray-400 hover:bg-white/10 border border-white/10'
                 }`}
               >
@@ -660,7 +657,7 @@ const Purchase = () => {
                     type="number"
                     value={userProfile.age}
                     onChange={(e) => setUserProfile({ ...userProfile, age: parseInt(e.target.value) || 18 })}
-                    className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white focus:border-blue-500 focus:outline-none transition"
+                    className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white focus:border-purple-500 focus:outline-none transition"
                     min="18"
                     max="100"
                   />
@@ -670,7 +667,7 @@ const Purchase = () => {
                   <select
                     value={userProfile.smoking ? 'yes' : 'no'}
                     onChange={(e) => setUserProfile({ ...userProfile, smoking: e.target.value === 'yes' })}
-                    className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white focus:border-blue-500 focus:outline-none transition"
+                    className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white focus:border-purple-500 focus:outline-none transition"
                   >
                     <option value="no">Non-smoker</option>
                     <option value="yes">Smoker</option>
@@ -681,7 +678,7 @@ const Purchase = () => {
                   <select
                     value={userProfile.occupationRisk}
                     onChange={(e) => setUserProfile({ ...userProfile, occupationRisk: e.target.value as any })}
-                    className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white focus:border-blue-500 focus:outline-none transition"
+                    className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white focus:border-purple-500 focus:outline-none transition"
                   >
                     <option value="Low">Low Risk</option>
                     <option value="Medium">Medium Risk</option>
@@ -693,7 +690,7 @@ const Purchase = () => {
                   <select
                     value={userProfile.dnaRiskClass}
                     onChange={(e) => setUserProfile({ ...userProfile, dnaRiskClass: e.target.value as any })}
-                    className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white focus:border-blue-500 focus:outline-none transition"
+                    className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white focus:border-purple-500 focus:outline-none transition"
                   >
                     <option value="A">Class A (Best)</option>
                     <option value="B">Class B (Good)</option>
@@ -714,30 +711,33 @@ const Purchase = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="flex flex-wrap gap-2 mb-6"
+          className="flex flex-wrap gap-3 mb-8"
         >
-          {insuranceTypes.map((type, index) => (
-            <motion.button
-              key={type}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.3 + index * 0.1 }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => {
-                setActiveType(type)
-                setSearchQuery('')
-              }}
-              className={`px-6 py-3 rounded-xl font-semibold transition flex items-center gap-2 ${
-                activeType === type
-                  ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/50'
-                  : 'backdrop-blur-xl bg-white/5 text-gray-400 hover:bg-white/10 border border-white/10'
-              }`}
-            >
-              <span className="text-xl">{typeIcons[type]}</span>
-              {type}
-            </motion.button>
-          ))}
+          {insuranceTypes.map((type, index) => {
+            const Icon = typeIcons[type]
+            return (
+              <motion.button
+                key={type}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.3 + index * 0.1 }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => {
+                  setActiveType(type)
+                  setSearchQuery('')
+                }}
+                className={`px-8 py-3.5 rounded-xl font-medium transition-all duration-300 flex items-center gap-2.5 ${
+                  activeType === type
+                    ? 'bg-purple-600 text-white shadow-lg shadow-purple-500/30 border border-purple-500/50'
+                    : 'bg-zinc-900/50 text-gray-400 hover:bg-zinc-800/70 hover:text-gray-300 border border-zinc-700/50 hover:border-zinc-600/50'
+                }`}
+              >
+                <Icon className="w-5 h-5" />
+                <span>{type}</span>
+              </motion.button>
+            )
+          })}
         </motion.div>
         
         {/* Filters & Search */}
@@ -745,43 +745,43 @@ const Purchase = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="mb-6 p-6 rounded-2xl backdrop-blur-2xl bg-gradient-to-br from-white/[0.07] to-white/[0.02] border border-white/10"
+          className="mb-8 p-6 rounded-2xl backdrop-blur-2xl bg-gradient-to-br from-white/[0.05] to-white/[0.02] border border-white/10"
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
             <div>
-              <label className="block text-sm text-gray-400 mb-2">Search Plans</label>
+              <label className="block text-sm font-medium text-gray-400 mb-2.5">Search Plans</label>
               <input
                 type="text"
                 placeholder="Company or plan name..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none transition"
+                className="w-full backdrop-blur-xl bg-zinc-900/40 border border-zinc-700/50 rounded-lg px-4 py-2.5 text-white placeholder-gray-500 focus:border-purple-500 focus:bg-zinc-900/60 focus:outline-none transition"
               />
             </div>
             <div>
-              <label className="block text-sm text-gray-400 mb-2">Max Monthly Budget (RM)</label>
+              <label className="block text-sm font-medium text-gray-400 mb-2.5">Max Monthly Budget (RM)</label>
               <input
                 type="number"
                 value={filters.maxMonthlyBudget}
                 onChange={(e) => setFilters({ ...filters, maxMonthlyBudget: parseInt(e.target.value) || 1000 })}
-                className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white focus:border-blue-500 focus:outline-none transition"
+                className="w-full backdrop-blur-xl bg-zinc-900/40 border border-zinc-700/50 rounded-lg px-4 py-2.5 text-white focus:border-purple-500 focus:bg-zinc-900/60 focus:outline-none transition"
               />
             </div>
             <div>
-              <label className="block text-sm text-gray-400 mb-2">Max Deductible (RM)</label>
+              <label className="block text-sm font-medium text-gray-400 mb-2.5">Max Deductible (RM)</label>
               <input
                 type="number"
                 value={filters.maxDeductible}
                 onChange={(e) => setFilters({ ...filters, maxDeductible: parseInt(e.target.value) || 10000 })}
-                className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white focus:border-blue-500 focus:outline-none transition"
+                className="w-full backdrop-blur-xl bg-zinc-900/40 border border-zinc-700/50 rounded-lg px-4 py-2.5 text-white focus:border-purple-500 focus:bg-zinc-900/60 focus:outline-none transition"
               />
             </div>
             <div>
-              <label className="block text-sm text-gray-400 mb-2">Sort By</label>
+              <label className="block text-sm font-medium text-gray-400 mb-2.5">Sort By</label>
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as any)}
-                className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white focus:border-blue-500 focus:outline-none transition"
+                className="w-full backdrop-blur-xl bg-zinc-900/40 border border-zinc-700/50 rounded-lg px-4 py-2.5 text-white focus:border-purple-500 focus:bg-zinc-900/60 focus:outline-none transition cursor-pointer"
               >
                 <option value="premium">Premium (Low → High)</option>
                 <option value="coverage">Coverage (High → Low)</option>
@@ -796,6 +796,7 @@ const Purchase = () => {
           {filteredPlans.map((plan, index) => {
             const pricing = calculatePremium(plan, showPersonalizedPricing)
             const valueColor = getValueColor(plan)
+            const Icon = typeIcons[plan.type]
             
             return (
               <motion.div
@@ -805,20 +806,16 @@ const Purchase = () => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 whileHover={{ y: -5 }}
-                className={`p-6 rounded-2xl backdrop-blur-2xl bg-gradient-to-br from-white/[0.07] to-white/[0.02] border-2 ${valueColor} hover:shadow-2xl transition-all relative group overflow-hidden`}
+                className={`p-6 rounded-2xl backdrop-blur-2xl bg-gradient-to-br from-white/[0.07] to-white/[0.02] border ${valueColor} hover:shadow-2xl transition-all relative group overflow-hidden`}
               >
                 {/* Shine effect on hover */}
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
                 
                 <div className="relative z-10">
                   <div className="flex items-start gap-4 mb-4">
-                    <motion.div 
-                      className="text-4xl"
-                      whileHover={{ scale: 1.2, rotate: 5 }}
-                      transition={{ type: "spring", stiffness: 300 }}
-                    >
-                      {typeIcons[plan.type]}
-                    </motion.div>
+                    <div className="p-3 rounded-xl bg-purple-500/10 border border-purple-500/20">
+                      <Icon className="w-6 h-6 text-purple-400" />
+                    </div>
                     <div className="flex-1">
                       <div className="text-xs text-gray-500 uppercase tracking-wide">{plan.company}</div>
                       <h3 className="text-xl font-light text-white">
@@ -889,13 +886,15 @@ const Purchase = () => {
                   {/* Badges */}
                   <div className="flex flex-wrap gap-2 mb-4">
                     {plan.dnaDiscount && (
-                      <span className="px-2 py-1 backdrop-blur-xl bg-purple-500/20 text-purple-300 text-xs rounded-lg border border-purple-500/50">
-                        🧬 DNA-optimized
+                      <span className="px-3 py-1 backdrop-blur-xl bg-purple-500/10 text-purple-300 text-xs rounded-lg border border-purple-500/30 flex items-center gap-1.5">
+                        <Dna className="w-3.5 h-3.5" />
+                        DNA-optimized
                       </span>
                     )}
                     {plan.lifestyleDiscount && (
-                      <span className="px-2 py-1 backdrop-blur-xl bg-green-500/20 text-green-300 text-xs rounded-lg border border-green-500/50">
-                        💚 Lifestyle discount
+                      <span className="px-3 py-1 backdrop-blur-xl bg-green-500/10 text-green-300 text-xs rounded-lg border border-green-500/30 flex items-center gap-1.5">
+                        <Sparkles className="w-3.5 h-3.5" />
+                        Lifestyle discount
                       </span>
                     )}
                   </div>
@@ -906,7 +905,7 @@ const Purchase = () => {
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={() => setSelectedPlanDetail(plan)}
-                      className="flex-1 px-4 py-2 backdrop-blur-xl bg-white/5 text-white rounded-lg hover:bg-white/10 transition border border-white/10"
+                      className="flex-1 px-4 py-2.5 backdrop-blur-xl bg-zinc-800/50 text-gray-300 rounded-lg hover:bg-zinc-700/60 transition border border-zinc-700/50 hover:border-zinc-600/50"
                     >
                       View Details
                     </motion.button>
@@ -914,7 +913,7 @@ const Purchase = () => {
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={() => addItem({ ...plan, price: pricing.monthly, type: plan.type })}
-                      className="flex-1 px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:shadow-lg hover:shadow-blue-500/50 transition"
+                      className="flex-1 px-4 py-2.5 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-lg hover:from-purple-500 hover:to-purple-600 transition font-medium shadow-lg shadow-purple-500/20"
                     >
                       Select Plan
                     </motion.button>

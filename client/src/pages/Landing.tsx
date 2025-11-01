@@ -471,36 +471,6 @@ const Landing = () => {
         </div>
       </section>
 
-      {/* Get Started Section */}
-      <section id="signup" className="min-h-screen py-20 bg-gradient-to-br from-blue-950 via-purple-950 to-black flex items-center relative overflow-hidden">
-        <div className="absolute inset-0 grid-bg opacity-20"></div>
-        <div className="max-w-2xl mx-auto px-4 w-full relative z-10 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-              Ready to Get Started?
-            </h2>
-            <p className="text-xl text-gray-400 mb-12 max-w-xl mx-auto">
-              Begin your personalized insurance journey with APEX. Takes only 2 minutes to complete.
-            </p>
-
-            <button
-              onClick={() => navigate('/onboarding/avatar-selection')}
-              className="px-12 py-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-xl font-bold rounded-full hover:shadow-2xl hover:shadow-blue-500/50 transform hover:scale-110 transition-all duration-300"
-            >
-              Get Started →
-            </button>
-
-            <p className="text-center text-sm text-gray-500 mt-8">
-              No credit card required • Free assessment • 2 minutes
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
       {/* ═══════════════════════════════════════════════════════════════
           FOOTER
           ═══════════════════════════════════════════════════════════════ */}

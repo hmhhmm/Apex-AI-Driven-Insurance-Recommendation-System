@@ -11,27 +11,26 @@ const Navigation = () => {
 
   const navLinks = [
     { path: '/dashboard', label: 'Dashboard', requireAuth: true },
-    { path: '/claims', label: 'Claims', requireAuth: true },
     { path: '/purchase', label: 'Browse Plans', requireAuth: false },
   ]
 
   return (
     <nav className="sticky top-0 z-50 bg-black/95 backdrop-blur-xl border-b border-zinc-800/50 shadow-lg shadow-black/20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex items-center h-16">
           
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-blue-500/50">
-              A
-            </div>
-            <span className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+          {/* Logo - Simple Text Only */}
+          <Link to="/" className="flex items-center pl-2">
+            <span className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-purple-600 bg-clip-text text-transparent tracking-tight">
               APEX
             </span>
           </Link>
 
+          {/* Spacer to push everything right */}
+          <div className="flex-1"></div>
+
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-6 -mr-4">
             {navLinks.map((link) => {
               if (link.requireAuth && !isAuthenticated) return null
               
@@ -41,8 +40,8 @@ const Navigation = () => {
                   to={link.path}
                   className={`text-sm font-medium transition-all pb-1 ${
                     location.pathname === link.path
-                      ? 'text-blue-400 border-b-2 border-blue-400'
-                      : 'text-gray-400 hover:text-blue-400'
+                      ? 'text-purple-400 border-b-2 border-purple-400'
+                      : 'text-gray-400 hover:text-purple-400'
                   }`}
                 >
                   {link.label}
@@ -50,7 +49,7 @@ const Navigation = () => {
               )
             })}
 
-            {/* Chat Toggle Button */}
+            {/* AI Assistant Button */}
             <ChatToggleButton />
 
             {/* Account Section */}
@@ -60,7 +59,7 @@ const Navigation = () => {
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                   className="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-zinc-900 transition border border-transparent hover:border-zinc-800"
                 >
-                  <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-sm shadow-lg shadow-blue-500/30">
+                  <div className="w-8 h-8 bg-gradient-to-br from-purple-600 to-purple-800 rounded-full flex items-center justify-center text-white font-semibold text-sm shadow-lg shadow-purple-500/30">
                     {user?.name?.charAt(0).toUpperCase()}
                   </div>
                   <span className="text-sm font-medium text-gray-300">{user?.name}</span>
@@ -74,17 +73,10 @@ const Navigation = () => {
                   <div className="absolute right-0 mt-2 w-48 bg-zinc-950 rounded-lg shadow-2xl border border-zinc-800 py-2">
                     <Link
                       to="/dashboard"
-                      className="block px-4 py-2 text-sm text-gray-300 hover:bg-zinc-900 hover:text-blue-400 transition"
+                      className="block px-4 py-2 text-sm text-gray-300 hover:bg-zinc-900 hover:text-purple-400 transition"
                       onClick={() => setIsDropdownOpen(false)}
                     >
                       My Dashboard
-                    </Link>
-                    <Link
-                      to="/claims"
-                      className="block px-4 py-2 text-sm text-gray-300 hover:bg-zinc-900 hover:text-blue-400 transition"
-                      onClick={() => setIsDropdownOpen(false)}
-                    >
-                      My Claims
                     </Link>
                     <hr className="my-2 border-zinc-800" />
                     <button
@@ -100,16 +92,12 @@ const Navigation = () => {
                 )}
               </div>
             ) : (
-              <a
-                href="#signup"
-                onClick={(e) => {
-                  e.preventDefault()
-                  document.getElementById('signup')?.scrollIntoView({ behavior: 'smooth' })
-                }}
-                className="px-6 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:shadow-lg hover:shadow-blue-500/50 transition transform hover:scale-105"
+              <Link
+                to="/onboarding/quick-assessment"
+                className="px-6 py-2 bg-gradient-to-r from-purple-600 to-purple-800 text-white rounded-lg hover:shadow-lg hover:shadow-purple-500/50 transition transform hover:scale-105"
               >
                 Get Started
-              </a>
+              </Link>
             )}
           </div>
 
@@ -138,7 +126,7 @@ const Navigation = () => {
                 <Link
                   key={link.path}
                   to={link.path}
-                  className="block px-4 py-2 text-gray-300 hover:bg-zinc-900 rounded hover:text-blue-400 transition"
+                  className="block px-4 py-2 text-gray-300 hover:bg-zinc-900 rounded hover:text-purple-400 transition"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {link.label}

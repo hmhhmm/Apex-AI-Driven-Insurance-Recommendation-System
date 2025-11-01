@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { motion } from 'framer-motion'
 import { useOnboardingStore, type AccountCreationData } from '../../store/onboardingStore'
+import { useAuthStore } from '../../store/authStore'
 import { useNavigate } from 'react-router-dom'
 
 // Validation schema
@@ -26,6 +27,7 @@ type FormData = z.infer<typeof accountSchema>
 export default function AccountCreation() {
   const navigate = useNavigate()
   const { saveAccountCreation, setCurrentStep, goToPreviousStep } = useOnboardingStore()
+  const { signup } = useAuthStore()
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
@@ -38,10 +40,10 @@ export default function AccountCreation() {
   })
 
   const onSubmit = async (data: FormData) => {
-    // Simulate account creation
-    await new Promise(resolve => setTimeout(resolve, 1000))
+    // Create account and log in
+    await signup(data.email, data.password, data.fullName)
     
-    const { confirmPassword, ...accountData } = data
+    const { confirmPassword, password, ...accountData } = data
     saveAccountCreation(accountData as AccountCreationData)
     setCurrentStep('dna-test-option')
     navigate('/onboarding/dna-test')

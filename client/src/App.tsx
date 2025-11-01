@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { useAuthStore } from './store/authStore'
 import { useChatPanel } from './hooks/useChatPanel'
 import { useChatToggleShortcut } from './hooks/useKeyboardShortcut'
@@ -6,7 +6,6 @@ import Navigation from './components/layout/Navigation'
 import ChatPanel from './components/chat/ChatPanel'
 import Landing from './pages/Landing'
 import Dashboard from './pages/Dashboard'
-import Claims from './pages/Claims'
 import Purchase from './pages/Purchase'
 
 // Onboarding Pages
@@ -23,13 +22,17 @@ import DocumentVault from './pages/onboarding/DocumentVault'
 function AppContent() {
   const { isAuthenticated } = useAuthStore()
   const { isOpen, toggleChat } = useChatPanel()
+  const location = useLocation()
 
   // Keyboard shortcut: Cmd/Ctrl + K to toggle chat
   useChatToggleShortcut(toggleChat)
 
+  // Hide navigation on onboarding pages
+  const isOnboardingPage = location.pathname.startsWith('/onboarding')
+
   return (
     <div className="min-h-screen bg-black flex flex-col overflow-x-hidden">
-      <Navigation />
+      {!isOnboardingPage && <Navigation />}
       
       <div className="flex flex-1 relative overflow-x-hidden">
         {/* Main Content Area - Resizes when chat is open */}
@@ -60,10 +63,6 @@ function AppContent() {
             <Route 
               path="/dashboard" 
               element={isAuthenticated ? <Dashboard /> : <Navigate to="/" />} 
-            />
-            <Route 
-              path="/claims" 
-              element={isAuthenticated ? <Claims /> : <Navigate to="/" />} 
             />
 
             {/* Catch all */}
