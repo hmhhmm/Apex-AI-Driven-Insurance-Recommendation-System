@@ -22,10 +22,52 @@ export default function AvatarSelection() {
   }
 
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center relative overflow-hidden">
-      {/* Animated Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-950 via-purple-950 to-black">
-        <div className="absolute inset-0 grid-bg opacity-20"></div>
+    <div className="min-h-screen flex items-center justify-center relative overflow-hidden">
+      {/* Enhanced Background - Same as Landing */}
+      <div className="fixed inset-0 -z-10">
+        {/* Base gradient */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0a0a0a] via-[#1a1a2e] to-[#0a0a0a]" />
+        
+        {/* Animated gradient orbs */}
+        <motion.div 
+          className="absolute top-0 -left-1/4 w-1/2 h-1/2 bg-purple-500/20 rounded-full blur-[120px]"
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.3, 0.5, 0.3],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+        <motion.div 
+          className="absolute top-1/4 -right-1/4 w-1/2 h-1/2 bg-blue-500/20 rounded-full blur-[120px]"
+          animate={{
+            scale: [1.2, 1, 1.2],
+            opacity: [0.4, 0.6, 0.4],
+          }}
+          transition={{
+            duration: 10,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+        <motion.div 
+          className="absolute bottom-0 left-1/3 w-1/2 h-1/2 bg-cyan-500/15 rounded-full blur-[100px]"
+          animate={{
+            scale: [1, 1.3, 1],
+            opacity: [0.2, 0.4, 0.2],
+          }}
+          transition={{
+            duration: 12,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+        
+        {/* Subtle grid overlay */}
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:100px_100px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,black,transparent)]" />
       </div>
 
       <div className="relative z-10 w-full max-w-6xl mx-auto px-4">
@@ -54,7 +96,7 @@ export default function AvatarSelection() {
                   whileTap={{ scale: 0.95 }}
                   className="group relative"
                 >
-                  <div className="card p-8 hover:border-pink-500 transition-all duration-300 hover:shadow-2xl hover:shadow-pink-500/30">
+                  <div className="backdrop-blur-2xl bg-gradient-to-br from-white/[0.07] to-white/[0.02] border border-white/10 rounded-3xl p-8 hover:border-pink-500/50 transition-all duration-300 hover:shadow-2xl hover:shadow-pink-500/30" style={{ boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.37)' }}>
                     {/* Female Avatar SVG */}
                     <div className="w-64 h-64 mx-auto mb-6 relative">
                       <svg viewBox="0 0 200 200" className="w-full h-full">
@@ -98,7 +140,7 @@ export default function AvatarSelection() {
                   whileTap={{ scale: 0.95 }}
                   className="group relative"
                 >
-                  <div className="card p-8 hover:border-blue-500 transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/30">
+                  <div className="backdrop-blur-2xl bg-gradient-to-br from-white/[0.07] to-white/[0.02] border border-white/10 rounded-3xl p-8 hover:border-blue-500/50 transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/30" style={{ boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.37)' }}>
                     {/* Male Avatar SVG */}
                     <div className="w-64 h-64 mx-auto mb-6 relative">
                       <svg viewBox="0 0 200 200" className="w-full h-full">

@@ -93,8 +93,24 @@ export default function DocumentVault() {
   }
 
   return (
-    <div className="min-h-screen bg-black py-12">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen py-12 relative overflow-hidden">
+      {/* Enhanced Background */}
+      <div className="fixed inset-0 -z-10">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0a0a0a] via-[#1a1a2e] to-[#0a0a0a]" />
+        <motion.div 
+          className="absolute top-0 -left-1/4 w-1/2 h-1/2 bg-purple-500/20 rounded-full blur-[120px]"
+          animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div 
+          className="absolute top-1/4 -right-1/4 w-1/2 h-1/2 bg-blue-500/20 rounded-full blur-[120px]"
+          animate={{ scale: [1.2, 1, 1.2], opacity: [0.4, 0.6, 0.4] }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:100px_100px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,black,transparent)]" />
+      </div>
+      
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Header */}
         <motion.div
@@ -102,13 +118,18 @@ export default function DocumentVault() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-12"
         >
-          <div className="inline-block mb-4">
-            <span className="px-4 py-2 bg-blue-950/50 text-blue-400 rounded-full text-sm font-semibold border border-blue-800/30">
-              Step 4 of 4 - Final Step!
-            </span>
-          </div>
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            <span className="text-gradient">Secure Document Vault</span>
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ type: "spring", stiffness: 100, delay: 0.2 }}
+            className="inline-block mb-6"
+          >
+            <div className="px-4 py-2 bg-green-500/10 text-green-400 rounded-full text-sm font-semibold border border-green-500/20 backdrop-blur-xl">
+              🎉 Step 4 of 4 - Final Step!
+            </div>
+          </motion.div>
+          <h1 className="text-4xl md:text-6xl font-light mb-4">
+            Secure <span className="font-normal bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Document Vault</span>
           </h1>
           <p className="text-xl text-gray-400 max-w-2xl mx-auto">
             Store and manage your medical documents securely (Optional - You can skip this step)
@@ -128,8 +149,8 @@ export default function DocumentVault() {
           className="space-y-6"
         >
               {/* Drag & Drop Zone */}
-              <div className="card">
-                <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
+              <div className="backdrop-blur-2xl bg-gradient-to-br from-white/[0.07] to-white/[0.02] border border-white/10 rounded-3xl p-8" style={{ boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.37)' }}>
+                <h2 className="text-2xl font-light text-white mb-6 flex items-center gap-2">
                   <span>📤</span> Upload Documents
                 </h2>
 
@@ -185,8 +206,8 @@ export default function DocumentVault() {
               </div>
 
               {/* Quick Category Upload */}
-              <div className="card">
-                <h3 className="font-bold text-white mb-4">Quick Upload by Category</h3>
+              <div className="backdrop-blur-2xl bg-gradient-to-br from-white/[0.07] to-white/[0.02] border border-white/10 rounded-3xl p-8" style={{ boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.37)' }}>
+                <h3 className="font-light text-white mb-4">Quick Upload by Category</h3>
                 <div className="grid md:grid-cols-4 gap-4">
                   {docTypes.map((type) => (
                     <button
@@ -204,8 +225,8 @@ export default function DocumentVault() {
 
               {/* Uploaded Files List */}
               {uploadedDocs.length > 0 && (
-                <div className="card">
-                  <h3 className="font-bold text-white mb-4 flex items-center justify-between">
+                <div className="backdrop-blur-2xl bg-gradient-to-br from-white/[0.07] to-white/[0.02] border border-white/10 rounded-3xl p-8" style={{ boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.37)' }}>
+                  <h3 className="font-light text-white mb-4 flex items-center justify-between">
                     <span>📋 Uploaded Files ({uploadedDocs.length})</span>
                     <button
                       onClick={() => setUploadedDocs([])}

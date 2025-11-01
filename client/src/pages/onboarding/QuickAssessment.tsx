@@ -11,33 +11,34 @@ interface Question {
   placeholder?: string
   emoji: string
   category: string
-  points: number
   min?: number
   max?: number
 }
 
 const questions: Question[] = [
-  { id: 'fullName', question: "What's your name?", type: 'text', placeholder: 'John Doe', emoji: '👤', category: 'Personal', points: 10 },
-  { id: 'age', question: 'How old are you?', type: 'slider', emoji: '🎂', category: 'Personal', points: 10, min: 18, max: 100 },
-  { id: 'location', question: 'Where do you live?', type: 'text', placeholder: 'Kuala Lumpur', emoji: '📍', category: 'Personal', points: 10 },
-  { id: 'occupation', question: "What's your occupation?", type: 'text', placeholder: 'Software Engineer', emoji: '💼', category: 'Personal', points: 10 },
+  // UNIVERSAL Questions (Always shown)
+  { id: 'fullName', question: "What's your name?", type: 'text', placeholder: 'John Doe', emoji: '👤', category: 'Universal' },
+  { id: 'dateOfBirth', question: "What's your date of birth?", type: 'text', placeholder: 'DD/MM/YYYY', emoji: '�', category: 'Universal' },
+  { id: 'zipCode', question: "What's your ZIP code?", type: 'text', placeholder: '50000', emoji: '�', category: 'Universal' },
   { 
     id: 'insuranceNeeds', 
-    question: 'What insurance are you looking for?', 
+    question: 'Which insurance types do you need?', 
     type: 'multi-select',
     options: ['Health', 'Life', 'Car', 'Travel'],
     emoji: '🛡️',
-    category: 'Insurance',
-    points: 20
+    category: 'Universal'
   },
+  { id: 'annualIncome', question: "What's your annual household income?", type: 'text', placeholder: 'RM 50,000', emoji: '💰', category: 'Universal' },
+  { id: 'occupation', question: "What's your occupation?", type: 'text', placeholder: 'Software Engineer', emoji: '💼', category: 'Universal' },
+  
+  // HEALTH Questions (Conditional - shown if Health insurance selected)
   {
-    id: 'healthStatus',
-    question: 'How would you rate your health?',
+    id: 'smoking',
+    question: 'Do you smoke or use tobacco?',
     type: 'radio',
-    options: ['Excellent', 'Good', 'Fair', 'Need Improvement'],
-    emoji: '❤️',
-    category: 'Health',
-    points: 15
+    options: ['Never', 'Former smoker', 'Occasionally', 'Regularly'],
+    emoji: '🚭',
+    category: 'Health'
   },
   {
     id: 'exercise',
@@ -45,76 +46,132 @@ const questions: Question[] = [
     type: 'radio',
     options: ['Daily', '3-4 times/week', '1-2 times/week', 'Rarely'],
     emoji: '🏃',
-    category: 'Lifestyle',
-    points: 15
+    category: 'Health'
   },
+  
+  // CAR Questions (Conditional - shown if Car insurance selected)
+  { id: 'vehicleInfo', question: 'Vehicle make, model, year?', type: 'text', placeholder: 'Toyota Camry 2020', emoji: '🚗', category: 'Car' },
+  
+  // TRAVEL Questions (Conditional - shown if Travel insurance selected)
   {
-    id: 'smoking',
-    question: 'Do you smoke?',
+    id: 'travelFrequency',
+    question: 'How often do you travel?',
     type: 'radio',
-    options: ['Never', 'Former smoker', 'Occasionally', 'Regularly'],
-    emoji: '🚭',
-    category: 'Lifestyle',
-    points: 15
+    options: ['1-2 times/year', '3-4 times/year', '5+ times/year', 'Rarely'],
+    emoji: '✈️',
+    category: 'Travel'
   },
 ]
 
 export default function QuickAssessment() {
   const navigate = useNavigate()
   const { saveQuickAssessment, selectedGender } = useOnboardingStore()
-  const [currentStep, setCurrentStep] = useState(0)
+  const [currentGroupIndex, setCurrentGroupIndex] = useState(0)
   const [answers, setAnswers] = useState<Record<string, any>>({})
-  const [error, setError] = useState('')
-  const [score, setScore] = useState(0)
-  const [streak, setStreak] = useState(0)
-  const [showCelebration, setShowCelebration] = useState(false)
-  const [completedQuestions, setCompletedQuestions] = useState<string[]>([])
+  const [errors, setErrors] = useState<Record<string, string>>({})
 
-  const currentQuestion = questions[currentStep]
-  const progress = ((currentStep + 1) / questions.length) * 100
-  const totalSteps = questions.length
+  // Dynamically build question groups based on selected insurance types
+  const getQuestionGroups = () => {
+    const groups = [
+      {
+        title: 'Personal Information',
+        subtitle: 'Tell us about yourself',
+        emoji: '👤',
+        questions: questions.filter(q => q.category === 'Universal')
+      }
+    ]
 
-  const validateAnswer = (value: any): boolean => {
-    if (!value) return false
-    if (typeof value === 'string' && value.trim() === '') return false
-    if (Array.isArray(value) && value.length === 0) return false
-    return true
+    const selectedInsurance = Array.isArray(answers.insuranceNeeds) ? answers.insuranceNeeds : []
+
+    // Add Health questions if Health insurance selected
+    if (selectedInsurance.includes('Health')) {
+      groups.push({
+        title: 'Health & Lifestyle',
+        subtitle: 'Help us understand your health profile',
+        emoji: '❤️',
+        questions: questions.filter(q => q.category === 'Health')
+      })
+    }
+
+    // Add Car questions if Car insurance selected
+    if (selectedInsurance.includes('Car')) {
+      groups.push({
+        title: 'Vehicle Information',
+        subtitle: 'Tell us about your vehicle',
+        emoji: '🚗',
+        questions: questions.filter(q => q.category === 'Car')
+      })
+    }
+
+    // Add Travel questions if Travel insurance selected
+    if (selectedInsurance.includes('Travel')) {
+      groups.push({
+        title: 'Travel Details',
+        subtitle: 'Share your travel habits',
+        emoji: '✈️',
+        questions: questions.filter(q => q.category === 'Travel')
+      })
+    }
+
+    return groups
   }
 
-  const handleAnswer = (value: any) => {
-    setAnswers(prev => ({ ...prev, [currentQuestion.id]: value }))
-    setError('')
+  const questionGroups = getQuestionGroups()
+  const currentGroup = questionGroups[currentGroupIndex]
+  const progress = ((currentGroupIndex + 1) / questionGroups.length) * 100
+
+  const validateGroup = (): boolean => {
+    const newErrors: Record<string, string> = {}
+    let isValid = true
+
+    currentGroup.questions.forEach(question => {
+      const value = answers[question.id]
+      if (!value || (typeof value === 'string' && value.trim() === '') || (Array.isArray(value) && value.length === 0)) {
+        newErrors[question.id] = 'This field is required'
+        isValid = false
+      }
+    })
+
+    setErrors(newErrors)
+    return isValid
   }
 
-  const addPoints = () => {
-    setScore(prev => prev + currentQuestion.points)
-    setStreak(prev => prev + 1)
-    setShowCelebration(true)
-    setTimeout(() => setShowCelebration(false), 1000)
+  const handleAnswer = (questionId: string, value: any) => {
+    setAnswers(prev => ({ ...prev, [questionId]: value }))
+    setErrors(prev => ({ ...prev, [questionId]: '' }))
+    
+    // If insurance needs changed and we're on the first page, reset to allow conditional questions
+    if (questionId === 'insuranceNeeds' && currentGroupIndex === 0) {
+      // Questions will dynamically update based on selection
+    }
   }
 
   const handleNext = () => {
-    if (!validateAnswer(answers[currentQuestion.id])) {
-      setError('Please answer this question to continue')
-      setStreak(0)
+    if (!validateGroup()) {
       return
     }
 
-    if (!completedQuestions.includes(currentQuestion.id)) {
-      addPoints()
-      setCompletedQuestions(prev => [...prev, currentQuestion.id])
-    }
-
-    if (currentStep < questions.length - 1) {
-      setCurrentStep(prev => prev + 1)
+    // Check if we need to move to next group or complete
+    const updatedGroups = getQuestionGroups()
+    
+    if (currentGroupIndex < updatedGroups.length - 1) {
+      setCurrentGroupIndex(prev => prev + 1)
     } else {
+      // Calculate age from date of birth if provided
+      let calculatedAge = 25
+      if (answers.dateOfBirth) {
+        const birthDate = new Date(answers.dateOfBirth)
+        const today = new Date()
+        calculatedAge = today.getFullYear() - birthDate.getFullYear()
+      }
+
       // Format answers to match QuickAssessmentData interface
       const formattedData = {
-        age: answers.age || 25,
+        age: calculatedAge,
         gender: selectedGender || 'male',
         occupation: answers.occupation || '',
         healthGoals: Array.isArray(answers.insuranceNeeds) ? answers.insuranceNeeds : [],
-        existingConditions: answers.healthStatus ? [answers.healthStatus] : [],
+        existingConditions: answers.smoking ? [answers.smoking] : [],
         familyHistory: []
       }
       saveQuickAssessment(formattedData)
@@ -123,77 +180,66 @@ export default function QuickAssessment() {
   }
 
   const handleBack = () => {
-    if (currentStep > 0) {
-      setCurrentStep(prev => prev - 1)
-      setError('')
+    if (currentGroupIndex > 0) {
+      setCurrentGroupIndex(prev => prev - 1)
+      setErrors({})
     }
   }
 
-  // Keyboard navigation
-  useEffect(() => {
-    const handleKeyPress = (e: KeyboardEvent) => {
-      if (e.key === 'Enter' && validateAnswer(answers[currentQuestion.id])) {
-        handleNext()
-      }
-    }
-    window.addEventListener('keypress', handleKeyPress)
-    return () => window.removeEventListener('keypress', handleKeyPress)
-  }, [currentStep, answers])
+
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-zinc-900 to-black flex items-center justify-center px-4 py-8 relative overflow-hidden">
-      {/* Animated Background */}
-      <div className="absolute inset-0 opacity-20">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-blue-500 rounded-full filter blur-3xl animate-pulse" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-purple-500 rounded-full filter blur-3xl animate-pulse delay-1000" />
+    <div className="min-h-screen flex items-center justify-center px-4 py-8 relative overflow-hidden">
+      {/* Enhanced Background - Same as Landing */}
+      <div className="fixed inset-0 -z-10">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0a0a0a] via-[#1a1a2e] to-[#0a0a0a]" />
+        <motion.div 
+          className="absolute top-0 -left-1/4 w-1/2 h-1/2 bg-purple-500/20 rounded-full blur-[120px]"
+          animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div 
+          className="absolute top-1/4 -right-1/4 w-1/2 h-1/2 bg-blue-500/20 rounded-full blur-[120px]"
+          animate={{ scale: [1.2, 1, 1.2], opacity: [0.4, 0.6, 0.4] }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:100px_100px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,black,transparent)]" />
       </div>
 
-      {/* Confetti Effect */}
-      <AnimatePresence>
-        {showCelebration && (
-          <motion.div 
-            className="absolute inset-0 pointer-events-none"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            {[...Array(20)].map((_, i) => (
-              <motion.div
-                key={i}
-                className="absolute text-2xl"
-                style={{
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
-                }}
-                initial={{ y: 0, opacity: 1, scale: 0 }}
-                animate={{ 
-                  y: -100, 
-                  opacity: 0, 
-                  scale: 1,
-                  rotate: Math.random() * 360 
-                }}
-                transition={{ duration: 1 }}
-              >
-                {['🎉', '✨', '🌟', '⭐', '💫'][Math.floor(Math.random() * 5)]}
-              </motion.div>
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       <div className="w-full max-w-4xl relative z-10">
-        {/* Header with Stats */}
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex items-center justify-between mb-8"
+          className="text-center mb-8"
         >
-          {/* Avatar & Level */}
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ type: "spring", stiffness: 100, delay: 0.2 }}
+            className="inline-block mb-6"
+          >
+            <div className="px-4 py-2 bg-blue-500/10 text-blue-400 rounded-full text-sm font-semibold border border-blue-500/20 backdrop-blur-xl">
+              Step 1 of 4
+            </div>
+          </motion.div>
+          <h1 className="text-4xl md:text-6xl font-light mb-4">
+            Tell Us <span className="font-normal bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">About Yourself</span>
+          </h1>
+          <p className="text-xl text-gray-400 max-w-2xl mx-auto mb-8">
+            Help us personalize your insurance recommendations
+          </p>
+        </motion.div>
+
+        {/* Avatar Display */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="flex justify-center mb-6"
+        >
           <div className="flex items-center gap-4">
-            <motion.div 
+            <div 
               className="w-16 h-16 relative"
-              whileHover={{ scale: 1.1 }}
-              animate={showCelebration ? { rotate: [0, -10, 10, -10, 0] } : {}}
             >
               <svg viewBox="0 0 200 200" className="w-full h-full drop-shadow-lg">
                 {selectedGender === 'female' ? (
@@ -224,332 +270,284 @@ export default function QuickAssessment() {
                   </>
                 )}
               </svg>
-              {/* Level Badge */}
-              <motion.div 
-                className="absolute -bottom-1 -right-1 w-6 h-6 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center text-xs font-bold text-white shadow-lg"
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                whileHover={{ scale: 1.2 }}
-              >
-                {Math.floor(score / 50) + 1}
-              </motion.div>
-            </motion.div>
-            <div>
-              <div className="text-sm text-gray-400">Level {Math.floor(score / 50) + 1}</div>
-              <div className="text-xs text-gray-500">Profile Builder</div>
             </div>
-          </div>
-
-          {/* Score & Streak */}
-          <div className="flex gap-4">
-            <motion.div 
-              className="px-4 py-2 bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-full border border-blue-500/30 backdrop-blur-sm"
-              animate={showCelebration ? { scale: [1, 1.2, 1] } : {}}
-            >
-              <div className="text-center">
-                <div className="text-2xl font-bold text-blue-400">{score}</div>
-                <div className="text-xs text-gray-400">Points</div>
-              </div>
-            </motion.div>
-            {streak > 0 && (
-              <motion.div 
-                className="px-4 py-2 bg-gradient-to-r from-orange-600/20 to-red-600/20 rounded-full border border-orange-500/30 backdrop-blur-sm"
-                initial={{ scale: 0, rotate: -180 }}
-                animate={{ scale: 1, rotate: 0 }}
-              >
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-orange-400">{streak}🔥</div>
-                  <div className="text-xs text-gray-400">Streak</div>
-                </div>
-              </motion.div>
-            )}
           </div>
         </motion.div>
 
-        {/* Progress Bar with Categories */}
+        {/* Progress Bar */}
         <motion.div
           initial={{ opacity: 0, scaleX: 0 }}
           animate={{ opacity: 1, scaleX: 1 }}
           className="mb-8"
         >
-          <div className="flex items-center justify-between mb-2">
-            <div className="text-sm font-semibold text-white">
-              Question {currentStep + 1} of {totalSteps}
-            </div>
+          <div className="flex items-center justify-between mb-3">
             <div className="text-sm text-gray-400">
-              <span className="px-2 py-1 bg-zinc-800 rounded-full text-xs">
-                {currentQuestion.category}
-              </span>
+              Step {currentGroupIndex + 1} of {questionGroups.length}
+            </div>
+            <div className="text-sm text-gray-500">
+              {currentGroup.title}
             </div>
           </div>
-          <div className="relative w-full h-3 bg-zinc-900 rounded-full overflow-hidden">
+          <div className="relative w-full h-2 bg-zinc-900/50 rounded-full overflow-hidden backdrop-blur-xl border border-white/10">
             <motion.div
-              className="absolute inset-y-0 left-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full"
+              className="absolute inset-y-0 left-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"
               initial={{ width: 0 }}
               animate={{ width: `${progress}%` }}
               transition={{ duration: 0.5, ease: "easeOut" }}
             />
-            {/* Milestone Markers */}
-            {questions.map((_, i) => (
-              <div
-                key={i}
-                className={`absolute top-0 bottom-0 w-0.5 ${
-                  i < currentStep ? 'bg-white/50' : 'bg-zinc-700'
-                }`}
-                style={{ left: `${((i + 1) / totalSteps) * 100}%` }}
-              />
-            ))}
           </div>
         </motion.div>
 
-        {/* Question Card */}
+        {/* Question Group Card */}
         <AnimatePresence mode="wait">
           <motion.div
-            key={currentStep}
-            initial={{ opacity: 0, x: 100, rotateY: -90 }}
-            animate={{ opacity: 1, x: 0, rotateY: 0 }}
-            exit={{ opacity: 0, x: -100, rotateY: 90 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
-            className="glass-effect rounded-3xl p-8 border border-zinc-800/50 shadow-2xl backdrop-blur-xl"
+            key={currentGroupIndex}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            className="backdrop-blur-2xl bg-gradient-to-br from-white/[0.07] to-white/[0.02] border border-white/10 rounded-3xl p-8 shadow-2xl"
             style={{
-              background: 'linear-gradient(135deg, rgba(24, 24, 27, 0.8) 0%, rgba(9, 9, 11, 0.9) 100%)'
+              boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.37)'
             }}
           >
-            {/* Question Header */}
+            {/* Group Header */}
             <div className="flex items-start gap-6 mb-8">
               <motion.div 
-                className="text-6xl"
-                animate={{ 
-                  rotate: [0, -10, 10, -10, 0],
-                  scale: [1, 1.1, 1]
-                }}
-                transition={{ duration: 0.5 }}
+                className="text-5xl"
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ type: "spring", stiffness: 200 }}
               >
-                {currentQuestion.emoji}
+                {currentGroup.emoji}
               </motion.div>
               <div className="flex-1">
                 <motion.h2 
-                  className="text-3xl font-bold text-white mb-2"
+                  className="text-2xl font-light text-white mb-2"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2 }}
+                  transition={{ delay: 0.1 }}
                 >
-                  {currentQuestion.question}
+                  {currentGroup.title}
                 </motion.h2>
-                <motion.div 
-                  className="text-sm text-gray-400 flex items-center gap-2"
+                <motion.p 
+                  className="text-sm text-gray-400"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ delay: 0.3 }}
+                  transition={{ delay: 0.2 }}
                 >
-                  <span className="inline-block w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                  Earn {currentQuestion.points} points
-                </motion.div>
+                  {currentGroup.subtitle}
+                </motion.p>
               </div>
             </div>
 
-            {/* Answer Input */}
+            {/* Questions Grid */}
             <motion.div 
-              className="space-y-3 mb-6"
+              className="space-y-6 mb-6"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
+              transition={{ delay: 0.3 }}
             >
-              {currentQuestion.type === 'text' && (
-                <input
-                  type="text"
-                  value={answers[currentQuestion.id] || ''}
-                  onChange={(e) => handleAnswer(e.target.value)}
-                  placeholder={currentQuestion.placeholder}
-                  className="w-full px-6 py-4 bg-zinc-900/50 border-2 border-zinc-800 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-white text-lg placeholder-gray-500 transition-all"
-                  autoFocus
-                />
-              )}
+              {currentGroup.questions.map((question, qIndex) => (
+                <div key={question.id} className="space-y-3">
+                  {/* Question Label */}
+                  <label className="block">
+                    <div className="flex items-center gap-2 mb-3">
+                      <span className="text-2xl">{question.emoji}</span>
+                      <span className="text-lg text-white font-medium">
+                        {question.question}
+                      </span>
+                    </div>
 
-              {currentQuestion.type === 'slider' && (
-                <div className="space-y-4">
-                  <input
-                    type="range"
-                    min={currentQuestion.min}
-                    max={currentQuestion.max}
-                    value={answers[currentQuestion.id] || currentQuestion.min}
-                    onChange={(e) => handleAnswer(Number(e.target.value))}
-                    className="w-full h-3 bg-zinc-800 rounded-lg appearance-none cursor-pointer slider"
-                  />
-                  <div className="text-center">
-                    <span className="text-5xl font-bold text-gradient">
-                      {answers[currentQuestion.id] || currentQuestion.min}
-                    </span>
-                    <span className="text-2xl text-gray-400 ml-2">years old</span>
-                  </div>
-                </div>
-              )}
+                    {/* Input based on type */}
+                    {question.type === 'text' && (
+                      <input
+                        type="text"
+                        value={answers[question.id] || ''}
+                        onChange={(e) => handleAnswer(question.id, e.target.value)}
+                        placeholder={question.placeholder}
+                        className="w-full px-6 py-4 bg-white/5 border border-white/10 rounded-xl focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 text-white text-lg placeholder-gray-500 transition-all backdrop-blur-xl"
+                      />
+                    )}
 
-              {currentQuestion.type === 'radio' && currentQuestion.options?.map((option, index) => (
-                <motion.button
-                  key={option}
-                  onClick={() => handleAnswer(option)}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.5 + index * 0.1 }}
-                  whileHover={{ scale: 1.02, x: 10 }}
-                  whileTap={{ scale: 0.98 }}
-                  className={`w-full p-5 rounded-xl border-2 text-left transition-all duration-300 ${
-                    answers[currentQuestion.id] === option
-                      ? 'border-blue-500 bg-gradient-to-r from-blue-600/30 to-purple-600/30 shadow-lg shadow-blue-500/20'
-                      : 'border-zinc-800 bg-zinc-900/50 hover:border-zinc-700'
-                  }`}
-                >
-                  <div className="flex items-center justify-between">
-                    <span className="text-lg font-medium text-white">{option}</span>
-                    <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${
-                      answers[currentQuestion.id] === option
-                        ? 'border-blue-500 bg-blue-500'
-                        : 'border-zinc-600'
-                    }`}>
-                      {answers[currentQuestion.id] === option && (
-                        <motion.div 
-                          className="w-3 h-3 bg-white rounded-full"
-                          initial={{ scale: 0 }}
-                          animate={{ scale: 1 }}
+                    {question.type === 'slider' && (
+                      <div className="space-y-4">
+                        <input
+                          type="range"
+                          min={question.min}
+                          max={question.max}
+                          value={answers[question.id] || question.min}
+                          onChange={(e) => handleAnswer(question.id, Number(e.target.value))}
+                          className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer slider"
                         />
-                      )}
-                    </div>
-                  </div>
-                </motion.button>
-              ))}
-
-              {currentQuestion.type === 'multi-select' && currentQuestion.options?.map((option, index) => {
-                const selected = Array.isArray(answers[currentQuestion.id]) 
-                  ? answers[currentQuestion.id].includes(option)
-                  : false
-
-                return (
-                  <motion.button
-                    key={option}
-                    onClick={() => {
-                      const current = Array.isArray(answers[currentQuestion.id]) 
-                        ? answers[currentQuestion.id] 
-                        : []
-                      const updated = selected
-                        ? current.filter((o: string) => o !== option)
-                        : [...current, option]
-                      handleAnswer(updated)
-                    }}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.5 + index * 0.1 }}
-                    whileHover={{ scale: 1.02, x: 10 }}
-                    whileTap={{ scale: 0.98 }}
-                    className={`w-full p-5 rounded-xl border-2 text-left transition-all duration-300 ${
-                      selected
-                        ? 'border-blue-500 bg-gradient-to-r from-blue-600/30 to-purple-600/30 shadow-lg shadow-blue-500/20'
-                        : 'border-zinc-800 bg-zinc-900/50 hover:border-zinc-700'
-                    }`}
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="text-lg font-medium text-white">{option}</span>
-                      <div className={`w-6 h-6 rounded border-2 flex items-center justify-center transition-all ${
-                        selected
-                          ? 'border-blue-500 bg-blue-500'
-                          : 'border-zinc-600'
-                      }`}>
-                        {selected && (
-                          <motion.span 
-                            className="text-white text-sm font-bold"
-                            initial={{ scale: 0 }}
-                            animate={{ scale: 1 }}
-                          >
-                            ✓
-                          </motion.span>
-                        )}
+                        <div className="text-center">
+                          <span className="text-4xl font-light bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                            {answers[question.id] || question.min}
+                          </span>
+                          <span className="text-lg text-gray-400 ml-2">years old</span>
+                        </div>
                       </div>
-                    </div>
-                  </motion.button>
-                )
-              })}
-            </motion.div>
+                    )}
+                  </label>
 
-            {/* Error Message */}
-            <AnimatePresence>
-              {error && (
-                <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  className="mb-4 p-4 bg-red-950/30 border border-red-800/30 rounded-lg text-red-400 text-sm flex items-center gap-2"
-                >
-                  <span>⚠️</span>
-                  {error}
-                </motion.div>
-              )}
-            </AnimatePresence>
+                  {question.type === 'radio' && (
+                    <div className="space-y-3">
+                      {question.options?.map((option) => (
+                        <motion.button
+                          key={option}
+                          onClick={() => handleAnswer(question.id, option)}
+                          whileHover={{ scale: 1.01 }}
+                          whileTap={{ scale: 0.99 }}
+                          className={`w-full p-4 rounded-xl border text-left transition-all duration-300 backdrop-blur-xl ${
+                            answers[question.id] === option
+                              ? 'border-blue-500/50 bg-gradient-to-r from-blue-600/20 to-purple-600/20 shadow-lg shadow-blue-500/10'
+                              : 'border-white/10 bg-white/5 hover:border-white/20 hover:bg-white/10'
+                          }`}
+                        >
+                          <div className="flex items-center justify-between">
+                            <span className="text-base font-medium text-white">{option}</span>
+                            <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${
+                              answers[question.id] === option
+                                ? 'border-blue-500 bg-blue-500'
+                                : 'border-white/30'
+                            }`}>
+                              {answers[question.id] === option && (
+                                <motion.div 
+                                  className="w-3 h-3 bg-white rounded-full"
+                                  initial={{ scale: 0 }}
+                                  animate={{ scale: 1 }}
+                                />
+                              )}
+                            </div>
+                          </div>
+                        </motion.button>
+                      ))}
+                    </div>
+                  )}
+
+                  {question.type === 'multi-select' && (
+                    <div className="space-y-3">
+                      {question.options?.map((option) => {
+                        const selected = Array.isArray(answers[question.id]) 
+                          ? answers[question.id].includes(option)
+                          : false
+
+                        return (
+                          <motion.button
+                            key={option}
+                            onClick={() => {
+                              const current = Array.isArray(answers[question.id]) 
+                                ? answers[question.id] 
+                                : []
+                              const updated = selected
+                                ? current.filter((o: string) => o !== option)
+                                : [...current, option]
+                              handleAnswer(question.id, updated)
+                            }}
+                            whileHover={{ scale: 1.01 }}
+                            whileTap={{ scale: 0.99 }}
+                            className={`w-full p-4 rounded-xl border text-left transition-all duration-300 backdrop-blur-xl ${
+                              selected
+                                ? 'border-blue-500/50 bg-gradient-to-r from-blue-600/20 to-purple-600/20 shadow-lg shadow-blue-500/10'
+                                : 'border-white/10 bg-white/5 hover:border-white/20 hover:bg-white/10'
+                            }`}
+                          >
+                            <div className="flex items-center justify-between">
+                              <span className="text-base font-medium text-white">{option}</span>
+                              <div className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${
+                                selected
+                                  ? 'border-blue-500 bg-blue-500'
+                                  : 'border-white/30'
+                              }`}>
+                                {selected && (
+                                  <motion.span 
+                                    className="text-white text-sm font-bold"
+                                    initial={{ scale: 0 }}
+                                    animate={{ scale: 1 }}
+                                  >
+                                    ✓
+                                  </motion.span>
+                                )}
+                              </div>
+                            </div>
+                          </motion.button>
+                        )
+                      })}
+                    </div>
+                  )}
+
+                  {/* Error Message for this question */}
+                  <AnimatePresence>
+                    {errors[question.id] && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        className="p-3 bg-red-950/30 border border-red-800/30 rounded-lg text-red-400 text-sm flex items-center gap-2"
+                      >
+                        <span>⚠️</span>
+                        {errors[question.id]}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              ))}
+            </motion.div>
 
             {/* Navigation Buttons */}
             <div className="flex gap-4">
-              {currentStep > 0 && (
+              {currentGroupIndex > 0 && (
                 <motion.button
                   onClick={handleBack}
-                  whileHover={{ scale: 1.05, x: -5 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="px-6 py-3 bg-zinc-900 text-gray-300 rounded-xl border border-zinc-800 hover:border-zinc-700 transition-all font-medium flex items-center gap-2"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="px-6 py-3 bg-white/5 text-gray-300 rounded-xl border border-white/10 hover:border-white/20 hover:bg-white/10 transition-all backdrop-blur-xl flex items-center gap-2"
                 >
                   <span>←</span>
-                  Previous
+                  Back
                 </motion.button>
               )}
               
               <motion.button
                 onClick={handleNext}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                disabled={!validateAnswer(answers[currentQuestion.id])}
-                className="flex-1 px-6 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-bold text-lg hover:shadow-xl hover:shadow-blue-500/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="flex-1 px-6 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-medium text-lg hover:shadow-xl hover:shadow-blue-500/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
-                {currentStep === questions.length - 1 ? (
+                {currentGroupIndex === questionGroups.length - 1 ? (
                   <>
-                    Complete Assessment
-                    <span className="text-2xl">🎉</span>
+                    Complete
+                    <span>✓</span>
                   </>
                 ) : (
                   <>
-                    Next Question
+                    Continue
                     <span>→</span>
                   </>
                 )}
               </motion.button>
             </div>
 
-            {/* Hint */}
-            <motion.div 
-              className="mt-4 text-center text-xs text-gray-500"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1 }}
-            >
-              💡 Press Enter to continue
-            </motion.div>
           </motion.div>
         </AnimatePresence>
 
         {/* Question Dots */}
         <motion.div 
-          className="flex justify-center gap-2 mt-6"
+          className="flex justify-center gap-2 mt-8"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
+          transition={{ delay: 0.3 }}
         >
-          {questions.map((_, i) => (
+          {questionGroups.map((_, i) => (
             <motion.div
               key={i}
-              className={`h-2 rounded-full transition-all ${
-                i === currentStep 
+              className={`h-1.5 rounded-full transition-all ${
+                i === currentGroupIndex 
                   ? 'w-8 bg-gradient-to-r from-blue-500 to-purple-500' 
-                  : i < currentStep
-                  ? 'w-2 bg-green-500'
-                  : 'w-2 bg-zinc-800'
+                  : i < currentGroupIndex
+                  ? 'w-1.5 bg-blue-500/50'
+                  : 'w-1.5 bg-white/20'
               }`}
-              whileHover={{ scale: 1.2 }}
             />
           ))}
         </motion.div>

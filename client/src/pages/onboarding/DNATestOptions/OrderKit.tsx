@@ -42,8 +42,24 @@ export default function OrderKit() {
   }
 
   return (
-    <div className="min-h-screen bg-black py-12">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen py-12 relative overflow-hidden">
+      {/* Enhanced Background */}
+      <div className="fixed inset-0 -z-10">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0a0a0a] via-[#1a1a2e] to-[#0a0a0a]" />
+        <motion.div 
+          className="absolute top-0 -left-1/4 w-1/2 h-1/2 bg-purple-500/20 rounded-full blur-[120px]"
+          animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div 
+          className="absolute top-1/4 -right-1/4 w-1/2 h-1/2 bg-blue-500/20 rounded-full blur-[120px]"
+          animate={{ scale: [1.2, 1, 1.2], opacity: [0.4, 0.6, 0.4] }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:100px_100px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,black,transparent)]" />
+      </div>
+      
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Header */}
         <motion.div
@@ -51,9 +67,16 @@ export default function OrderKit() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-12"
         >
-          <div className="text-6xl mb-4">📦</div>
-          <h1 className="text-4xl font-bold mb-4">
-            <span className="text-gradient">Order Your DNA Kit</span>
+          <motion.div
+            initial={{ scale: 0, rotate: -180 }}
+            animate={{ scale: 1, rotate: 0 }}
+            transition={{ type: "spring", stiffness: 100 }}
+            className="text-6xl mb-4"
+          >
+            📦
+          </motion.div>
+          <h1 className="text-4xl md:text-5xl font-light mb-4">
+            Order Your <span className="font-normal bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">DNA Kit</span>
           </h1>
           <p className="text-xl text-gray-400 max-w-2xl mx-auto">
             We'll ship your kit within 24 hours
@@ -65,9 +88,10 @@ export default function OrderKit() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="card mb-8"
+          className="backdrop-blur-2xl bg-gradient-to-br from-white/[0.07] to-white/[0.02] border border-white/10 rounded-3xl p-8 mb-8"
+          style={{ boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.37)' }}
         >
-          <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
+          <h2 className="text-2xl font-light text-white mb-6 flex items-center gap-2">
             <span>📋</span> What's Included
           </h2>
           
@@ -95,9 +119,10 @@ export default function OrderKit() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
           onSubmit={handleSubmit(onSubmit)}
-          className="card space-y-6"
+          className="backdrop-blur-2xl bg-gradient-to-br from-white/[0.07] to-white/[0.02] border border-white/10 rounded-3xl p-8 space-y-6"
+          style={{ boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.37)' }}
         >
-          <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+          <h2 className="text-2xl font-light text-white flex items-center gap-2">
             <span>🏠</span> Shipping Address
           </h2>
 

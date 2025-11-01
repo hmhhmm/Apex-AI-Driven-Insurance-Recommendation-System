@@ -53,8 +53,24 @@ export default function AccountCreation() {
   }
 
   return (
-    <div className="min-h-screen bg-black py-12">
-      <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen py-12 relative overflow-hidden">
+      {/* Enhanced Background */}
+      <div className="fixed inset-0 -z-10">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0a0a0a] via-[#1a1a2e] to-[#0a0a0a]" />
+        <motion.div 
+          className="absolute top-0 -left-1/4 w-1/2 h-1/2 bg-purple-500/20 rounded-full blur-[120px]"
+          animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div 
+          className="absolute top-1/4 -right-1/4 w-1/2 h-1/2 bg-blue-500/20 rounded-full blur-[120px]"
+          animate={{ scale: [1.2, 1, 1.2], opacity: [0.4, 0.6, 0.4] }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:100px_100px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,black,transparent)]" />
+      </div>
+      
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Header */}
         <motion.div
@@ -62,13 +78,18 @@ export default function AccountCreation() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-12"
         >
-          <div className="inline-block mb-4">
-            <span className="px-4 py-2 bg-blue-950/50 text-blue-400 rounded-full text-sm font-semibold border border-blue-800/30">
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ type: "spring", stiffness: 100, delay: 0.2 }}
+            className="inline-block mb-6"
+          >
+            <div className="px-4 py-2 bg-blue-500/10 text-blue-400 rounded-full text-sm font-semibold border border-blue-500/20 backdrop-blur-xl">
               Step 2 of 4
-            </span>
-          </div>
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            <span className="text-gradient">Create Your Account</span>
+            </div>
+          </motion.div>
+          <h1 className="text-4xl md:text-6xl font-light mb-4">
+            Create Your <span className="font-normal bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Account</span>
           </h1>
           <p className="text-xl text-gray-400 max-w-2xl mx-auto">
             Secure your personalized insurance journey with APEX
@@ -86,7 +107,8 @@ export default function AccountCreation() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
           onSubmit={handleSubmit(onSubmit)}
-          className="card space-y-6"
+          className="backdrop-blur-2xl bg-gradient-to-br from-white/[0.07] to-white/[0.02] border border-white/10 rounded-3xl p-8 space-y-6"
+          style={{ boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.37)' }}
         >
           {/* Full Name */}
           <div>
