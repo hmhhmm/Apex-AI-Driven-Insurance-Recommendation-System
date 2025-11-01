@@ -1,29 +1,6 @@
 import { motion } from 'framer-motion'
-import { useNavigate } from 'react-router-dom'
-import { useState } from 'react'
-import { useAuthStore } from '../store/authStore'
 
 const Landing = () => {
-  const navigate = useNavigate()
-  const { signup } = useAuthStore()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [name, setName] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
-
-  const handleSignUp = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
-    
-    try {
-      await signup(email, password, name)
-      navigate('/dashboard')
-    } catch (error) {
-      alert('Signup failed. Please try again.')
-    } finally {
-      setIsLoading(false)
-    }
-  }
 
   return (
     <div className="overflow-x-hidden bg-black">
@@ -55,14 +32,12 @@ const Landing = () => {
               <span className="text-gray-500">One test. Five personalized plans. Unlimited savings.</span>
             </p>
 
-            <button
-              onClick={() => {
-                document.getElementById('signup')?.scrollIntoView({ behavior: 'smooth' })
-              }}
-              className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-lg font-semibold rounded-full hover:shadow-2xl hover:shadow-blue-500/50 transform hover:scale-105 transition-all duration-300"
+            <a
+              href="/dashboard"
+              className="inline-block px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-lg font-semibold rounded-full hover:shadow-2xl hover:shadow-blue-500/50 transform hover:scale-105 transition-all duration-300"
             >
               Unlock Your Protection →
-            </button>
+            </a>
 
             <div className="mt-12 flex flex-wrap justify-center gap-8 text-sm">
               <div className="flex items-center gap-2 bg-zinc-950/50 backdrop-blur-sm px-4 py-3 rounded-xl border border-zinc-800/50">
@@ -190,77 +165,6 @@ const Landing = () => {
               </ul>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Sign Up Section */}
-      <section id="signup" className="min-h-screen py-20 bg-gradient-to-br from-blue-950 via-purple-950 to-black flex items-center relative overflow-hidden">
-        <div className="absolute inset-0 grid-bg opacity-20"></div>
-        <div className="max-w-md mx-auto px-4 w-full relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="bg-zinc-950 border border-zinc-800/50 rounded-2xl shadow-2xl p-8"
-          >
-            <div className="text-center mb-8">
-              <h2 className="text-4xl font-bold mb-2 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                Start Your Journey
-              </h2>
-              <p className="text-gray-400">Create your account in seconds</p>
-            </div>
-
-            <form onSubmit={handleSignUp} className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Full Name</label>
-                <input
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  required
-                  className="w-full px-4 py-3 bg-zinc-900 border border-zinc-800 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white placeholder-gray-500"
-                  placeholder="John Doe"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Email</label>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  className="w-full px-4 py-3 bg-zinc-900 border border-zinc-800 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white placeholder-gray-500"
-                  placeholder="john@example.com"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Password</label>
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  minLength={6}
-                  className="w-full px-4 py-3 bg-zinc-900 border border-zinc-800 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white placeholder-gray-500"
-                  placeholder="••••••••"
-                />
-              </div>
-
-              <button
-                type="submit"
-                disabled={isLoading}
-                className="w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-lg hover:shadow-xl hover:shadow-blue-500/50 transform hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {isLoading ? 'Creating Account...' : 'Get Started Free →'}
-              </button>
-            </form>
-
-            <p className="text-center text-sm text-gray-500 mt-6">
-              By signing up, you agree to our Terms & Privacy Policy
-            </p>
-          </motion.div>
         </div>
       </section>
     </div>
