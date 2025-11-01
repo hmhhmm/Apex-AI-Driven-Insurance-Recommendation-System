@@ -112,7 +112,8 @@ export default function AvatarSelection() {
   }
 
   const handleContinue = () => {
-    navigate('/onboarding/quick-assessment')
+    // Skip the long quick assessment — go straight to account creation
+    navigate('/onboarding/account')
   }
 
   return (

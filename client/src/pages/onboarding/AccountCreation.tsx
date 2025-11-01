@@ -51,7 +51,8 @@ export default function AccountCreation() {
 
   const handleBack = () => {
     goToPreviousStep()
-    navigate('/onboarding/quick-assessment')
+    // Return to avatar selection instead of the removed quick assessment
+    navigate('/onboarding/avatar-selection')
   }
 
   return (

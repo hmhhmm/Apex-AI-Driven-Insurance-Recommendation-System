@@ -93,7 +93,7 @@ const Navigation = () => {
               </div>
             ) : (
               <Link
-                to="/onboarding/quick-assessment"
+                to="/onboarding/avatar-selection"
                 className="px-6 py-2 bg-gradient-to-r from-purple-600 to-purple-800 text-white rounded-lg hover:shadow-lg hover:shadow-purple-500/50 transition transform hover:scale-105"
               >
                 Get Started
