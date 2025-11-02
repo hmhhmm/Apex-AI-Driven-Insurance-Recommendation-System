@@ -1,6 +1,7 @@
 # **APEX - DNA-Powered Insurance Marketplace**
 
 *Revolutionizing insurance with personalized, data-driven coverage recommendations*
+*APEX only makes money when the user saves money"
 
 ---
 
@@ -26,7 +27,7 @@
 **APEX uses DNA analysis + AI to revolutionize insurance:**
 
 #### 🧬 Analyze
-- DNA test (order kit for RM 49 or upload existing results)
+- DNA test (order kit for RM 49 and there will be a cashback for the user after they purchase insurances with us.)
 - Triple AI analysis of 750,000+ genetic markers
 - Comprehensive risk profiling
 
@@ -36,11 +37,11 @@
 - Transparent DNA-based pricing explanation
 
 #### 💼 Manage
-- One platform for all insurance types (Health, Auto, Life, Travel, Sports)
+- One platform for all insurance types (Health, Car, Life, Travel)
 - Centralized policy management dashboard
 - AI assistant for 24/7 guidance
 
-**Result:** Save average **RM 3,200/year** with coverage tailored to YOUR DNA.
+**Result:** Save average **RM 1200/year** with coverage tailored to YOUR DNA.
 
 ---
 
@@ -53,7 +54,7 @@
 ## ⚙️ Tech Stack
 
 ### Frontend
-- **React 18** + **TypeScript** - Type-safe component architecture
+- **React** + **TypeScript** - Type-safe component architecture
 - **Vite** - Lightning-fast build tool
 - **Tailwind CSS** - Utility-first styling
 - **Framer Motion** - Smooth animations
@@ -63,14 +64,14 @@
 - **Spline** - 3D avatar and interactive visualizations
 
 ### Backend & AI
-- **Google Gemini AI** - Advanced language model for personalized recommendations
+- **Google Gemini AI API** - Advanced language model for personalized recommendations
 - **Agentic AI System** - Triple AI engine:
   - DNA Analysis Agent (genetic risk profiling)
   - Cognitive Risk Agent (behavioral analysis)
   - Quantum Prediction Agent (future scenario simulation)
 
 ### Integrations
-- **Insurance Partner APIs** - Malaysian insurer integrations
+- **Insurance Partnerships** - Malaysian insurer integrations
 - **Lab Partnerships** - LabCorp, Quest Diagnostics
 - **Secure Data Storage** - Encrypted user data protection
 
