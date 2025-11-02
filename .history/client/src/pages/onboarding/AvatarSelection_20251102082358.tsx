@@ -106,16 +106,7 @@ export default function AvatarSelection() {
   const canProceedFromCar = () => {
     if (formData.hasCar === 'no') return true
     if (formData.hasCar === 'yes') {
-      // Must have insurance status selected
-      if (!formData.hasCarInsurance) return false
-      
-      // If they have insurance, they can proceed
-      if (formData.hasCarInsurance === 'yes') return true
-      
-      // If they don't have insurance, need car plate and model
-      if (formData.hasCarInsurance === 'no') {
-        return formData.carPlate && formData.carModel
-      }
+      return formData.hasCarInsurance && formData.carPlate && formData.carModel
     }
     return false
   }
@@ -178,6 +169,21 @@ export default function AvatarSelection() {
           }
         `
       }} />
+
+      {/* Retaking Questionnaire Banner */}
+      {hasCompletedDNATest && (
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50 max-w-2xl w-full mx-4"
+        >
+          <div className="bg-blue-600/90 backdrop-blur-sm text-white px-6 py-3 rounded-lg shadow-lg border border-blue-400/30">
+            <p className="text-sm font-medium text-center">
+              ℹ️ You're updating your questionnaire. We'll use your existing DNA results to generate new personalized plans.
+            </p>
+          </div>
+        </motion.div>
+      )}
 
       {/* Landing-style Background (particles + animated orbs + grid) */}
       <div className="fixed inset-0 -z-10">
@@ -264,7 +270,7 @@ export default function AvatarSelection() {
                       >
                         <Spline
                           scene="https://prod.spline.design/PuH8zLiZwiK61OXD/scene.splinecode"
-                          className="w-full h-full"
+                          className="w-full h-full pointer-events-none"
                         />
                       </div>
                     </div>
@@ -292,7 +298,7 @@ export default function AvatarSelection() {
                     <div className="absolute top-0 left-0 right-0" style={{ height: '320px', clipPath: 'inset(0 0 20% 0)', transform: selectedGender === 'male' ? 'scale(1.1)' : undefined, transformOrigin: 'center center' }}>
                       <Spline
                         scene={selectedGender === 'female' ? 'https://prod.spline.design/xWHBgK2bOBQRvsmd/scene.splinecode' : 'https://prod.spline.design/PuH8zLiZwiK61OXD/scene.splinecode'}
-                        className="w-full h-full"
+                        className="w-full h-full pointer-events-none"
                       />
                     </div>
                 </div>
@@ -334,8 +340,8 @@ export default function AvatarSelection() {
                         </div>
                       </div>
 
-                      {/* Personal Information */}
-                      {questionOrder[currentQuestion] === 'personal' && (
+                      {/* Question 0: Personal Information */}
+                      {currentQuestion === 0 && (
                         <motion.div 
                           className="space-y-6"
                           initial={{ opacity: 0, y: 20 }}
@@ -453,7 +459,7 @@ export default function AvatarSelection() {
                       )}
 
                       {/* Health Assessment */}
-                      {questionOrder[currentQuestion] === 'health' && (
+                      {formData.insuranceTypes.includes('Health') && currentQuestion === (formData.insuranceTypes.indexOf('Health') < formData.insuranceTypes.indexOf('Life') || !formData.insuranceTypes.includes('Life') ? 1 : formData.insuranceTypes.includes('Life') ? 2 : 1) && (
                         <motion.div 
                           className="space-y-6"
                           initial={{ opacity: 0, y: 20 }}
@@ -622,38 +628,33 @@ export default function AvatarSelection() {
                                 </div>
                               </div>
 
-                              {/* Only ask for car details if they DON'T have car insurance */}
-                              {formData.hasCarInsurance === 'no' && (
-                                <>
-                                  {/* Car Plate */}
-                                  <div className="card p-6">
-                                    <label className="block text-white font-semibold mb-3">
-                                      Car Plate Number <span className="text-red-400">*</span>
-                                    </label>
-                                    <input
-                                      type="text"
-                                      value={formData.carPlate}
-                                      onChange={(e) => updateFormData('carPlate', e.target.value.toUpperCase())}
-                                      placeholder="e.g., ABC 1234"
-                                      className="w-full px-4 py-3 bg-zinc-900 text-white rounded-lg border border-zinc-700 focus:border-blue-500 focus:outline-none transition-all"
-                                    />
-                                  </div>
+                              {/* Car Plate */}
+                              <div className="card p-6">
+                                <label className="block text-white font-semibold mb-3">
+                                  Car Plate Number <span className="text-red-400">*</span>
+                                </label>
+                                <input
+                                  type="text"
+                                  value={formData.carPlate}
+                                  onChange={(e) => updateFormData('carPlate', e.target.value.toUpperCase())}
+                                  placeholder="e.g., ABC 1234"
+                                  className="w-full px-4 py-3 bg-zinc-900 text-white rounded-lg border border-zinc-700 focus:border-blue-500 focus:outline-none transition-all"
+                                />
+                              </div>
 
-                                  {/* Car Model */}
-                                  <div className="card p-6">
-                                    <label className="block text-white font-semibold mb-3">
-                                      Car Model <span className="text-red-400">*</span>
-                                    </label>
-                                    <input
-                                      type="text"
-                                      value={formData.carModel}
-                                      onChange={(e) => updateFormData('carModel', e.target.value)}
-                                      placeholder="e.g., Honda Civic 2020"
-                                      className="w-full px-4 py-3 bg-zinc-900 text-white rounded-lg border border-zinc-700 focus:border-blue-500 focus:outline-none transition-all"
-                                    />
-                                  </div>
-                                </>
-                              )}
+                              {/* Car Model */}
+                              <div className="card p-6">
+                                <label className="block text-white font-semibold mb-3">
+                                  Car Model <span className="text-red-400">*</span>
+                                </label>
+                                <input
+                                  type="text"
+                                  value={formData.carModel}
+                                  onChange={(e) => updateFormData('carModel', e.target.value)}
+                                  placeholder="e.g., Honda Civic 2020"
+                                  className="w-full px-4 py-3 bg-zinc-900 text-white rounded-lg border border-zinc-700 focus:border-blue-500 focus:outline-none transition-all"
+                                />
+                              </div>
                             </>
                           )}
                         </motion.div>
@@ -677,50 +678,31 @@ export default function AvatarSelection() {
 
                           {/* Travel Frequency */}
                           <div className="card p-6">
-                            <label className="block text-white font-semibold mb-3 flex items-center gap-2">
-                              ✈️ How many times do you travel internationally per year? <span className="text-red-400">*</span>
+                            <label className="block text-white font-semibold mb-3">
+                              How frequently do you travel internationally? <span className="text-red-400">*</span>
                             </label>
                             <div className="space-y-2">
                               {[
-                                { label: '0-1 times per year', value: '0-1' },
-                                { label: '2 times per year', value: '2' },
-                                { label: '3-5 times per year', value: '3-5' },
-                                { label: '6+ times per year', value: '6+' }
+                                'Multiple times a year',
+                                '1-2 times a year',
+                                'Rarely',
+                                'Never',
+                                'Planning a trip soon'
                               ].map((option) => (
                                 <button
-                                  key={option.value}
-                                  onClick={() => updateFormData('travelFrequency', option.value)}
+                                  key={option}
+                                  onClick={() => updateFormData('travelFrequency', option)}
                                   className={`w-full px-4 py-3 rounded-lg transition-all duration-200 text-left ${
-                                    formData.travelFrequency === option.value
+                                    formData.travelFrequency === option
                                       ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'
                                       : 'bg-zinc-800 text-white hover:bg-zinc-700'
                                   }`}
                                 >
-                                  {option.label}
+                                  {option}
                                 </button>
                               ))}
                             </div>
                           </div>
-
-                          {/* Recommendation Message for Frequent Travelers */}
-                          {(formData.travelFrequency === '3-5' || formData.travelFrequency === '6+') && (
-                            <motion.div
-                              initial={{ opacity: 0, y: 10 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              className="card p-6 bg-gradient-to-r from-blue-600/20 to-purple-600/20 border-2 border-blue-500/30"
-                            >
-                              <div className="flex items-start gap-3">
-                                <div className="text-2xl">💡</div>
-                                <div>
-                                  <h4 className="text-white font-semibold mb-2">Frequent Traveler Recommendation</h4>
-                                  <p className="text-gray-300 text-sm">
-                                    Based on your travel frequency, we highly recommend adding travel insurance to your plan. 
-                                    Our recommendations will include comprehensive travel coverage options tailored to frequent travelers.
-                                  </p>
-                                </div>
-                              </div>
-                            </motion.div>
-                          )}
                         </motion.div>
                       )}
 

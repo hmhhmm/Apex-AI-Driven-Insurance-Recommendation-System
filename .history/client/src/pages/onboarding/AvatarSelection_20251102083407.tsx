@@ -106,16 +106,7 @@ export default function AvatarSelection() {
   const canProceedFromCar = () => {
     if (formData.hasCar === 'no') return true
     if (formData.hasCar === 'yes') {
-      // Must have insurance status selected
-      if (!formData.hasCarInsurance) return false
-      
-      // If they have insurance, they can proceed
-      if (formData.hasCarInsurance === 'yes') return true
-      
-      // If they don't have insurance, need car plate and model
-      if (formData.hasCarInsurance === 'no') {
-        return formData.carPlate && formData.carModel
-      }
+      return formData.hasCarInsurance && formData.carPlate && formData.carModel
     }
     return false
   }
@@ -334,8 +325,8 @@ export default function AvatarSelection() {
                         </div>
                       </div>
 
-                      {/* Personal Information */}
-                      {questionOrder[currentQuestion] === 'personal' && (
+                      {/* Question 0: Personal Information */}
+                      {currentQuestion === 0 && (
                         <motion.div 
                           className="space-y-6"
                           initial={{ opacity: 0, y: 20 }}
@@ -453,7 +444,7 @@ export default function AvatarSelection() {
                       )}
 
                       {/* Health Assessment */}
-                      {questionOrder[currentQuestion] === 'health' && (
+                      {formData.insuranceTypes.includes('Health') && currentQuestion === (formData.insuranceTypes.indexOf('Health') < formData.insuranceTypes.indexOf('Life') || !formData.insuranceTypes.includes('Life') ? 1 : formData.insuranceTypes.includes('Life') ? 2 : 1) && (
                         <motion.div 
                           className="space-y-6"
                           initial={{ opacity: 0, y: 20 }}
@@ -677,50 +668,31 @@ export default function AvatarSelection() {
 
                           {/* Travel Frequency */}
                           <div className="card p-6">
-                            <label className="block text-white font-semibold mb-3 flex items-center gap-2">
-                              ✈️ How many times do you travel internationally per year? <span className="text-red-400">*</span>
+                            <label className="block text-white font-semibold mb-3">
+                              How frequently do you travel internationally? <span className="text-red-400">*</span>
                             </label>
                             <div className="space-y-2">
                               {[
-                                { label: '0-1 times per year', value: '0-1' },
-                                { label: '2 times per year', value: '2' },
-                                { label: '3-5 times per year', value: '3-5' },
-                                { label: '6+ times per year', value: '6+' }
+                                'Multiple times a year',
+                                '1-2 times a year',
+                                'Rarely',
+                                'Never',
+                                'Planning a trip soon'
                               ].map((option) => (
                                 <button
-                                  key={option.value}
-                                  onClick={() => updateFormData('travelFrequency', option.value)}
+                                  key={option}
+                                  onClick={() => updateFormData('travelFrequency', option)}
                                   className={`w-full px-4 py-3 rounded-lg transition-all duration-200 text-left ${
-                                    formData.travelFrequency === option.value
+                                    formData.travelFrequency === option
                                       ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'
                                       : 'bg-zinc-800 text-white hover:bg-zinc-700'
                                   }`}
                                 >
-                                  {option.label}
+                                  {option}
                                 </button>
                               ))}
                             </div>
                           </div>
-
-                          {/* Recommendation Message for Frequent Travelers */}
-                          {(formData.travelFrequency === '3-5' || formData.travelFrequency === '6+') && (
-                            <motion.div
-                              initial={{ opacity: 0, y: 10 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              className="card p-6 bg-gradient-to-r from-blue-600/20 to-purple-600/20 border-2 border-blue-500/30"
-                            >
-                              <div className="flex items-start gap-3">
-                                <div className="text-2xl">💡</div>
-                                <div>
-                                  <h4 className="text-white font-semibold mb-2">Frequent Traveler Recommendation</h4>
-                                  <p className="text-gray-300 text-sm">
-                                    Based on your travel frequency, we highly recommend adding travel insurance to your plan. 
-                                    Our recommendations will include comprehensive travel coverage options tailored to frequent travelers.
-                                  </p>
-                                </div>
-                              </div>
-                            </motion.div>
-                          )}
                         </motion.div>
                       )}
 

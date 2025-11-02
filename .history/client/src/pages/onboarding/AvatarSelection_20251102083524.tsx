@@ -334,8 +334,8 @@ export default function AvatarSelection() {
                         </div>
                       </div>
 
-                      {/* Personal Information */}
-                      {questionOrder[currentQuestion] === 'personal' && (
+                      {/* Question 0: Personal Information */}
+                      {currentQuestion === 0 && (
                         <motion.div 
                           className="space-y-6"
                           initial={{ opacity: 0, y: 20 }}
@@ -453,7 +453,7 @@ export default function AvatarSelection() {
                       )}
 
                       {/* Health Assessment */}
-                      {questionOrder[currentQuestion] === 'health' && (
+                      {formData.insuranceTypes.includes('Health') && currentQuestion === (formData.insuranceTypes.indexOf('Health') < formData.insuranceTypes.indexOf('Life') || !formData.insuranceTypes.includes('Life') ? 1 : formData.insuranceTypes.includes('Life') ? 2 : 1) && (
                         <motion.div 
                           className="space-y-6"
                           initial={{ opacity: 0, y: 20 }}

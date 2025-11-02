@@ -106,16 +106,7 @@ export default function AvatarSelection() {
   const canProceedFromCar = () => {
     if (formData.hasCar === 'no') return true
     if (formData.hasCar === 'yes') {
-      // Must have insurance status selected
-      if (!formData.hasCarInsurance) return false
-      
-      // If they have insurance, they can proceed
-      if (formData.hasCarInsurance === 'yes') return true
-      
-      // If they don't have insurance, need car plate and model
-      if (formData.hasCarInsurance === 'no') {
-        return formData.carPlate && formData.carModel
-      }
+      return formData.hasCarInsurance && formData.carPlate && formData.carModel
     }
     return false
   }
@@ -334,8 +325,8 @@ export default function AvatarSelection() {
                         </div>
                       </div>
 
-                      {/* Personal Information */}
-                      {questionOrder[currentQuestion] === 'personal' && (
+                      {/* Question 0: Personal Information */}
+                      {currentQuestion === 0 && (
                         <motion.div 
                           className="space-y-6"
                           initial={{ opacity: 0, y: 20 }}
@@ -453,7 +444,7 @@ export default function AvatarSelection() {
                       )}
 
                       {/* Health Assessment */}
-                      {questionOrder[currentQuestion] === 'health' && (
+                      {formData.insuranceTypes.includes('Health') && currentQuestion === (formData.insuranceTypes.indexOf('Health') < formData.insuranceTypes.indexOf('Life') || !formData.insuranceTypes.includes('Life') ? 1 : formData.insuranceTypes.includes('Life') ? 2 : 1) && (
                         <motion.div 
                           className="space-y-6"
                           initial={{ opacity: 0, y: 20 }}

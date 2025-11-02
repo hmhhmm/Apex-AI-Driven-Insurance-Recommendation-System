@@ -334,8 +334,8 @@ export default function AvatarSelection() {
                         </div>
                       </div>
 
-                      {/* Personal Information */}
-                      {questionOrder[currentQuestion] === 'personal' && (
+                      {/* Question 0: Personal Information */}
+                      {currentQuestion === 0 && (
                         <motion.div 
                           className="space-y-6"
                           initial={{ opacity: 0, y: 20 }}
