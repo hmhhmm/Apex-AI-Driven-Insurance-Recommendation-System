@@ -1,7 +1,8 @@
 # **APEX - DNA-Powered Insurance Marketplace**
 
 *Revolutionizing insurance with personalized, data-driven coverage recommendations*
-*APEX only makes money when the user saves money"
+
+**APEX only makes money when the user saves money"**
 
 ---
 
@@ -439,7 +440,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 📞 Contact & Support
 
 - **GitHub:** [https://github.com/hmhhmm/Apex-AI-Driven-Insurance-Recommendation-System](https://github.com/hmhhmm/Apex-AI-Driven-Insurance-Recommendation-System)
-- **Team Email:** teamgunners@apex-insurance.com
+- **Team Email:** hiapmenglau@gmail.com
+- **Presentation slides:** [https://www.canva.com/design/DAG3b8Qs2cw/oZblpmtq3wYAWOy9HvppEQ/edit?]utm_content=DAG3b8Qs2cw&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
 
 ---
 
