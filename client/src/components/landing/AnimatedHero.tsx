@@ -14,7 +14,7 @@ const AnimatedHero = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
+            transition={{ duration: 0.3, delay: 0.05 }}
             className="mb-8"
           >
             <span className="text-sm text-gray-400 tracking-wider uppercase">
@@ -27,7 +27,7 @@ const AnimatedHero = () => {
             <motion.h1
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
+              transition={{ duration: 0.4, delay: 0.15 }}
               className="text-5xl md:text-7xl lg:text-8xl font-light mb-4 leading-tight"
             >
               <span className="text-white font-light">Insurance Made </span>
@@ -40,7 +40,7 @@ const AnimatedHero = () => {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.8 }}
+            transition={{ duration: 0.4, delay: 0.35 }}
             className="max-w-2xl mx-auto mb-12"
           >
             <p className="text-base md:text-lg text-gray-400">
@@ -52,7 +52,7 @@ const AnimatedHero = () => {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1.2 }}
+            transition={{ duration: 0.4, delay: 0.5 }}
             className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-20"
           >
             <Link to="/onboarding/avatar-selection">
@@ -127,7 +127,7 @@ const AnimatedHero = () => {
         className="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-center"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 2.5, duration: 1 }}
+        transition={{ delay: 1, duration: 0.5 }}
       >
         <motion.div
           animate={{ y: [0, 10, 0] }}
