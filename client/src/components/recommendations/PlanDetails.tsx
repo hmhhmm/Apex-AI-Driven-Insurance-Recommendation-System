@@ -41,7 +41,7 @@ export default function PlanDetails({ recommendation, isOpen, onClose }: PlanDet
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[95vw] md:w-full md:max-w-5xl max-h-[90vh] z-50 overflow-hidden flex flex-col rounded-3xl"
+            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[85vw] max-w-3xl max-h-[80vh] z-50 overflow-hidden flex flex-col rounded-3xl shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Enhanced Background - Same as Landing Page */}
