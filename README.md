@@ -42,7 +42,7 @@
 - Centralized policy management dashboard
 - AI assistant for 24/7 guidance
 
-**Result:** Save average **RM 1200/year** with coverage tailored to YOUR DNA.
+**Result:** Save average **RM 3200/year** with coverage tailored to YOUR DNA.
 
 ---
 
