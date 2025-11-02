@@ -7,7 +7,7 @@ import RecommendationHeader from '../components/recommendations/RecommendationHe
 import RecommendationCard from '../components/recommendations/RecommendationCard';
 import LoadingState from '../components/recommendations/LoadingState';
 import ParticleBackground from '../components/landing/ParticleBackground';
-import { AlertCircle, RefreshCw, TrendingUp, Sparkles, X, ShoppingCart } from 'lucide-react';
+import { AlertCircle, RefreshCw, TrendingUp, Sparkles, X, ShoppingCart, Bot, AlertTriangle, Lightbulb } from 'lucide-react';
 import { useMemo } from 'react';
 import { INSURANCE_PLANS } from '../data/insurancePlans';
 import { useRecommendationsStore } from '../store/recommendationsStore';
@@ -300,7 +300,7 @@ export default function Purchase() {
           >
             <div className="flex items-start gap-3 mb-4">
               <div className="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center flex-shrink-0">
-                <span className="text-xl">🤖</span>
+                <Bot className="w-5 h-5 text-purple-400" />
               </div>
               <div>
                 <h3 className="text-lg font-semibold text-white mb-1">AI Analysis</h3>
@@ -312,7 +312,7 @@ export default function Purchase() {
               {aiInsights.riskFactors?.length > 0 && (
                 <div className="bg-white/5 rounded-lg p-4">
                   <h4 className="text-sm font-medium text-white mb-2 flex items-center gap-2">
-                    <span>⚠️</span>
+                    <AlertTriangle className="w-4 h-4 text-amber-400" />
                     Key Risk Factors
                   </h4>
                   <ul className="space-y-1">
@@ -326,7 +326,7 @@ export default function Purchase() {
               {aiInsights.savingsTips?.length > 0 && (
                 <div className="bg-white/5 rounded-lg p-4">
                   <h4 className="text-sm font-medium text-white mb-2 flex items-center gap-2">
-                    <span>💡</span>
+                    <Lightbulb className="w-4 h-4 text-yellow-400" />
                     Money-Saving Tips
                   </h4>
                   <ul className="space-y-1">

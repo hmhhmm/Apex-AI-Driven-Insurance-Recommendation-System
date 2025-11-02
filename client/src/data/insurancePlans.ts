@@ -174,6 +174,112 @@ export const INSURANCE_PLANS: InsurancePlan[] = [
       high: 1.20
     }
   },
+  {
+    id: "health-007",
+    provider: "Tokio Marine",
+    name: "HealthFirst Essentials",
+    type: "Health",
+    basePrice: 175,
+    currency: "RM",
+    coverage: "Budget-friendly medical protection for young professionals",
+    features: [
+      "RM 150,000 annual limit",
+      "Hospital room & board",
+      "Surgical coverage",
+      "Outpatient benefits",
+      "Emergency treatment",
+      "Prescription drug coverage"
+    ],
+    targetAgeRange: [21, 45],
+    targetRiskProfile: [15, 45],
+    idealLifestyle: ["Active", "Moderate"],
+    dnaFactors: [],
+    riskMultipliers: {
+      low: 0.90,
+      medium: 1.0,
+      high: 1.10
+    }
+  },
+  {
+    id: "health-008",
+    provider: "MSIG Malaysia",
+    name: "MediPlus Standard",
+    type: "Health",
+    basePrice: 325,
+    currency: "RM",
+    coverage: "Standard comprehensive medical coverage with wellness benefits",
+    features: [
+      "RM 300,000 annual limit",
+      "Private hospital coverage",
+      "Surgical procedures",
+      "Cancer treatment",
+      "Pre & post hospitalization",
+      "Annual health screening",
+      "Wellness rewards"
+    ],
+    targetAgeRange: [25, 60],
+    targetRiskProfile: [35, 70],
+    idealLifestyle: ["Moderate", "Sedentary"],
+    dnaFactors: ["cardiovascularRisk", "cancerRisk"],
+    riskMultipliers: {
+      low: 0.87,
+      medium: 1.0,
+      high: 1.13
+    }
+  },
+  {
+    id: "health-009",
+    provider: "Etiqa Insurance",
+    name: "SecureHealth Plus",
+    type: "Health",
+    basePrice: 185,
+    currency: "RM",
+    coverage: "Affordable medical protection with essential benefits",
+    features: [
+      "RM 180,000 annual limit",
+      "Hospital room coverage",
+      "Surgery & procedures",
+      "ICU benefits",
+      "Ambulance services",
+      "Day surgery coverage"
+    ],
+    targetAgeRange: [18, 55],
+    targetRiskProfile: [20, 55],
+    idealLifestyle: ["Active", "Moderate"],
+    dnaFactors: [],
+    riskMultipliers: {
+      low: 0.89,
+      medium: 1.0,
+      high: 1.11
+    }
+  },
+  {
+    id: "health-010",
+    provider: "Hong Leong Assurance",
+    name: "HealthGuard Premium",
+    type: "Health",
+    basePrice: 455,
+    currency: "RM",
+    coverage: "Premium health coverage with extensive medical benefits",
+    features: [
+      "Unlimited annual limit",
+      "International coverage",
+      "Advanced medical procedures",
+      "Cancer & cardiac care",
+      "Mental health support",
+      "Alternative medicine",
+      "Wellness programs"
+    ],
+    targetAgeRange: [28, 65],
+    targetRiskProfile: [55, 90],
+    idealLifestyle: ["Active", "Moderate", "Sedentary"],
+    dnaFactors: ["cardiovascularRisk", "diabetesRisk", "cancerRisk"],
+    riskMultipliers: {
+      low: 0.84,
+      medium: 1.0,
+      high: 1.16
+    }
+  },
 
   // ==================== AUTO INSURANCE ====================
   {
@@ -308,6 +414,84 @@ export const INSURANCE_PLANS: InsurancePlan[] = [
       low: 0.70,
       medium: 0.90,
       high: 1.10
+    }
+  },
+  {
+    id: "auto-006",
+    provider: "RHB Insurance",
+    name: "AutoProtect Classic",
+    type: "Auto",
+    basePrice: 225,
+    currency: "RM",
+    coverage: "Comprehensive auto protection with roadside assistance",
+    features: [
+      "Comprehensive coverage",
+      "Third party liability",
+      "Windscreen protection",
+      "24/7 roadside assistance",
+      "Towing services",
+      "Flood & fire coverage"
+    ],
+    targetAgeRange: [21, 70],
+    targetRiskProfile: [25, 65],
+    idealLifestyle: ["Active", "Moderate"],
+    dnaFactors: ["cognitiveFunction", "stressResponse"],
+    riskMultipliers: {
+      low: 0.82,
+      medium: 1.0,
+      high: 1.23
+    }
+  },
+  {
+    id: "auto-007",
+    provider: "Liberty Insurance",
+    name: "DriveSecure Basic",
+    type: "Auto",
+    basePrice: 155,
+    currency: "RM",
+    coverage: "Affordable third party coverage with essential benefits",
+    features: [
+      "Third party liability",
+      "Fire & theft protection",
+      "Legal costs coverage",
+      "Towing assistance",
+      "Emergency support"
+    ],
+    targetAgeRange: [21, 60],
+    targetRiskProfile: [20, 55],
+    idealLifestyle: ["Moderate", "Sedentary"],
+    dnaFactors: [],
+    riskMultipliers: {
+      low: 0.88,
+      medium: 1.0,
+      high: 1.17
+    }
+  },
+  {
+    id: "auto-008",
+    provider: "Etiqa Takaful",
+    name: "MotorShield Elite",
+    type: "Auto",
+    basePrice: 315,
+    currency: "RM",
+    coverage: "Premium comprehensive auto coverage with enhanced benefits",
+    features: [
+      "Comprehensive coverage",
+      "Windscreen & flood protection",
+      "Replacement vehicle service",
+      "24/7 roadside assistance",
+      "Personal accident benefit",
+      "Workshop guarantee",
+      "Accessories coverage"
+    ],
+    targetAgeRange: [25, 70],
+    targetRiskProfile: [20, 50],
+    idealLifestyle: ["Active", "Moderate"],
+    dnaFactors: ["cognitiveFunction", "stressResponse", "riskTaking"],
+    riskMultipliers: {
+      low: 0.76,
+      medium: 1.0,
+      high: 1.28
     }
   },
 
@@ -449,6 +633,112 @@ export const INSURANCE_PLANS: InsurancePlan[] = [
       high: 1.20
     }
   },
+  {
+    id: "life-006",
+    provider: "AXA Affin",
+    name: "FamilyShield Term",
+    type: "Life",
+    basePrice: 175,
+    currency: "RM",
+    coverage: "Affordable term life protection for families",
+    features: [
+      "RM 500,000 coverage",
+      "25-year term protection",
+      "Death benefit",
+      "TPD coverage",
+      "Affordable premiums",
+      "Family protection"
+    ],
+    targetAgeRange: [25, 50],
+    targetRiskProfile: [20, 55],
+    idealLifestyle: ["Active", "Moderate"],
+    dnaFactors: ["lifespan", "cardiovascularRisk"],
+    riskMultipliers: {
+      low: 0.81,
+      medium: 1.0,
+      high: 1.19
+    }
+  },
+  {
+    id: "life-007",
+    provider: "Tokio Marine Life",
+    name: "LifeSecure Plus",
+    type: "Life",
+    basePrice: 425,
+    currency: "RM",
+    coverage: "Whole life insurance with comprehensive benefits",
+    features: [
+      "Lifetime coverage",
+      "RM 800,000 sum assured",
+      "Cash value growth",
+      "Critical illness rider",
+      "Death benefit",
+      "Living benefits",
+      "Policy loan option"
+    ],
+    targetAgeRange: [28, 60],
+    targetRiskProfile: [35, 75],
+    idealLifestyle: ["Active", "Moderate", "Sedentary"],
+    dnaFactors: ["lifespan", "cardiovascularRisk", "cancerRisk"],
+    riskMultipliers: {
+      low: 0.84,
+      medium: 1.0,
+      high: 1.16
+    }
+  },
+  {
+    id: "life-008",
+    provider: "Hong Leong Assurance",
+    name: "SmartProtect Term",
+    type: "Life",
+    basePrice: 115,
+    currency: "RM",
+    coverage: "Budget term life insurance for young professionals",
+    features: [
+      "RM 300,000 coverage",
+      "20-year term",
+      "Death benefit",
+      "Online application",
+      "Fast approval",
+      "Renewable option"
+    ],
+    targetAgeRange: [21, 45],
+    targetRiskProfile: [15, 50],
+    idealLifestyle: ["Active", "Moderate"],
+    dnaFactors: [],
+    riskMultipliers: {
+      low: 0.86,
+      medium: 1.0,
+      high: 1.14
+    }
+  },
+  {
+    id: "life-009",
+    provider: "MSIG Life",
+    name: "WealthBuilder Universal",
+    type: "Life",
+    basePrice: 355,
+    currency: "RM",
+    coverage: "Universal life with flexible premiums and investment growth",
+    features: [
+      "Flexible premium payments",
+      "Investment options",
+      "Death benefit",
+      "Cash value accumulation",
+      "Partial withdrawals",
+      "Coverage to age 99",
+      "Critical illness rider"
+    ],
+    targetAgeRange: [30, 65],
+    targetRiskProfile: [40, 80],
+    idealLifestyle: ["Moderate", "Sedentary"],
+    dnaFactors: ["cardiovascularRisk", "diabetesRisk", "cancerRisk"],
+    riskMultipliers: {
+      low: 0.83,
+      medium: 1.0,
+      high: 1.17
+    }
+  },
 
   // ==================== TRAVEL INSURANCE ====================
   {
@@ -570,6 +860,92 @@ export const INSURANCE_PLANS: InsurancePlan[] = [
       high: 1.25
     }
   },
+  {
+    id: "travel-005",
+    provider: "MSIG Travel",
+    name: "TravelGuard Regional",
+    type: "Travel",
+    basePrice: 42,
+    currency: "RM",
+    coverage: "Budget-friendly ASEAN travel coverage",
+    features: [
+      "ASEAN coverage",
+      "Medical expenses",
+      "Trip cancellation",
+      "Baggage protection",
+      "Travel delay benefits",
+      "Personal accident"
+    ],
+    targetAgeRange: [18, 70],
+    targetRiskProfile: [20, 55],
+    idealLifestyle: ["Active", "Moderate"],
+    dnaFactors: [],
+    riskMultipliers: {
+      low: 0.86,
+      medium: 1.0,
+      high: 1.14
+    }
+  },
+  {
+    id: "travel-006",
+    provider: "Etiqa Travel",
+    name: "GlobalProtect Complete",
+    type: "Travel",
+    basePrice: 88,
+    currency: "RM",
+    coverage: "Comprehensive worldwide travel insurance",
+    features: [
+      "Worldwide coverage",
+      "Medical expenses up to RM 500,000",
+      "Trip cancellation",
+      "Baggage loss & delay",
+      "Flight delay compensation",
+      "Emergency assistance",
+      "COVID-19 coverage"
+    ],
+    targetAgeRange: [18, 75],
+    targetRiskProfile: [25, 65],
+    idealLifestyle: ["Active", "Moderate"],
+    dnaFactors: ["cardiovascularRisk"],
+    riskMultipliers: {
+      low: 0.83,
+      medium: 1.0,
+      high: 1.17
+    }
+  },
+  {
+    id: "travel-007",
+    provider: "RHB Travel",
+    name: "MultiTrip Annual Pro",
+    type: "Travel",
+    basePrice: 285,
+    currency: "RM",
+    coverage: "Annual multi-trip insurance for business travelers",
+    features: [
+      "Unlimited trips per year",
+      "Up to 90 days per trip",
+      "Worldwide coverage",
+      "Business travel included",
+      "Medical expenses",
+      "Trip cancellation",
+      "Equipment coverage"
+    ],
+    targetAgeRange: [25, 70],
+    targetRiskProfile: [20, 55],
+    idealLifestyle: ["Active", "Moderate"],
+    dnaFactors: [],
+    requiresCondition: {
+      type: "lifestyle",
+      field: "travelFrequency",
+      value: "Frequent",
+      operator: "equals"
+    },
+    riskMultipliers: {
+      low: 0.81,
+      medium: 1.0,
+      high: 1.19
+    }
+  },
 
   // ==================== SPORTS INSURANCE ====================
   {
@@ -687,6 +1063,90 @@ export const INSURANCE_PLANS: InsurancePlan[] = [
       low: 0.80,
       medium: 1.0,
       high: 1.35
+    }
+  },
+  {
+    id: "sports-005",
+    provider: "Liberty Sports",
+    name: "ActiveLife Premium",
+    type: "Sports",
+    basePrice: 98,
+    currency: "RM",
+    coverage: "Comprehensive sports coverage for recreational athletes",
+    features: [
+      "Sports injury coverage",
+      "Gym & fitness protection",
+      "Medical expenses",
+      "Physiotherapy benefits",
+      "Rehabilitation support",
+      "Equipment protection"
+    ],
+    targetAgeRange: [18, 60],
+    targetRiskProfile: [30, 65],
+    idealLifestyle: ["Active", "Moderate"],
+    dnaFactors: ["athleticAdvantage", "injurySusceptibility", "recoveryRate"],
+    riskMultipliers: {
+      low: 0.81,
+      medium: 1.0,
+      high: 1.19
+    }
+  },
+  {
+    id: "sports-006",
+    provider: "RHB Sports",
+    name: "FitnessGuard Basic",
+    type: "Sports",
+    basePrice: 68,
+    currency: "RM",
+    coverage: "Essential gym and fitness center injury coverage",
+    features: [
+      "Gym accident coverage",
+      "Basic injury treatment",
+      "Medical expenses",
+      "Physiotherapy sessions",
+      "Emergency treatment"
+    ],
+    targetAgeRange: [18, 65],
+    targetRiskProfile: [25, 55],
+    idealLifestyle: ["Active", "Moderate"],
+    dnaFactors: ["injurySusceptibility", "recoveryRate"],
+    riskMultipliers: {
+      low: 0.86,
+      medium: 1.0,
+      high: 1.14
+    }
+  },
+  {
+    id: "sports-007",
+    provider: "MSIG Sports",
+    name: "CompetitionPro Elite",
+    type: "Sports",
+    basePrice: 285,
+    currency: "RM",
+    coverage: "Professional sports coverage for competitive athletes",
+    features: [
+      "Competition coverage",
+      "Career protection",
+      "Surgery & rehab",
+      "Loss of income benefit",
+      "Mental health support",
+      "Performance recovery",
+      "International coverage"
+    ],
+    targetAgeRange: [18, 45],
+    targetRiskProfile: [50, 85],
+    idealLifestyle: ["Active"],
+    dnaFactors: ["athleticAdvantage", "powerPerformance", "recoveryRate", "injurySusceptibility"],
+    requiresCondition: {
+      type: "lifestyle",
+      field: "occupation",
+      value: ["Athlete", "Sports", "Coach", "Trainer"],
+      operator: "includes"
+    },
+    riskMultipliers: {
+      low: 0.76,
+      medium: 1.0,
+      high: 1.28
     }
   }
 ];
