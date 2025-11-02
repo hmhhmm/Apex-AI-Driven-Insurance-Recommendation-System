@@ -1,7 +1,7 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
 // ✅ Get API_KEY from environment variable
-const API_KEY = (import.meta.env.VITE_GEMINI_API_KEY as string) || 'AIzaSyCDCAldGNNXk8DS5ydJlcQmgdD87FGdiGQ';
+const API_KEY = (import.meta as any).env?.API_KEY || 'AIzaSyCDCAldGNNXk8DS5ydJlcQmgdD87FGdiGQ';
 
 const SYSTEM_PROMPT = `You are APEX AI Assistant, an expert insurance advisor.
 
